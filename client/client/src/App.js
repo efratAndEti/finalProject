@@ -9,7 +9,8 @@ import {
   Link
 } from "react-router-dom";
 import LOgIn from './components/LogIn/LogIn';
-
+import Opinion from './components/Opinion/Opinion';
+import Chats from './components/Massages/Chat';
 
 function App() {
   return (
@@ -17,15 +18,21 @@ function App() {
     <Router>
       <div>
         <nav>
-          <ul>
-            <li>
+          <ul id='ul'>
+            <li id='li'>
               <Link to="/sample">Home</Link>
             </li>
-            <li>
-              <Link to="/sign-up">Home</Link>
+            <li id='li'>
+              <Link to="/sign-up">Sign-up</Link>
             </li>
-            <li>
+            <li id='li'>
               <Link to="/log-in">LogIn</Link>
+            </li>
+            <li id='li'>
+              <Link to="/opinion">Chat</Link>
+            </li>
+            <li id='li'>
+              <Link to="/massages">Massages</Link>
             </li>
           </ul>
         </nav>
@@ -37,6 +44,8 @@ function App() {
           <Route path="/sample" element={<Sample />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/log-in" element={<LOgIn />} />
+          <Route path="/opinion" element={<Opinion />} />
+          <Route path="/massages" element={<Chats />} />
         </Routes>
       </div>
     </Router>
