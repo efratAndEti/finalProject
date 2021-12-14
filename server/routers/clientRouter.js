@@ -20,15 +20,10 @@ clientRouter.get('/getClient/:clientId', async (req, res) => {
 })
 
 
-clientRouter.get('/findClientByStatus/:StatusId', (req, res) => {
-    const { StatusId } = req.params;
-    // mysqlConnection.query(`SELECT first_name , last_name  FROM client WHERE client_status  = ${StatusId}`, (err, rows) => {
-    //     if (!err)
-    //         res.send(rows);
-    //     else
-    //         console.log(err);
-    // })
-    const result = promiseQuery(`SELECT first_name , last_name  FROM client WHERE client_status  = ${StatusId}`);
+clientRouter.get('/findClientByStatus', async (req, res) => {    
+    const { statusId } = req.params;
+    const result =await promiseQuery(`SELECT first_name , last_name  FROM client `);
+    console.log("Result of status" ,result);
     res.send(result);
 })
 

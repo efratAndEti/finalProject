@@ -9,9 +9,8 @@ const getClientsByStatus = async (status) => {
     //     console.log(err);
     //     return null;
     // })
-    console.log("arrived");
     try {
-        const result = await axios.get(`http://localhost:8080/client/findClientByStatus/${status}`);
+        const result = await axios.get(`http://localhost:8080/client/findClientByStatus`);
         console.log(result);
 
         return result.data;
