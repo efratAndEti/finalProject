@@ -20,12 +20,12 @@ app.listen(port, () => console.log(`Listening on port ${port}..`));
 
 
 
-/*
+//----------------שינוי!!!!!!!!!!!!!!!!!!!!
 app.get('/find', (req, res) => {
     console.log(req.query);
     console.log(req.params);
 
-})*/
+})
 app.post("/addEmployee", (req, res) => {
     const { emp_id, last_name, first_name, end_visa_period, type,
         status_emp, genus, address, city, phone, password, mail, birth_date } = req.body;
