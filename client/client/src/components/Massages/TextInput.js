@@ -38,7 +38,7 @@ export const TextInput = () => {
             <form className={classes.wrapForm}  noValidate autoComplete="off">
             <TextField
                 id="standard-text"
-                label="Send"
+                label="Type Somthing"
                 className={classes.wrapText}
                 //margin="normal"
             />

@@ -11,12 +11,15 @@ import {
 import LOgIn from './components/LogIn/LogIn';
 import Opinion from './components/Opinion/Opinion';
 import Chats from './components/Massages/Chat';
+import SwipeableTextMobileStepper from './components/Image';
 
 function App() {
+  
   return (
 
     <Router>
       <div>
+      
         <nav>
           <ul id='ul'>
             <li id='li'>
@@ -47,6 +50,7 @@ function App() {
           <Route path="/opinion" element={<Opinion />} />
           <Route path="/massages" element={<Chats />} />
         </Routes>
+        <SwipeableTextMobileStepper/>
       </div>
     </Router>
 
