@@ -1,12 +1,16 @@
-import { Avatar, createStyles ,Theme} from "@mui/material";
+import { ThemeProvider } from "@emotion/react";
+import { Avatar, createStyles } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
-import { makeStyles } from "@mui/styles";
+import { makeStyles} from "@mui/styles";
 import React from "react";
+import { Theme } from '@mui/material'
+import stringAvatar from "../Opinion/Color";
+
 // import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 // import Avatar from "@material-ui/core/Avatar";
 // import { deepOrange } from "@material-ui/core/colors";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(theme =>
   createStyles({
     messageRow: {
       display: "flex"
@@ -100,16 +104,17 @@ const useStyles = makeStyles((theme: Theme) =>
     },
 
     orange: {
-      color: theme.palette.getContrastText(deepOrange[500]),
+      color:'#ffab91',
+      //theme.palette.getContrastText(deepOrange[500]),
       backgroundColor: deepOrange[500],
-      width: theme.spacing(4),
-      height: theme.spacing(4)
+     // width: theme.spacing(4),
+      //height: theme.spacing(4)
     },
     avatarNothing: {
       color: "transparent",
       backgroundColor: "transparent",
-      width: theme.spacing(4),
-      height: theme.spacing(4)
+     // width: theme.spacing(4),
+     // height: theme.spacing(4)
     },
     displayName: {
       marginLeft: "20px"
@@ -129,6 +134,7 @@ export const MessageLeft = (props) => {
       <div className={classes.messageRow}>
         <Avatar
           alt={displayName}
+          {...stringAvatar(displayName)}
           className={classes.orange}
           src={photoURL}
         ></Avatar>

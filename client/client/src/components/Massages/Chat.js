@@ -2,12 +2,11 @@ import React from "react";
 // import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 // import { Paper } from "@material-ui/core";
 import { TextInput } from "./TextInput.js";
-import { Chat } from "@mui/icons-material";
-import { createStyles, Paper, Theme } from "@mui/material";
+import { createStyles, Paper } from "@mui/material";
 import { MessageLeft, MessageRight } from "./Massage.js";
-import { makeStyles } from "@mui/styles";
+import { makeStyles,Theme } from "@mui/styles";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(theme =>
   createStyles({
     paper: {
       width: "80vw",
@@ -50,31 +49,31 @@ export default function Chats() {
       <Paper className={classes.paper} zDepth={2}>
         <Paper id="style-1" className={classes.messagesBody}>
           <MessageLeft
-            message="あめんぼあかいなあいうえお"
-            timestamp="MM/DD 00:00"
+            message="hi how are you?"
+           // timestamp="MM/DD 00:00"
             photoURL="https://lh3.googleusercontent.com/a-/AOh14Gi4vkKYlfrbJ0QLJTg_DLjcYyyK7fYoWRpz2r4s=s96-c"
-            displayName=""
+            displayName="Joy Rpy"
             avatarDisp={true}
           />
           <MessageLeft
-            message="xxxxxhttps://yahoo.co.jp xxxxxxxxxあめんぼあかいなあいうえおあいうえおかきくけこさぼあかいなあいうえおあいうえおかきくけこさぼあかいなあいうえおあいうえおかきくけこさいすせそ"
+            message="are you ok?"
             timestamp="MM/DD 00:00"
             photoURL=""
-            displayName="テスト"
+            displayName="Bem Her"
             avatarDisp={false}
           />
           <MessageRight
             message="messageRあめんぼあかいなあいうえおあめんぼあかいなあいうえおあめんぼあかいなあいうえお"
             timestamp="MM/DD 00:00"
             photoURL="https://lh3.googleusercontent.com/a-/AOh14Gi4vkKYlfrbJ0QLJTg_DLjcYyyK7fYoWRpz2r4s=s96-c"
-            displayName="まさりぶ"
+            displayName="me"
             avatarDisp={true}
           />
           <MessageRight
             message="messageRあめんぼあかいなあいうえおあめんぼあかいなあいうえお"
             timestamp="MM/DD 00:00"
             photoURL="https://lh3.googleusercontent.com/a-/AOh14Gi4vkKYlfrbJ0QLJTg_DLjcYyyK7fYoWRpz2r4s=s96-c"
-            displayName="まさりぶ"
+            displayName="me"
             avatarDisp={false}
           />
         </Paper>
