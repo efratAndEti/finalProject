@@ -2,9 +2,6 @@ import { Avatar, Divider, Fab, Grid, List, ListItem, ListItemIcon, ListItemText,
 import React from 'react';
 import { makeStyles } from '@mui/styles';
 import SendIcon from '@mui/icons-material/Send';
-import stringAvatar from './Color';
-import AddIcon from '@mui/icons-material/Add';
-import Add from './Add';
 
 const useStyles = makeStyles({
   table: {
@@ -39,9 +36,9 @@ const Opinion = () => {
         <Grid container component={Paper} className={classes.chatSection}>
             <Grid item xs={3} className={classes.borderRight500}>
                 <List>
-                    <ListItem button key="John Wick">
+                    <ListItem button key="RemySharp">
                         <ListItemIcon>
-                        <Avatar alt="John Wick" {...stringAvatar('John Wick')} />
+                        <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
                         </ListItemIcon>
                         <ListItemText primary="John Wick"></ListItemText>
                     </ListItem>
@@ -54,20 +51,20 @@ const Opinion = () => {
                 <List>
                     <ListItem button key="RemySharp">
                         <ListItemIcon>
-                            <Avatar alt="Remy Sharp" {...stringAvatar('Remy Sharp')} />
+                            <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
                         </ListItemIcon>
                         <ListItemText primary="Remy Sharp">Remy Sharp</ListItemText>
-                        {/* <ListItemText secondary="online" align="right"></ListItemText> */}
+                        <ListItemText secondary="online" align="right"></ListItemText>
                     </ListItem>
                     <ListItem button key="Alice">
                         <ListItemIcon>
-                            <Avatar alt="Alice A" {...stringAvatar('Alice A')} />
+                            <Avatar alt="Alice" src="https://material-ui.com/static/images/avatar/3.jpg" />
                         </ListItemIcon>
                         <ListItemText primary="Alice">Alice</ListItemText>
                     </ListItem>
                     <ListItem button key="CindyBaker">
                         <ListItemIcon>
-                            <Avatar alt="Cindy Baker"{...stringAvatar('Cindy Baker')} />
+                            <Avatar alt="Cindy Baker" src="https://material-ui.com/static/images/avatar/2.jpg" />
                         </ListItemIcon>
                         <ListItemText primary="Cindy Baker">Cindy Baker</ListItemText>
                     </ListItem>
@@ -95,11 +92,24 @@ const Opinion = () => {
                             </Grid>
                         </Grid>
                     </ListItem>
+                    <ListItem key="3">
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <ListItemText align="right" primary="Cool. i am good, let's catch up!"></ListItemText>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <ListItemText align="right" secondary="10:30"></ListItemText>
+                            </Grid>
+                        </Grid>
+                    </ListItem>
                 </List>
                 <Divider />
-                <Grid container style={{padding: '0px'}}>
-                    <Grid xs={11} align="right">
-                        <Fab color="primary" aria-label="add"><Add /></Fab>
+                <Grid container style={{padding: '20px'}}>
+                    <Grid item xs={11}>
+                        <TextField id="outlined-basic-email" label="Type Something" fullWidth />
+                    </Grid>
+                    <Grid xs={1} align="right">
+                        <Fab color="primary" aria-label="add"><SendIcon /></Fab>
                     </Grid>
                 </Grid>
             </Grid>

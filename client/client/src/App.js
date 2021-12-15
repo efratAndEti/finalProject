@@ -29,7 +29,7 @@ function App() {
               <Link to="/log-in">LogIn</Link>
             </li>
             <li id='li'>
-              <Link to="/opinion">Chat</Link>
+              <Link to="/opinion">Opinion</Link>
             </li>
             <li id='li'>
               <Link to="/massages">Massages</Link>
