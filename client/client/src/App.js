@@ -12,6 +12,7 @@ import LOgIn from './components/LogIn/LogIn';
 import Opinion from './components/Opinion/Opinion';
 import Chats from './components/Massages/Chat';
 import SwipeableTextMobileStepper from './components/Image';
+import LogIn from './components/LogIn/LogIn';
 
 function App() {
   
@@ -26,7 +27,7 @@ function App() {
               <Link to="/sample">Home</Link>
             </li>
             <li id='li'>
-              <Link to="/sign-up">Sign-up</Link>
+              <Link to="/sign-up">SignUp</Link>
             </li>
             <li id='li'>
               <Link to="/log-in">LogIn</Link>
@@ -46,7 +47,7 @@ function App() {
 
           <Route path="/sample" element={<Sample />} />
           <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/log-in" element={<LOgIn />} />
+          <Route path="/log-in" element={<LogIn />} />
           <Route path="/opinion" element={<Opinion />} />
           <Route path="/massages" element={<Chats />} />
         </Routes>
