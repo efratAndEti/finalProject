@@ -30,6 +30,7 @@
 //     )
 // }
 import * as React from 'react';
+import axios from 'axios';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -44,6 +45,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import ControlledRadioButtonsGroup from './RadioButton';
+import { AddBusinessRounded } from '@mui/icons-material';
 // import {
 //     BrowserRouter as Router,
 //     Routes,
@@ -67,6 +70,22 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+
+  const [firstName,setFirstName]=React.useState('');
+  const [lastName,setLastName]=React.useState('');
+  const [password,setPassword]=React.useState('');
+  const [email,setEmail]=React.useState('');
+  const [kind,setKind]=React.useState(1);
+
+  const AddUser= ()=> {
+     const body={
+      email, password, kind ,lastName,firstName  
+     }
+      axios.post('http://localhost:8080/addUser', body).then((res) => {
+            console.log(res);
+        })
+     console.log(body);
+  }
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -99,9 +118,11 @@ export default function SignUp() {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  value={firstName}
+                  onChange={(e) => { setFirstName(e.target.value) }}
                   autoComplete="given-name"
                   name="firstName"
-                  required
+                  required="true"
                   fullWidth
                   id="firstName"
                   label="First Name"
@@ -110,7 +131,9 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
+                  value={lastName}
+                  onChange={(e) => { setLastName(e.target.value) }}
+                  required="true"
                   fullWidth
                   id="lastName"
                   label="Last Name"
@@ -120,7 +143,9 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value) }}
+                  required="true"
                   fullWidth
                   id="email"
                   label="Email Address"
@@ -130,7 +155,9 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
+                  value={password}
+                  onChange={(e) => { setPassword(e.target.value) }}
+                  requiredrequired="true"
                   fullWidth
                   name="password"
                   label="Password"
@@ -139,11 +166,14 @@ export default function SignUp() {
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
+              </Grid> */}
+              <Grid>
+                <ControlledRadioButtonsGroup />
               </Grid>
             </Grid>
             <Button
@@ -151,6 +181,7 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={AddUser}
             >
               Sign Up
             </Button>

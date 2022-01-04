@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
+import { getUsers } from '../../services/user.service';
 
 function Copyright(props) {
 	const navigate = useNavigate();
@@ -34,9 +35,13 @@ function Copyright(props) {
   );
 }
 
+
 const theme = createTheme();
 
 export default function LogIn() {
+  const [users, setUsers] = React.useState([]);
+  const [userName,setUserName]=React.useState('');
+  const [password,setPassword]=React.useState('');
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -46,6 +51,20 @@ export default function LogIn() {
       password: data.get('password'),
     });
   };
+  React.useEffect(async () => {
+    console.log("getting data from server");
+
+    const users = await getUsers();
+    if (users != null)
+        setUsers(users);
+    else
+        alert("server Errror! , client");
+}, [])
+  const findUser= ()=>{
+    console.log(users);
+    const result = users.filter(e=>e.user_name==userName);
+    alert(result);
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -67,6 +86,8 @@ export default function LogIn() {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
+              value={userName}
+              onChange={(e) => { setUserName(e.target.value) }}
               margin="normal"
               required
               fullWidth
@@ -77,6 +98,8 @@ export default function LogIn() {
               autoFocus
             />
             <TextField
+             value={password}
+             onChange={(e) => { setPassword(e.target.value) }}
               margin="normal"
               required
               fullWidth
@@ -91,6 +114,7 @@ export default function LogIn() {
               label="Remember me"
             />
             <Button
+              onClick={findUser}
               type="submit"
               fullWidth
               variant="contained"
