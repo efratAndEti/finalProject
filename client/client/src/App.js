@@ -13,6 +13,8 @@ import Opinion from './components/Opinion/Opinion';
 import Chats from './components/Massages/Chat';
 import SwipeableTextMobileStepper from './components/Image';
 import LogIn from './components/LogIn/LogIn';
+import EmployeeBar from './components/Employee/Emploee';
+import Page404 from './components/PageNotFound';
 
 function App() {
   
@@ -50,6 +52,9 @@ function App() {
           <Route path="/log-in" element={<LogIn />} />
           <Route path="/opinion" element={<Opinion />} />
           <Route path="/massages" element={<Chats />} />
+          <Route path="/employee-bar" element={<EmployeeBar />} />
+          <Route path="*" element={<Page404 />} />
+
         </Routes>
         <SwipeableTextMobileStepper/>
       </div>

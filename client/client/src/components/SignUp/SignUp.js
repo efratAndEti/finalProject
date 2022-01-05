@@ -45,8 +45,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import ControlledRadioButtonsGroup from './RadioButton';
 import { AddBusinessRounded } from '@mui/icons-material';
+import { FormControl, Radio, RadioGroup } from '@mui/material';
 // import {
 //     BrowserRouter as Router,
 //     Routes,
@@ -75,7 +75,19 @@ export default function SignUp() {
   const [lastName,setLastName]=React.useState('');
   const [password,setPassword]=React.useState('');
   const [email,setEmail]=React.useState('');
-  const [kind,setKind]=React.useState(1);
+  const [kind,setKind]=React.useState();
+  const [disabled	,setDisabled]=React.useState(true);
+  const [value, setValue] = React.useState('');
+  
+    
+    const handleChange = (event) => {
+      if(event.target.value=='client')
+        setKind(1);
+      else
+        setKind(0);
+      ifCanged();
+
+    };
 
   const AddUser= ()=> {
      const body={
@@ -85,6 +97,19 @@ export default function SignUp() {
             console.log(res);
         })
      console.log(body);
+     sendTo();
+  }
+
+ const ifCanged=()=>{
+    if((kind != undefined) &&email&&password&&lastName&&firstName)
+       setDisabled(false);
+  }
+
+  const sendTo =()=>{
+    if (kind)
+      window.location.assign('http://localhost:3000/client-bar');
+    else
+      window.location.assign('http://localhost:3000/employee-bar');
   }
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -119,7 +144,7 @@ export default function SignUp() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   value={firstName}
-                  onChange={(e) => { setFirstName(e.target.value) }}
+                  onChange={(e) => { setFirstName(e.target.value); ifCanged() }}
                   autoComplete="given-name"
                   name="firstName"
                   required="true"
@@ -132,7 +157,7 @@ export default function SignUp() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   value={lastName}
-                  onChange={(e) => { setLastName(e.target.value) }}
+                  onChange={(e) => { setLastName(e.target.value) ; ifCanged()}}
                   required="true"
                   fullWidth
                   id="lastName"
@@ -144,7 +169,7 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <TextField
                   value={email}
-                  onChange={(e) => { setEmail(e.target.value) }}
+                  onChange={(e) => { setEmail(e.target.value) ; ifCanged()}}
                   required="true"
                   fullWidth
                   id="email"
@@ -156,7 +181,7 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <TextField
                   value={password}
-                  onChange={(e) => { setPassword(e.target.value) }}
+                  onChange={(e) => { setPassword(e.target.value) ; ifCanged()}}
                   requiredrequired="true"
                   fullWidth
                   name="password"
@@ -173,7 +198,18 @@ export default function SignUp() {
                 />
               </Grid> */}
               <Grid>
-                <ControlledRadioButtonsGroup />
+              <FormControl component="fieldset">
+       {/* <FormLabel component="legend">סוג</FormLabel> */}
+        <RadioGroup
+          aria-label="kind"
+          name="controlled-radio-buttons-group"
+          value={kind}
+          onChange={handleChange}
+        >
+          <FormControlLabel value="client" control={<Radio />} label="מטופל" />
+          <FormControlLabel value="employee" control={<Radio />} label="עובד" />
+                  </RadioGroup>
+      </FormControl>
               </Grid>
             </Grid>
             <Button
@@ -182,6 +218,7 @@ export default function SignUp() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               onClick={AddUser}
+              disabled={disabled}
             >
               Sign Up
             </Button>

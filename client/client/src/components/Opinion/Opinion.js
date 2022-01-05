@@ -33,7 +33,7 @@ const Opinion = () => {
       <div>
         <Grid container>
             <Grid item xs={12} >
-                <Typography variant="h5" className="header-message">Chat</Typography>
+                <Typography variant="h5" className="header-message">חוות דעת</Typography>
             </Grid>
         </Grid>
         <Grid container component={Paper} className={classes.chatSection}>
