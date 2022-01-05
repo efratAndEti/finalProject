@@ -15,6 +15,11 @@ import SwipeableTextMobileStepper from './components/Image';
 import LogIn from './components/LogIn/LogIn';
 import EmployeeBar from './components/Employee/Emploee';
 import Page404 from './components/PageNotFound';
+import About from './components/About/about';
+import AboutTheWeb from './components/About/about';
+import ClientBar from './components/Client/Client';
+import SearchEmp from './components/Search/Search';
+
 
 function App() {
   
@@ -35,10 +40,7 @@ function App() {
               <Link to="/log-in">LogIn</Link>
             </li>
             <li id='li'>
-              <Link to="/opinion">Opinion</Link>
-            </li>
-            <li id='li'>
-              <Link to="/massages">Massages</Link>
+              <Link to="/about">About</Link>
             </li>
           </ul>
         </nav>
@@ -53,6 +55,10 @@ function App() {
           <Route path="/opinion" element={<Opinion />} />
           <Route path="/massages" element={<Chats />} />
           <Route path="/employee-bar" element={<EmployeeBar />} />
+          <Route path="/client-bar" element={<ClientBar />} />
+          <Route path="/search" element={<SearchEmp />} />
+          <Route path="/about" element={<AboutTheWeb/>} />
+
           <Route path="*" element={<Page404 />} />
 
         </Routes>

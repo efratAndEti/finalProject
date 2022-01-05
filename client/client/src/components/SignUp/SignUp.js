@@ -101,7 +101,7 @@ export default function SignUp() {
   }
 
  const ifCanged=()=>{
-    if((kind != undefined) &&email&&password&&lastName&&firstName)
+    if(email&&password&&lastName&&firstName)
        setDisabled(false);
   }
 

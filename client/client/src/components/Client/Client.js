@@ -18,6 +18,7 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 
 
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -58,7 +59,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function EmployeeBar() {
+export default function ClientBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -175,7 +176,7 @@ export default function EmployeeBar() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            Emploee
+            Client 
           </Typography>
           <Search>
             <SearchIconWrapper>
@@ -188,7 +189,11 @@ export default function EmployeeBar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit" 
+          <IconButton size="large" aria-label="search employee" color="inherit" 
+            onClick={(e)=>{window.location.assign('http://localhost:3000/search')}}>
+                 <SearchIcon/>
+            </IconButton>
+            <IconButton size="large" aria-label="show opinion" color="inherit" 
             onClick={(e)=>{window.location.assign('http://localhost:3000/opinion')}}>
                 <InsertEmoticonIcon/>
             </IconButton>

@@ -12,5 +12,4 @@ export default function Custumer(props) {
             <p>{last_name}</p>
         </div>
     )
-
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Custumer from '../Custumer/Custumer';
+import Custumer from '../Client/Custumer';
 import { getClientsByStatus } from '../../services/client.service';
 import axios from 'axios';
 import { Box, Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
