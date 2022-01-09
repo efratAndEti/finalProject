@@ -36,16 +36,13 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { AddBusinessRounded } from '@mui/icons-material';
 import { FormControl, Radio, RadioGroup } from '@mui/material';
 // import {
 //     BrowserRouter as Router,
@@ -69,43 +66,51 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignUp() {
+export default function SignUp(props) {
+  const { onSignUp } = props;
+  const [firstName, setFirstName] = React.useState('');
+  const [lastName, setLastName] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [kind, setKind] = React.useState();
+  const [disabled, setDisabled] = React.useState(true);
 
-  const [firstName,setFirstName]=React.useState('');
-  const [lastName,setLastName]=React.useState('');
-  const [password,setPassword]=React.useState('');
-  const [email,setEmail]=React.useState('');
-  const [kind,setKind]=React.useState();
-  const [disabled	,setDisabled]=React.useState(true);
-  const [value, setValue] = React.useState('');
-  
-    
-    const handleChange = (event) => {
-      if(event.target.value=='client')
-        setKind(1);
-      else
-        setKind(0);
-      ifCanged();
 
-    };
+  const handleChange = (event) => {
+    if (event.target.value == 'client')
+      setKind(1);
+    else
+      setKind(0);
+    ifCanged();
 
-  const AddUser= ()=> {
-     const body={
-      email, password, kind ,lastName,firstName  
-     }
-      axios.post('http://localhost:8080/addUser', body).then((res) => {
-            console.log(res);
-        })
-     console.log(body);
-     sendTo();
+  };
+
+  const AddUser = () => {
+    const body = {
+      email, password, kind, lastName, firstName
+    }
+    axios.post('http://localhost:8080/addUser', body).then((res) => {
+      console.log(res);
+      body.id = res.data.insertId;
+      console.log(body);
+      const userStr = JSON.stringify(body);
+      localStorage.setItem("user", userStr);
+      console.log(body);
+      onSignUp();
+      sendTo();
+
+    })
+
   }
 
- const ifCanged=()=>{
-    if(email&&password&&lastName&&firstName)
-       setDisabled(false);
+  const ifCanged = () => {
+    if (email && password && lastName && firstName && (kind == 0 || kind == 1)) {
+      console.log("disabled:false");
+      setDisabled(false);
+    }
   }
 
-  const sendTo =()=>{
+  const sendTo = () => {
     if (kind)
       window.location.assign('http://localhost:3000/client-bar');
     else
@@ -157,7 +162,7 @@ export default function SignUp() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   value={lastName}
-                  onChange={(e) => { setLastName(e.target.value) ; ifCanged()}}
+                  onChange={(e) => { setLastName(e.target.value); ifCanged() }}
                   required="true"
                   fullWidth
                   id="lastName"
@@ -169,7 +174,7 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <TextField
                   value={email}
-                  onChange={(e) => { setEmail(e.target.value) ; ifCanged()}}
+                  onChange={(e) => { setEmail(e.target.value); ifCanged() }}
                   required="true"
                   fullWidth
                   id="email"
@@ -181,7 +186,7 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <TextField
                   value={password}
-                  onChange={(e) => { setPassword(e.target.value) ; ifCanged()}}
+                  onChange={(e) => { setPassword(e.target.value); ifCanged() }}
                   requiredrequired="true"
                   fullWidth
                   name="password"
@@ -198,18 +203,18 @@ export default function SignUp() {
                 />
               </Grid> */}
               <Grid>
-              <FormControl component="fieldset">
-       {/* <FormLabel component="legend">סוג</FormLabel> */}
-        <RadioGroup
-          aria-label="kind"
-          name="controlled-radio-buttons-group"
-          value={kind}
-          onChange={handleChange}
-        >
-          <FormControlLabel value="client" control={<Radio />} label="מטופל" />
-          <FormControlLabel value="employee" control={<Radio />} label="עובד" />
+                <FormControl component="fieldset">
+                  {/* <FormLabel component="legend">סוג</FormLabel> */}
+                  <RadioGroup
+                    aria-label="kind"
+                    name="controlled-radio-buttons-group"
+                    value={kind}
+                    onChange={handleChange}
+                  >
+                    <FormControlLabel value="client" control={<Radio />} label="מטופל" />
+                    <FormControlLabel value="employee" control={<Radio />} label="עובד" />
                   </RadioGroup>
-      </FormControl>
+                </FormControl>
               </Grid>
             </Grid>
             <Button
@@ -224,14 +229,14 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                  {/* <Router> */}
-                <Link  href="http://localhost:3000/log-in" variant="body2">
+                {/* <Router> */}
+                <Link href="http://localhost:3000/log-in" variant="body2">
                   Already have an account? Sign in
                 </Link>
                 {/* <Routers>
                      <Route path="/sign-in" element={<LogIn/>} />
                      </Routers> */}
-          {/* //<Routes/> */}
+                {/* //<Routes/> */}
                 {/* </Router> */}
               </Grid>
             </Grid>

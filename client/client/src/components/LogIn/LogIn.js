@@ -12,15 +12,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from "react-router-dom";
 import { getUsers } from '../../services/user.service';
 
 function Copyright(props) {
-	const navigate = useNavigate();
 
 	const routeChange = () =>{ 
 	  let path = `src/components/SignUp/SignUp.js`; 
-	  navigate(path);
+	  window.location.assign(path);
 	}
   
   return (
@@ -96,6 +94,8 @@ export default function LogIn() {
               name="email"
               autoComplete="email"
               autoFocus
+              // type="email"
+              // required
             />
             <TextField
              value={password}

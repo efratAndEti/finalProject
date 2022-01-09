@@ -1,4 +1,6 @@
 import logo from './logo.svg';
+import { useEffect, useState } from 'react';
+
 import './App.css';
 import Sample from './components/Sample/Sample'
 import SignUp from './components/SignUp/SignUp';
@@ -19,29 +21,49 @@ import About from './components/About/about';
 import AboutTheWeb from './components/About/about';
 import ClientBar from './components/Client/Client';
 import SearchEmp from './components/Search/Search';
-
+import EmployeeForm from './components/Employee/EmployeeForm';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   
+  useEffect(() => {
+    const userStr = localStorage.getItem("user");
+    const user = JSON.parse(userStr);
+    if (user != null)
+      setIsLoggedIn(true);
+  }, []);
+  const changeLogin = () => {
+    setIsLoggedIn(!isLoggedIn);
+  }
+
   return (
 
     <Router>
       <div>
-      
+
         <nav>
           <ul id='ul'>
             <li id='li'>
               <Link to="/sample">Home</Link>
             </li>
-            <li id='li'>
-              <Link to="/sign-up">SignUp</Link>
-            </li>
-            <li id='li'>
-              <Link to="/log-in">LogIn</Link>
-            </li>
-            <li id='li'>
-              <Link to="/about">About</Link>
-            </li>
+            {
+              isLoggedIn == false ?
+                <><li id='li'>
+                  <Link to="/sign-up">SignUp</Link>
+                </li>
+                  <li id='li'>
+                    <Link to="/log-in">LogIn</Link>
+                  </li>
+                  <li id='li'>
+                    <Link to="/about">About</Link>
+                  </li></>
+                : <>
+                  <li id='li'>
+                    <Link to="/employee-bar">Employee Bar</Link>
+                  </li>
+                </>
+            }
+
           </ul>
         </nav>
 
@@ -50,19 +72,21 @@ function App() {
         <Routes>
 
           <Route path="/sample" element={<Sample />} />
-          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/sign-up" element={<SignUp onSignUp={changeLogin} />} />
           <Route path="/log-in" element={<LogIn />} />
           <Route path="/opinion" element={<Opinion />} />
           <Route path="/massages" element={<Chats />} />
           <Route path="/employee-bar" element={<EmployeeBar />} />
           <Route path="/client-bar" element={<ClientBar />} />
           <Route path="/search" element={<SearchEmp />} />
-          <Route path="/about" element={<AboutTheWeb/>} />
+          <Route path="/about" element={<AboutTheWeb />} />
+          <Route path="/employee-form" element={<EmployeeForm />} />
+          <Route path="/" element={<Sample />} />
 
           <Route path="*" element={<Page404 />} />
 
         </Routes>
-        <SwipeableTextMobileStepper/>
+        <SwipeableTextMobileStepper />
       </div>
     </Router>
 
