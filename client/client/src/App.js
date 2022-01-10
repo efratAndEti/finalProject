@@ -13,7 +13,7 @@ import {
 import LOgIn from './components/LogIn/LogIn';
 import Opinion from './components/Opinion/Opinion';
 import Chats from './components/Massages/Chat';
-import SwipeableTextMobileStepper from './components/Image';
+import SwipeableTextMobileStepper from './components/Home/Image';
 import LogIn from './components/LogIn/LogIn';
 import EmployeeBar from './components/Employee/Emploee';
 import Page404 from './components/PageNotFound';
@@ -22,7 +22,8 @@ import AboutTheWeb from './components/About/about';
 import ClientBar from './components/Client/Client';
 import SearchEmp from './components/Search/Search';
 import EmployeeForm from './components/Employee/EmployeeForm';
-
+import SignOut from './components/SignOut/SignOut';
+import Home from './components/Home/Home';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   
@@ -35,6 +36,8 @@ function App() {
   const changeLogin = () => {
     setIsLoggedIn(!isLoggedIn);
   }
+  const userStr = localStorage.getItem("user");
+  const user = JSON.parse(userStr);
 
   return (
 
@@ -44,8 +47,11 @@ function App() {
         <nav>
           <ul id='ul'>
             <li id='li'>
-              <Link to="/sample">Home</Link>
+              <Link to="/">Home</Link>
             </li>
+            <li id='li'>
+                    <Link to="/about">About</Link>
+                  </li>
             {
               isLoggedIn == false ?
                 <><li id='li'>
@@ -53,15 +59,20 @@ function App() {
                 </li>
                   <li id='li'>
                     <Link to="/log-in">LogIn</Link>
-                  </li>
-                  <li id='li'>
-                    <Link to="/about">About</Link>
                   </li></>
-                : <>
+                  
+                : user.kind==1 ? <>
                   <li id='li'>
-                    <Link to="/employee-bar">Employee Bar</Link>
+                    <Link to="/client-bar">Client Bar</Link>
                   </li>
-                </>
+                  <li><SignOut onSignOut={changeLogin}/></li>
+                </>:
+                <>
+                 <li id='li'>
+                 <Link to="/employee-bar">Employee Bar</Link>
+               </li>
+               <li><SignOut onSignOut={changeLogin}/></li>
+             </>
             }
 
           </ul>
@@ -74,19 +85,20 @@ function App() {
           <Route path="/sample" element={<Sample />} />
           <Route path="/sign-up" element={<SignUp onSignUp={changeLogin} />} />
           <Route path="/log-in" element={<LogIn />} />
+          <Route path="/sign-out" element={<SignOut />} />
           <Route path="/opinion" element={<Opinion />} />
-          <Route path="/massages" element={<Chats />} />
+           <Route path="/massages" element={<Chats />} />
           <Route path="/employee-bar" element={<EmployeeBar />} />
           <Route path="/client-bar" element={<ClientBar />} />
           <Route path="/search" element={<SearchEmp />} />
           <Route path="/about" element={<AboutTheWeb />} />
           <Route path="/employee-form" element={<EmployeeForm />} />
-          <Route path="/" element={<Sample />} />
+          <Route path="/" element={<Home />} />
 
           <Route path="*" element={<Page404 />} />
 
         </Routes>
-        <SwipeableTextMobileStepper />
+        
       </div>
     </Router>
 

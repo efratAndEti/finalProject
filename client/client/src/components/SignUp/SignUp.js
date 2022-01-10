@@ -104,7 +104,7 @@ export default function SignUp(props) {
   }
 
   const ifCanged = () => {
-    if (email && password && lastName && firstName && (kind == 0 || kind == 1)) {
+    if (email && password && lastName && firstName) {
       console.log("disabled:false");
       setDisabled(false);
     }
