@@ -44,6 +44,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { FormControl, Radio, RadioGroup } from '@mui/material';
+import { wait } from '@testing-library/react';
 // import {
 //     BrowserRouter as Router,
 //     Routes,
@@ -104,7 +105,8 @@ export default function SignUp(props) {
   }
 
   const ifCanged = () => {
-    if (email && password && lastName && firstName) {
+    if(error==false )
+    if (email && password && lastName && firstName ) {
       console.log("disabled:false");
       setDisabled(false);
     }
@@ -125,6 +127,16 @@ export default function SignUp(props) {
       password: data.get('password'),
     });
   };
+  const [error,setError]=React.useState('');
+
+  const handleEmail=(e)=>{
+    const re=/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
+    if (re.test((e.target.value)))
+      setError('');
+    else
+    setError('אנא הכנס מייל תקין');
+      setEmail(e.target.value);
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -173,8 +185,10 @@ export default function SignUp(props) {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                error={error}
+                helperText={error}
                   value={email}
-                  onChange={(e) => { setEmail(e.target.value); ifCanged() }}
+                  onChange={(e) => { handleEmail(e); ifCanged() }}
                   required="true"
                   fullWidth
                   id="email"

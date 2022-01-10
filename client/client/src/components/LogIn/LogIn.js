@@ -63,6 +63,16 @@ export default function LogIn() {
     const result = users.filter(e=>e.user_name==userName);
     alert(result);
   }
+  const [error,setError]=React.useState('');
+
+  const handleEmail=(e)=>{
+    const re=/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
+    if (re.test((e.target.value)))
+      setError('');
+    else
+    setError('אנא הכנס מייל תקין');
+      setUserName(e.target.value);
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -85,7 +95,7 @@ export default function LogIn() {
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               value={userName}
-              onChange={(e) => { setUserName(e.target.value) }}
+              onChange={(e) => { handleEmail(e) }}
               margin="normal"
               required
               fullWidth
