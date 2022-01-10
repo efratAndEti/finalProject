@@ -74,13 +74,13 @@ app.post(("/addMassage"), async (req, res) => {
 // })
 app.post("/addEmployee", async(req, res) => {
     const { emp_id, last_name, first_name, end_visa_period, type,
-        status_emp, genus, address, city, phone, password, mail, birth_date } = req.body;
+        status_emp, gender, address, city, phone, password, mail, birth_date } = req.body;
     const query = `insert into db.employee values('${emp_id}', '${last_name}', '${first_name}', '${end_visa_period}'
-    , ${type}, ${status_emp}, ${genus}, '${address}', '${city}', '${phone}', '${password}','${mail}', '${birth_date}'`;
+    , ${type}, ${status_emp}, ${gender}, '${address}', '${city}', '${phone}', '${password}','${mail}', '${birth_date}'`;
 
     console.log(query);
     await promiseQuery(`insert into db.employee values('${emp_id}', '${last_name}', '${first_name}', '${end_visa_period}'
-            , ${type}, ${status_emp}, ${genus}, '${address}', '${city}', '${phone}', '${password}','${mail}', '${birth_date}');`, (err, result) => {
+            , ${type}, ${status_emp}, ${gender}, '${address}', '${city}', '${phone}', '${password}','${mail}', '${birth_date}');`, (err, result) => {
         if (!err) {
             console.log(result);
             res.send({ succes: true, insertId: result.insertId });

@@ -37,7 +37,7 @@ clientRouter.post("/addClient", (req, res) => {
     const { eligibility_hours } = req.body;
     const { client_status } = req.body;
     const { history } = req.body;
-    const { genous } = req.body;
+    const { gender } = req.body;
     const { phone } = req.body;
     const { address } = req.body;
     const { city } = req.body;
@@ -46,7 +46,7 @@ clientRouter.post("/addClient", (req, res) => {
     const { Degree_of_nursing } = req.body;
     const { Hours_out } = req.body;
     const { hours_out_price } = req.body;
-    mysqlConnection.query(`insert into db.client values(${id}, ${last_name},${first_name},${birthDate},${disability_perc},${eligibility_hours},${client_status},${history},${genous},${phone},${mail},${address},${city},${password}, ${Degree_of_nursing}, ${Hours_out}, ${hours_out_price});`, (err, result) => {
+    mysqlConnection.query(`insert into db.client values(${id}, ${last_name},${first_name},${birthDate},${disability_perc},${eligibility_hours},${client_status},${history},${gender},${phone},${mail},${address},${city},${password}, ${Degree_of_nursing}, ${Hours_out}, ${hours_out_price});`, (err, result) => {
         if (!err) {
             console.log(result);
             res.send({ succes: true, insertId: result.insertId });
