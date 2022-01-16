@@ -33,8 +33,8 @@ app.get("/getEmployee", async (req, res)=>{
     res.send(status);
 })
 app.post("/addUser", async (req,res)=> {
-    const { email, password, kind ,lastName,firstName }=req.body;
-    const query= `insert into db.users(user_name, password, user_kind, last_name, first_name) values('${email}','${password}','${kind}','${lastName}','${firstName}')`
+    const { email, password, kind ,lastName,firstName,date }=req.body;
+    const query= `insert into db.users(user_name, password, user_kind, last_name, first_name,date) values('${email}','${password}','${kind}','${lastName}','${firstName}','${date}')`
     await promiseQuery(query, (err, result) => {
         if (!err) {
             console.log(result);
