@@ -24,6 +24,7 @@ import SearchEmp from './components/Search/Search';
 import EmployeeForm from './components/Employee/EmployeeForm';
 import SignOut from './components/SignOut/SignOut';
 import Home from './components/Home/Home';
+import ClientForm from './components/Client/ClientForm';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   
@@ -93,6 +94,8 @@ function App() {
           <Route path="/search" element={<SearchEmp />} />
           <Route path="/about" element={<AboutTheWeb />} />
           <Route path="/employee-form" element={<EmployeeForm />} />
+          <Route path="/client-form" element={<ClientForm />} />
+
           <Route path="/" element={<Home />} />
 
           <Route path="*" element={<Page404 />} />

@@ -15,12 +15,12 @@ const images = [
   {
    // label: 'San Francisco – Oakland Bay Bridge, United States',
 
-    imgPath:'',
+    url:'C:/Users/1/Desktop/computers/projectFiles/project/client/client/src/pictures/1.jpg',
   },
   {
     //label: 'Bird',
-    imgPath:
-      'https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60',
+    title: 'picture',
+    url: 'src/pictures/pexels-kampus-production-7551633.jpg',
   },
   {
    // label: 'Bali, Indonesia',

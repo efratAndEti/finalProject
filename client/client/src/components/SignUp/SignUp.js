@@ -45,12 +45,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { FormControl, Radio, RadioGroup } from '@mui/material';
 import { wait } from '@testing-library/react';
-// import {
-//     BrowserRouter as Router,
-//     Routes,
-//     Route
-//   } from "react-router-dom";
-// import LogIn from '../LogIn/LogIn';
+
 
 function Copyright(props) {
   return (
@@ -87,8 +82,11 @@ export default function SignUp(props) {
   };
 
   const AddUser = () => {
+    var today = new Date(),
+    date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
     const body = {
-      email, password, kind, lastName, firstName
+      email, password, kind, lastName, firstName,date
     }
     axios.post('http://localhost:8080/addUser', body).then((res) => {
       console.log(res);
@@ -116,7 +114,7 @@ export default function SignUp(props) {
     if (kind)
       window.location.assign('http://localhost:3000/client-bar');
     else
-      window.location.assign('http://localhost:3000/employee-bar');
+      window.location.assign('http://localhost:3000/employee-form');
   }
   const handleSubmit = (event) => {
     event.preventDefault();

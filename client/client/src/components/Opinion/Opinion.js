@@ -27,6 +27,9 @@ const useStyles = makeStyles({
 });
 
 const Opinion = () => {
+    const userStr = localStorage.getItem("user");
+    const user = JSON.parse(userStr);
+    const name =user.firstName+' '+user.lastName;
   const classes = useStyles();
 
   return (
@@ -39,11 +42,11 @@ const Opinion = () => {
         <Grid container component={Paper} className={classes.chatSection}>
             <Grid item xs={3} className={classes.borderRight500}>
                 <List>
-                    <ListItem button key="John Wick">
+                    <ListItem button key={name}>
                         <ListItemIcon>
-                        <Avatar alt="John Wick" {...stringAvatar('John Wick')} />
+                        <Avatar alt={name} {...stringAvatar(name)} />
                         </ListItemIcon>
-                        <ListItemText primary="John Wick"></ListItemText>
+                        <ListItemText primary={name}></ListItemText>
                     </ListItem>
                 </List>
                 <Divider />

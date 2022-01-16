@@ -1,9 +1,11 @@
-import { Autocomplete, FormControl, FormControlLabel, FormLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, Stack, TextField } from '@mui/material';
+import { Autocomplete, Button, FormControl, FormControlLabel, FormLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, Stack, TextField } from '@mui/material';
 import { Box, minWidth } from '@mui/system';
 import React, { useState } from 'react';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SaveIcon from '@mui/icons-material/Save';
 
 
 const EmployeeForm =()=>{
@@ -69,6 +71,16 @@ const EmployeeForm =()=>{
                         setErrorNum('')
             setNumber(preNumber+event.target.value);
         };
+    const saveEmp=()=>{
+        alert('save the emp in db and save lockal storage');
+        window.location.assign('http://localhost:3000/employee-bar');
+    }
+    const [loading, setLoading] = React.useState(false);
+    function handleClick() {
+      setLoading(true);
+      saveEmp();
+    }
+  
 
     return(
         <Box
@@ -189,7 +201,7 @@ const EmployeeForm =()=>{
                       error={errorNum}
                       id="filled-required"
                       label="מספר טלפון"
-                      value={emp_id}
+                      value={number}
                       variant="standard"
                       onChange={ifNum}
                       helperText={errorNum}
@@ -211,8 +223,23 @@ const EmployeeForm =()=>{
                renderInput={(params) => <TextField {...params} />}
              />
             </LocalizationProvider>
-                  
+            
+            <LoadingButton
+        color="secondary"
+        onClick={handleClick}
+        loading={loading}
+        loadingPosition="start"
+        startIcon={<SaveIcon />}
+        variant="contained"
+      >
+        Save
+      </LoadingButton>
     </Box>
+
+            /* <Button variant="outlined">שמור</Button> */
+            
+                  
+
     );
 }
 const top100Films = [
