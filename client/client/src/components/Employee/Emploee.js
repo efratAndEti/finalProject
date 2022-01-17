@@ -26,6 +26,7 @@ import {
 } from "react-router-dom";
 import Opinion from '../Opinion/Opinion';
 import Chats from '../Massages/Chat';
+import SignOut from '../SignOut/SignOut';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -94,7 +95,11 @@ export default function EmployeeBar() {
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
-  };
+  }; 
+  const signout=()=>{
+    
+    handleMenuClose();
+  }
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -114,8 +119,9 @@ export default function EmployeeBar() {
       onClose={handleMenuClose}
     >
 
-      <MenuItem onClick={handleMenuClose}> {user.firstName}</MenuItem>
+      <MenuItem onClick={handleMenuClose}> {user.firstName} {user.lastName}</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}><SignOut/></MenuItem>
     </Menu>
   );
 

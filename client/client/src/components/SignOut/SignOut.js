@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, MenuItem } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -36,10 +36,11 @@ export default function SignOut(props) {
   return (
     <div>
         <ThemeProvider theme={whiteTheme}>
-      <Button variant="outlined" onClick={handleClickOpen} color="primary">
+      <Button variant="outlined" onClick={handleClickOpen} color="primary" >
         Sign Out
       </Button>
       </ThemeProvider>
+      {/* <MenuItem onClick={handleClickOpen}>Sign Out</MenuItem> */}
       <Dialog
         open={open}
         TransitionComponent={Transition}

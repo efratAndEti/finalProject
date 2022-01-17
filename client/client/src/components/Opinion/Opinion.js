@@ -5,6 +5,7 @@ import SendIcon from '@mui/icons-material/Send';
 import stringAvatar from './Color';
 import AddIcon from '@mui/icons-material/Add';
 import Add from './Add';
+import Chats from '../Massages/Chat'
 
 const useStyles = makeStyles({
   table: {
@@ -76,9 +77,10 @@ const Opinion = () => {
                     </ListItem>
                 </List>
             </Grid>
-            <Grid item xs={9}>
-                <List className={classes.messageArea}>
-                    <ListItem key="1">
+            <Grid item xs={7}>
+                 {/* <List className={classes.messageArea}> */}
+                     <Chats/>
+                    {/* <ListItem key="1">
                         <Grid container>
                             <Grid item xs={12}>
                                 <ListItemText align="right" primary="Hey man, What's up ?"></ListItemText>
@@ -97,14 +99,14 @@ const Opinion = () => {
                                 <ListItemText align="left" secondary="09:31"></ListItemText>
                             </Grid>
                         </Grid>
-                    </ListItem>
-                </List>
+                    </ListItem> */}
+                {/* </List>  */}
                 <Divider />
-                <Grid container style={{padding: '0px'}}>
+                {/* <Grid container style={{padding: '0px'}}>
                     <Grid xs={11} align="right">
                         <Fab color="primary" aria-label="add"><Add /></Fab>
                     </Grid>
-                </Grid>
+                </Grid> */}
             </Grid>
         </Grid>
       </div>

@@ -25,6 +25,7 @@ import EmployeeForm from './components/Employee/EmployeeForm';
 import SignOut from './components/SignOut/SignOut';
 import Home from './components/Home/Home';
 import ClientForm from './components/Client/ClientForm';
+import OpinionNew from './components/OpinoinNew/OpinionNew';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   
@@ -85,9 +86,12 @@ function App() {
 
           <Route path="/sample" element={<Sample />} />
           <Route path="/sign-up" element={<SignUp onSignUp={changeLogin} />} />
+          <Route path="/sign-out" element={<SignOut onSignOut={changeLogin} />} />
           <Route path="/log-in" element={<LogIn />} />
           <Route path="/sign-out" element={<SignOut />} />
           <Route path="/opinion" element={<Opinion />} />
+          <Route path="/opinion-new" element={<OpinionNew />} />
+
            <Route path="/massages" element={<Chats />} />
           <Route path="/employee-bar" element={<EmployeeBar />} />
           <Route path="/client-bar" element={<ClientBar />} />
