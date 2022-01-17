@@ -5,36 +5,43 @@ import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import img from '../../pictures/1.jpg'
 import Add from './Add';
-import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Fab, Grid, IconButton, Rating, TextField, Toolbar } from '@mui/material';
+import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, Fab, Grid, IconButton, Rating, TextField, Toolbar } from '@mui/material';
 import HoverRating from './Rate';
 import CloseIcon from '@mui/icons-material/Close';
+import { typography } from '@mui/system';
 
 
 const images = [
-  {
-    url: '../../pictures/1.jpg' ,
-    title: 'Breakfast',
-    width: '25%',
-    var: '4',
-  },
-  {
-    url: '/static/images/buttons/burgers.jpg',
-    title: 'Burgers',
-    width: '25%',
-    var: '3.5',
-  },
-  {
-    url: '/static/images/buttons/camera.jpg',
-    title: 'Camera',
-    width: '25%',
-    var: '5',
-  },
-  {
-    url: '/static/images/buttons/camera.jpg',
-    title: 'Camera',
-    width: '25%',
-    var: '1.5',
-  },
+    {
+        url: '../../pictures/1.jpg' ,
+        title: 'עובד 1',
+        width: '20%',
+        var: '4',
+      },
+      {
+        url: '/static/images/buttons/burgers.jpg',
+        title: 'Worker B',
+        width: '20%',
+        var: '3.5',
+      },
+      {
+        url: '/static/images/buttons/camera.jpg',
+        title: 'Camera',
+        width: '20%',
+        var: '5',
+      },
+      {
+        url: '/static/images/buttons/camera.jpg',
+        title: 'Camera',
+        width: '20%',
+        var: '1.5',
+      },
+      {
+        url: '/static/images/buttons/camera.jpg',
+        title: 'Camera',
+        width: '20%',
+        var: '1.5',
+      },
 ];
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
@@ -151,6 +158,12 @@ export default function OpinionNew() {
     //     </DialogActions>
     //   </Dialog>);
     // }
+    function generateRandomColor()
+{
+    var randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+    return randomColor;
+    //random color will be freshly served
+}
 
   return (
       
@@ -164,7 +177,10 @@ export default function OpinionNew() {
             width: image.width,
           }}
         >
-          <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
+          <ImageSrc style={{ 
+            //   backgroundImage: `url(${image.url})`
+            backgroundColor: `${generateRandomColor()}`
+               }} />
           <ImageBackdrop className="MuiImageBackdrop-root" />
           <Image>
             <Typography
@@ -210,14 +226,22 @@ export default function OpinionNew() {
             </Toolbar>
             </AppBar>
            
-        <DialogTitle>opinion</DialogTitle>
+        {/* <DialogTitle>opinion</DialogTitle> */}
         <DialogContent>
           <DialogContentText>
            
           </DialogContentText>
           <Typography >
               here nedd to be all the last opinion
-            </Typography>
+              <Divider>opinoin 1</Divider>
+                   
+                 <div><Rating name="read-only"   precision={0.5} value='3' readOnly /></div> 
+                 <>תאור  -----------------------------------
+                   ----------------------------------</>
+           
+                   <Divider>opinoin 2</Divider>
+                   <Divider>opinoin 3</Divider>
+              </Typography>
         </DialogContent>
         <DialogActions>
           {/* <Button onClick={handleClose}>Cancel</Button> */}
