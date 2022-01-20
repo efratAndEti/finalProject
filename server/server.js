@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const { promiseQuery } = require('./sql/sql')
 const clientRouter = require('./routers/clientRouter');
-const userRouter = require('./routers/userRouter'); 
+const userRouter = require('./routers/userRouter');
 
 
 const app = express();
@@ -20,30 +20,58 @@ app.listen(port, () => console.log(`Listening on port ${port}..`));
 
 
 
-app.get("/status/getStatuses", async (req, res)=>{
-            const status = await promiseQuery("SELECT * FROM status");
-            res.send(status);
+app.get("/status/getStatuses", async (req, res) => {
+    const status = await promiseQuery("SELECT * FROM status");
+    res.send(status);
 })
-app.get("/getUsers", async (req, res)=>{
+app.get("/getUsers", async (req, res) => {
     const status = await promiseQuery("SELECT * FROM users");
     res.send(status);
 })
-app.get("/getEmployee", async (req, res)=>{
+app.get("/getEmployee", async (req, res) => {
     const status = await promiseQuery("SELECT * FROM employee");
     res.send(status);
 })
-app.post("/addUser", async (req,res)=> {
-    const { email, password, kind ,lastName,firstName,date }=req.body;
-    const query= `insert into db.users(user_name, password, user_kind, last_name, first_name,date) values('${email}','${password}','${kind}','${lastName}','${firstName}','${date}')`
+app.post("/addUser", async (req, res) => {
+    //בדיקה ששם משתמש לא קיים
+    const { email, password, kind, lastName, firstName, date } = req.body;
+    const query = `insert into db.users(user_name, password, user_kind, last_name, first_name,date) values('${email}','${password}','${kind}','${lastName}','${firstName}','${date}')`
     await promiseQuery(query, (err, result) => {
         if (!err) {
             console.log(result);
             res.send({ succes: true, insertId: result.insertId });
+
         }
         else
             res.send(err);
 
     })
+
+})
+
+app.post("/login", async (req, res) => {
+    const { userName, password } = req.body;
+    const query = `SELECT * FROM users WHERE user_name = '${userName}'`;
+    console.log(query);
+
+    try {
+        const rows = await promiseQuery(query);
+        if (rows.length == 0)
+            res.send({ success: false, massage: "שם משתמש לא תקין" });
+
+        else {
+            const user = rows[0];
+            if (user.password != password)
+                res.send({ success: false, massage: "סיסמא שגויה" });
+            else
+                res.send({ success: true, user: user });
+
+        }
+    }
+    catch (err) {
+        console.log(err);
+        res.send(err);
+    }
 
 })
 app.post(("/addMassage"), async (req, res) => {
@@ -72,7 +100,7 @@ app.post(("/addMassage"), async (req, res) => {
 //     console.log(req.params);
 
 // })
-app.post("/addEmployee", async(req, res) => {
+app.post("/addEmployee", async (req, res) => {
     const { emp_id, last_name, first_name, end_visa_period, type,
         status_emp, gender, address, city, phone, password, mail, birth_date } = req.body;
     const query = `insert into db.employee values('${emp_id}', '${last_name}', '${first_name}', '${end_visa_period}'

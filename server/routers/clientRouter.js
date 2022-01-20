@@ -20,10 +20,10 @@ clientRouter.get('/getClient/:clientId', async (req, res) => {
 })
 
 
-clientRouter.get('/findClientByStatus', async (req, res) => {    
+clientRouter.get('/findClientByStatus', async (req, res) => {
     const { statusId } = req.params;
-    const result =await promiseQuery(`SELECT first_name , last_name  FROM client `);
-    console.log("Result of status" ,result);
+    const result = await promiseQuery(`SELECT first_name , last_name  FROM client `);
+    console.log("Result of status", result);
     res.send(result);
 })
 
@@ -70,5 +70,37 @@ clientRouter.put("/updateStatus/:id", (req, res) => {
             res.send(err);
     })
 })
+
+
+
+//SELECT * FROM employee WHERE status_emp = 3 AND  type = 1;
+clientRouter.get("/getListOfEmps/:id", (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const client = await promiseQuery(`SELECT *  FROM client WHERE id_client='${id}';`);
+        const emps = await promiseQuery(`SELECT * FROM employee WHERE status_emp = 3 AND  type = 1`);
+        //לכל עובד לשלוף רשימת העדפות
+                //לעבור עלרשימת העדפות ולספור כמה מתאימות לנתוני המטופלים
+                 //את ה-count צריך להוסיפף לאובייקט של העובד בתור דירוג
+       //למיין רשימת עובדים לפי דירוג
+       //להחזיר רשימת עובדים ( לכל עובד יש גם דירוג)
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+
+
+    mysqlConnection.query(`UPDATE client SET client_status = '${status}' WHERE id_client=${id};`, (err, result) => {
+        if (!err) {
+            console.log(result);
+            res.send({ succes: true, insertId: result.insertId });
+        }
+        else
+            res.send(err);
+    })
+})
+
 
 module.exports = clientRouter;
