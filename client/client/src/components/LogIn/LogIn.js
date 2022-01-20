@@ -12,15 +12,15 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { getUsers } from '../../services/user.service';
+import { loginUser } from '../../services/user.service';
 
 function Copyright(props) {
 
-	const routeChange = () =>{ 
-	  let path = `src/components/SignUp/SignUp.js`; 
-	  window.location.assign(path);
-	}
-  
+  const routeChange = () => {
+    let path = `src/components/SignUp/SignUp.js`;
+    window.location.assign(path);
+  }
+
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
@@ -37,41 +37,56 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function LogIn() {
-  const [users, setUsers] = React.useState([]);
-  const [userName,setUserName]=React.useState('');
-  const [password,setPassword]=React.useState('');
-  const handleSubmit = (event) => {
+  // const [users, setUsers] = React.useState([]);
+  const [userName, setUserName] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
-  React.useEffect(async () => {
-    console.log("getting data from server");
+    // const data = new FormData(event.currentTarget);
+    // // eslint-disable-next-line no-console
+    // console.log({
+    //   email: data.get('email'),
+    //   password: data.get('password'),
+    // });
 
-    const users = await getUsers();
-    if (users != null)
-        setUsers(users);
+    const result = await loginUser(userName, password);
+    if (result.success == true) {
+      alert("success");
+      console.log("user: ", result.user);
+
+    }
     else
-        alert("server Errror! , client");
-}, [])
-  const findUser= ()=>{
-    console.log(users);
-    const result = users.filter(e=>e.user_name==userName);
-    alert(result);
-  }
-  const [error,setError]=React.useState('');
+    {
+      alert("not success");
+      console.log("failed: ", result.massage);
+    }
 
-  const handleEmail=(e)=>{
-    const re=/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
+  };
+  // React.useEffect(async () => {
+  //   console.log("getting data from server");
+
+  //   const users = await getUsers();
+  //   console.log(users);
+  //   if (users != null) {
+  //     console.log(users);
+  //     setUsers(users);
+  //   } else
+  //     alert("server Errror! , client");
+  // }, [])
+  // const findUser = () => {
+  //   console.log(users);
+  //   const result = users.filter(e => e.user_name == userName);
+  //   alert(result);
+  // }
+  const [error, setError] = React.useState('');
+
+  const handleEmail = (e) => {
+    const re = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
     if (re.test((e.target.value)))
       setError('');
     else
-    setError('אנא הכנס מייל תקין');
-      setUserName(e.target.value);
+      setError('אנא הכנס מייל תקין');
+    setUserName(e.target.value);
   }
 
   return (
@@ -104,12 +119,12 @@ export default function LogIn() {
               name="email"
               autoComplete="email"
               autoFocus
-              // type="email"
-              // required
+            // type="email"
+            // required
             />
             <TextField
-             value={password}
-             onChange={(e) => { setPassword(e.target.value) }}
+              value={password}
+              onChange={(e) => { setPassword(e.target.value) }}
               margin="normal"
               required
               fullWidth
@@ -124,7 +139,7 @@ export default function LogIn() {
               label="Remember me"
             />
             <Button
-              onClick={findUser}
+              // onClick={findUser}
               type="submit"
               fullWidth
               variant="contained"

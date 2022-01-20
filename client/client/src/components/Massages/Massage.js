@@ -4,7 +4,7 @@ import { deepOrange } from "@mui/material/colors";
 import { makeStyles} from "@mui/styles";
 import React from "react";
 import { Theme } from '@mui/material'
-import stringAvatar from "../Opinion/Color";
+import stringAvatar from "../Chats/Color";
 
 // import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 // import Avatar from "@material-ui/core/Avatar";

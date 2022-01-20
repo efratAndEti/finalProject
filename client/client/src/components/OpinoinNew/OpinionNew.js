@@ -11,6 +11,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import { typography } from '@mui/system';
 
 
+
+
+
 const images = [
     {
         url: '../../pictures/1.jpg' ,

@@ -24,9 +24,11 @@ import {
 import {
   useMatch
 } from "react-router-dom";
-import Opinion from '../Opinion/Opinion';
+import Opinion from '../Chats/Massage';
 import Chats from '../Massages/Chat';
 import SignOut from '../SignOut/SignOut';
+import OpinionNew from '../OpinoinNew/OpinionNew';
+import Massage from '../Chats/Massage';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -212,7 +214,7 @@ export default function EmployeeBar() {
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <IconButton size="large" aria-label="show 4 new mails" color="inherit"
-                onClick={(e) => { window.location.assign(`http://localhost:3000/employee-bar/opinion`) }}>
+                onClick={(e) => { window.location.assign(`/employee-bar/opinion`) }}>
                 <InsertEmoticonIcon />
               </IconButton>
               <IconButton
@@ -261,8 +263,8 @@ export default function EmployeeBar() {
       </Box>
 
       <Routes>
-        <Route path={`/employee-bar/opinion`} element={<Opinion />} />
-        <Route path={`http://localhost:3000/employee-bar/massages`} element={<Chats />} />
+        <Route path={`opinion`} element={<OpinionNew />} />
+        <Route path={`massages`} element={<Massage />} />
 
       </Routes>
     </>

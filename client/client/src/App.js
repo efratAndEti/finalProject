@@ -11,7 +11,7 @@ import {
   Link
 } from "react-router-dom";
 import LOgIn from './components/LogIn/LogIn';
-import Opinion from './components/Opinion/Opinion';
+import Opinion from './components/Chats/Massage';
 import Chats from './components/Massages/Chat';
 import SwipeableTextMobileStepper from './components/Home/Image';
 import LogIn from './components/LogIn/LogIn';
@@ -93,7 +93,7 @@ function App() {
           <Route path="/opinion-new" element={<OpinionNew />} />
 
            <Route path="/massages" element={<Chats />} />
-          <Route path="/employee-bar" element={<EmployeeBar />} />
+          <Route path="/employee-bar/*" element={<EmployeeBar />} />
           <Route path="/client-bar" element={<ClientBar />} />
           <Route path="/search" element={<SearchEmp />} />
           <Route path="/about" element={<AboutTheWeb />} />

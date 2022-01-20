@@ -36,6 +36,28 @@ export default function Sample() {
         console.log(event.target.value);
         setStatus(event.target.value);
     };
+    
+
+    const examppleToMap = ()=>{
+        const objArr = [
+            {
+                name:"Sara",
+                age:12
+            },
+            {
+                name:"Michal",
+                age:12
+            },
+            {
+                name:"Ester",
+                age:12
+            }
+        ]
+
+        // [ {x:"Sara" , y:12} ]
+        const newArr = objArr.map(o=>{ return {x:o.name, y:o.age}  })
+    }
+
     return (
         <div>
             {/* <input onChange={(e) => { setStatus(e.target.value); console.log(e.target.value);  }} 

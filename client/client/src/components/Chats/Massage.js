@@ -27,7 +27,7 @@ const useStyles = makeStyles({
   }
 });
 
-const Opinion = () => {
+const Massage = () => {
     const userStr = localStorage.getItem("user");
     const user = JSON.parse(userStr);
     const name =user.firstName+' '+user.lastName;
@@ -113,4 +113,4 @@ const Opinion = () => {
   );
 }
 
-export default Opinion;
+export default Massage;
