@@ -74,17 +74,29 @@ clientRouter.put("/updateStatus/:id", (req, res) => {
 
 
 //SELECT * FROM employee WHERE status_emp = 3 AND  type = 1;
-clientRouter.get("/getListOfEmps/:id", (req, res) => {
+clientRouter.get("/getListOfEmps/:id", async (req, res) => {
     const { id } = req.params;
 
     try {
         const client = await promiseQuery(`SELECT *  FROM client WHERE id_client='${id}';`);
         const emps = await promiseQuery(`SELECT * FROM employee WHERE status_emp = 3 AND  type = 1`);
-        //לכל עובד לשלוף רשימת העדפות
-                //לעבור עלרשימת העדפות ולספור כמה מתאימות לנתוני המטופלים
-                 //את ה-count צריך להוסיפף לאובייקט של העובד בתור דירוג
-       //למיין רשימת עובדים לפי דירוג
-       //להחזיר רשימת עובדים ( לכל עובד יש גם דירוג)
+        for (employee of emps) {
+            let count=0;
+        let preference =  await promiseQuery(`SELECT * FROM preferences WHERE employeeid=${employee.id}`)
+    
+            if(preference.age==client.age)
+            count ++
+           employee.count=count
+
+        }
+        emps.sort((a, b)=>{return b.count - a.count })
+        return emps;
+        console.log("emps",emps)
+    //     לכל עובד לשלוף רשימת העדפות
+    //             לעבור עלרשימת העדפות ולספור כמה מתאימות לנתוני המטופלים
+    //              את ה-count צריך להוסיפף לאובייקט של העובד בתור דירוג
+    //    למיין רשימת עובדים לפי דירוג
+    //    להחזיר רשימת עובדים ( לכל עובד יש גם דירוג)
     }
     catch (err) {
         console.log(err);
