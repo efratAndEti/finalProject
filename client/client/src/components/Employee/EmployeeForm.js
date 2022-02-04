@@ -6,185 +6,217 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+import rtlPlugin from 'stylis-plugin-rtl';
+import {cities} from './../../assets/cities.json';
 
+const EmployeeForm = () => {
 
-const EmployeeForm =()=>{
-         
-    const [emp_id,setEmpId]=useState();
-    const [typeRec,setTypeRec]=useState('');
-    const [error,setError]=useState('');
-    const [errorNum,setErrorNum]=useState('');
-    const userStr = localStorage.getItem("user");
-    const user = JSON.parse(userStr);
-    const [end_visa_period,setEndVisaPeriod]=useState();
-    const [kind, setKind] = useState();
-    const [gender, setGender] = useState();
-    const [city, setCity] = useState();
-    const [address, setAddress] = useState();
-    const [number, setNumber] = useState();
-    const [preNumber, setPreNumber] = useState();
-    const [birth_date,setBirthDate]=useState();
+  const [emp_id, setEmpId] = useState();
+  const [typeRec, setTypeRec] = useState('');
+  const [error, setError] = useState('');
+  const [errorNum, setErrorNum] = useState('');
+  const userStr = localStorage.getItem("user");
+  const user = JSON.parse(userStr);
+  const [end_visa_period, setEndVisaPeriod] = useState();
+  const [kind, setKind] = useState();
+  const [gender, setGender] = useState();
+  const [city, setCity] = useState();
+  const [address, setAddress] = useState();
+  const [number, setNumber] = useState();
+  const [preNumber, setPreNumber] = useState('None');
+  const [birth_date, setBirthDate] = useState();
 
+  const citiesNames = cities.city.map(c=>c.hebrew_name);
 
-    const [disabled, setDisabled] = React.useState(true);
-    
+  const [disabled, setDisabled] = React.useState(true);
+  const theme = createTheme({
+    direction: 'rtl', // Both here and <body dir="rtl">
+  });
+  // Create rtl cache
+  const cacheRtl = createCache({
+    key: 'muirtl',
+    stylisPlugins: [rtlPlugin],
+  });
 
-    const ifLegal= (event)=>{
-        const re = /^[0-9\b]+$/;
-        if(typeRec=='id')
-            if(event.target.value.length!=9 || !re.test(event.target.value)){
-                setError('תעודת זהות לא תקינה')
-            }
-            else
-                setError('')
-        else{
-            if(!re.test(event.target.value))
-            setError('לא תקין')
-        } 
-        setEmpId(event.target.value)   
-        };
-    const changeKind = (event) => {
-            if (event.target.value == 'zar')
-              setKind(2);
-            else
-              setKind(1);        
-        };
-    const changeGender = (event) => {
-            if (event.target.value == 'male')
-              setGender(0);
-            else
-              setGender(1);        
-        };
-    const defaultProps = {
-              options: top100Films,
-              getOptionLabel: (option) => option.title,
-        };        
-    const flatProps = {
-              options: top100Films.map((option) => option.title),
-        };
-    const ifNum= (event)=>{
-            const re = /^[0-9\b]+$/;
-                if(event.target.value.length!=7 || !re.test(event.target.value)){
-                        setErrorNum('מספר טלפון לא תקין')
-                    }
-                    else
-                        setErrorNum('')
-            setNumber(preNumber+event.target.value);
-        };
-    const saveEmp=()=>{
-        alert('save the emp in db and save lockal storage');
-        window.location.assign('http://localhost:3000/employee-bar');
+  const ifLegal = (event) => {
+    const re = /^[0-9\b]+$/;
+    if (typeRec == 'id')
+      if (event.target.value.length != 9 || !re.test(event.target.value)) {
+        setError('תעודת זהות לא תקינה')
+      }
+      else
+        setError('')
+    else {
+      if (!re.test(event.target.value))
+        setError('לא תקין')
     }
-    const [loading, setLoading] = React.useState(false);
-    function handleClick() {
-      setLoading(true);
-      saveEmp();
+    setEmpId(event.target.value)
+  };
+  const changeKind = (event) => {
+    if (event.target.value == 'zar')
+      setKind(2);
+    else
+      setKind(1);
+  };
+  const changeGender = (event) => {
+    if (event.target.value == 'male')
+      setGender(0);
+    else
+      setGender(1);
+  };
+  const defaultProps = {
+    options: citiesNames,
+    getOptionLabel: (option) => option,
+  };
+  // const flatProps = {
+  //   options: top100Films.map((option) => option.title),
+  // };
+  const ifNum = (event) => {
+    const re = /^[0-9\b]+$/;
+    if (event.target.value.length != 7 || !re.test(event.target.value)) {
+      setErrorNum('מספר טלפון לא תקין')
+      setNumber(preNumber + event.target.value);
     }
-  
+    else {
+      setErrorNum('')
+      setNumber('');
+    }
 
-    return(
-        <Box
+  };
+  const saveEmp = () => {
+    alert('save the emp in db and save lockal storage');
+    window.location.assign('http://localhost:3000/employee-bar');
+  }
+  const [loading, setLoading] = React.useState(false);
+  function handleClick() {
+    setLoading(true);
+    saveEmp();
+  }
+
+
+  return (
+    <CacheProvider value={cacheRtl}>
+      <Box
+        dir='rtl'
         component="form"
-        sx={{'& .MuiTextField-root': { m: 1, width: '25ch' },}}
+        sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' }, }}
         noValidate
         autoComplete="off"
-        >
-          {/* //-emp_id, -last_name, -first_name, -end_visa_period, -type, status_emp, 
+      //  textAlign="center"
+      >
+        {/* //-emp_id, -last_name, -first_name, -end_visa_period, -type, status_emp, 
           //-genus, -address, -city, -phone, password, mail, birth_date */}
-            <div>
-            <FormControl component="fieldset">
-                <FormLabel component="legend">בחר אמצעי זיהוי</FormLabel>
-                <RadioGroup row aria-label="rec" name="row-radio-buttons-group">
-                    <FormControlLabel value="id" control={<Radio />} label="תעודת זהות" onChange={(e)=>{setTypeRec(e.target.value)}}/>
-                    <FormControlLabel value="passport" control={<Radio />} label="מספר דרכון" onChange={(e)=>{setTypeRec(e.target.value)}} />
-                </RadioGroup>
-            </FormControl>
-            <TextField
+
+        <FormControl component="fieldset">
+          <FormLabel component="legend">בחר אמצעי זיהוי</FormLabel>
+          <RadioGroup row aria-label="rec" name="row-radio-buttons-group" drawableRight>
+            <FormControlLabel value="id" control={<Radio />} label="תעודת זהות" onChange={(e) => { setTypeRec(e.target.value) }} />
+            <FormControlLabel value="passport" control={<Radio />} label="מספר דרכון" onChange={(e) => { setTypeRec(e.target.value) }} />
+          </RadioGroup>
+        </FormControl>
+        <br />
+        <TextField
+          required
+          error={error}
+          id="filled-required"
+          label={typeRec}
+          value={emp_id}
+          variant="standard"
+          onChange={ifLegal}
+          helperText={error}
+        />
+
+        <div>
+          <TextField
+
             required
-            error={error}
             id="filled-required"
-            label="תעודת זהות"
-            value={emp_id}
+            label="שם פרטי"
+            // value={emp_id}
             variant="standard"
-            onChange={ifLegal}
-            helperText={error}
-            />
-            </div>
-            <div>
-                <TextField
-                required
-                id="filled-required"
-                label="שם פרטי"
-                // value={emp_id}
-                variant="standard"
-                defaultValue={user.firstName}
-                />
-                <TextField
-                required
-                id="filled-required"
-                label="שם משפחה"
-                // value={emp_id}
-                variant="standard"
-                defaultValue={user.lastName}
-                />
-            </div>
-            <div>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-             <DatePicker
-               required
-               label="תאריך סיום אשרה"
-               value={end_visa_period}
-               onChange={(e) => { setEndVisaPeriod(e)}}
-               renderInput={(params) => <TextField {...params} />}
-             />
-            </LocalizationProvider>
-            </div>
-            <div>
-            <FormControl component="fieldset">
-                <FormLabel component="legend">בחר סוג עובד</FormLabel>
-                <RadioGroup row aria-label="rec" name="row-radio-buttons-group" value={kind} onChange={changeKind}>
-                    <FormControlLabel value="matav" control={<Radio />} label="עובד מט''ב"/>
-                    <FormControlLabel value="zar" control={<Radio />} label="עובד זר" />
-                </RadioGroup>
-            </FormControl>
-            <span>                    </span>
-            <FormControl component="fieldset">
-                 <FormLabel component="legend">מין</FormLabel>
-                 <RadioGroup row aria-label="gender" name="row-radio-buttons-group" value={gender} onChange={changeGender}>
-                    <FormControlLabel value="female" control={<Radio />} label="זכר" />
-                    <FormControlLabel value="male" control={<Radio />} label="נקבה" />
-                </RadioGroup>
-            </FormControl>
-            </div>
-            <div>
-             <Autocomplete
-            {...defaultProps}
-            id="disable-close-on-select"
-            disableCloseOnSelect
-              renderInput={(params) => (
-             <TextField {...params} label="עיר" variant="standard" value={city} onChange={(e)=>{setCity(e.target.value)}}/>
-             
-        )}/>
-            <Autocomplete
-            {...defaultProps}
-            id="disable-close-on-select"
-            disableCloseOnSelect
-              renderInput={(params) => (
-             <TextField {...params} label="רחוב" variant="standard" value={address} onChange={(e)=>{setAddress(e.target.value)}}/>
-             
-        )}/>
+            defaultValue={user.firstName}
+          />
+          <TextField
+            required
+            id="filled-required"
+            label="שם משפחה"
+            // value={emp_id}
+            variant="standard"
+            defaultValue={user.lastName}
+          />
         </div>
-        <div >
-       {/* sx={{ minWidth: 120 }
+        <div>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+
+              required
+              label="תאריך סיום אשרה"
+              value={end_visa_period}
+              onChange={(e) => { setEndVisaPeriod(e) }}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+        </div>
+
+        <FormControl component="fieldset">
+          <FormLabel component="legend">בחר סוג עובד</FormLabel>
+          <RadioGroup row aria-label="rec" name="row-radio-buttons-group" value={kind} onChange={changeKind}>
+            <FormControlLabel value="matav" control={<Radio />} label="עובד מט''ב" />
+            <FormControlLabel value="zar" control={<Radio />} label="עובד זר" />
+          </RadioGroup>
+        </FormControl>
+        <br />
+        <FormControl component="fieldset">
+          <FormLabel component="legend">מין</FormLabel>
+          <RadioGroup row aria-label="gender" name="row-radio-buttons-group" value={gender} onChange={changeGender}>
+            <FormControlLabel value="female" control={<Radio />} label="זכר" />
+            <FormControlLabel value="male" control={<Radio />} label="נקבה" />
+          </RadioGroup>
+        </FormControl>
+
+        <div>
+          <Autocomplete
+            {...defaultProps}
+            id="disable-close-on-select"
+            disableCloseOnSelect
+            renderInput={(params) => (
+              <TextField {...params} label="עיר" variant="standard" value={city} onChange={(e) => { setCity(e.target.value) }} />
+
+            )} />
+          <Autocomplete
+            {...defaultProps}
+            id="disable-close-on-select"
+            disableCloseOnSelect
+            renderInput={(params) => (
+              <TextField {...params} label="רחוב" variant="standard" value={address} onChange={(e) => { setAddress(e.target.value) }} />
+
+            )} />
+        </div>
+        <div  >
+          {/* sx={{ minWidth: 120 }
         <Grid sx={minWidth}> */}
-        <FormControl >
+          <TextField
+            dir='ltr'
+            required
+            error={errorNum}
+            id="filled-required"
+            label="מספר טלפון"
+            value={number}
+            variant="standard"
+            onChange={ifNum}
+            helperText={errorNum}
+          />
+          <FormControl  >
             <InputLabel id="demo-simple-select-label">קידומת</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={preNumber}
               label="קידומת"
-              onChange={(e)=>{setPreNumber(e.target.value)}}>
+              onChange={(e) => { setPreNumber(e.target.value) }}>
               <MenuItem value={'050'}>050</MenuItem>
               <MenuItem value={'052'}>052</MenuItem>
               <MenuItem value={'053'}>053</MenuItem>
@@ -193,1320 +225,46 @@ const EmployeeForm =()=>{
               <MenuItem value={'057'}>057</MenuItem>
               <MenuItem value={'058'}>058</MenuItem>
               {/* <MenuItem value={058}>058</MenuItem> */}
-              </Select>
-              </FormControl>
-              {/* </Grid> */}
-              <TextField
-                      required
-                      error={errorNum}
-                      id="filled-required"
-                      label="מספר טלפון"
-                      value={number}
-                      variant="standard"
-                      onChange={ifNum}
-                      helperText={errorNum}
-                      />
-                      </div>
-                <TextField
-                required
-                id="filled-required"
-                label="מייל"
-                variant="standard"
-                defaultValue={user.email}
-                />
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-             <DatePicker
-               required
-               label=" תאריך לידה"
-               value={birth_date}
-               onChange={(e) => { setBirthDate(e)}}
-               renderInput={(params) => <TextField {...params} />}
-             />
-            </LocalizationProvider>
-            
-            <LoadingButton
-        color="secondary"
-        onClick={handleClick}
-        loading={loading}
-        loadingPosition="start"
-        startIcon={<SaveIcon />}
-        variant="contained"
-      >
-        Save
-      </LoadingButton>
-    </Box>
+            </Select>
+          </FormControl>
+          {/* </Grid> */}
 
-            /* <Button variant="outlined">שמור</Button> */
-            
-                  
+        </div>
+        <TextField
+          required
+          id="filled-required"
+          label="מייל"
+          variant="standard"
+          defaultValue={user.email}
+        />
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            required
+            label=" תאריך לידה"
+            value={birth_date}
+            onChange={(e) => { setBirthDate(e) }}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
+        <br />
+        <LoadingButton
+          color="secondary"
+          onClick={handleClick}
+          loading={loading}
+          loadingPosition="start"
+          startIcon={<SaveIcon />}
+          variant="contained"
+        >
+          שמור
+        </LoadingButton>
+      </Box>
+    </CacheProvider>
 
-    );
+    /* <Button variant="outlined">שמור</Button> */
+
+
+
+  );
 }
-const top100Films = [
-{title: ' באקה אל-גרביה'},
-{title: ' אלעד '},
-{title: ' נווה זיו '},
-{title: ' עין חוד '},
-{title: 'חואלד'},
-{title: ' אחוזת ברק'},
-{title: ' כמאנה '},
-{title: ' קציר '},
-{title: ' חברון '},
-{title: ' נגוהות '},
-{title: ' ברוכין '},
-{title: ' נוף איילו'},
-{title: ' ראס אל-עי'},
-{title: ' שמשית '},
-{title: ' כדיתה '},
-{title: ' אל-עזי '},
-{title: ' מרחב עם '},
-{title: ' רוח מדבר '},
-{title: ' גבעות בר '},
-{title: ' תראבין א-וב) '},
-{title: ' קצר א-סר '},
-{title: ' ביר הדאג'},
-{title: ' דריגאת '},
-{title: ' אום בטין '},
-{title: ' אל סייד '},
-{title: ' סעוה '},
-{title: ' שלומית '},
-{title: ' כחלה '},
-{title: ' מצפה אילן'},
-{title: ' גני טל '},
-{title: ' נצר חזני '},
-{title: ' אבו תלול '},
-{title: ' באר גנים '},
-{title: ' מחנה הילה '},
-{title: ' מחנה תל נוף '},
-{title: ' מחנה יהודית '},
-{title: ' מחנה מרים '},
-{title: ' מחנה יפה '},
-{title: ' מחנה יוכבד '},
-{title: ' מחנה טלי '},
-{title: ' באר מילכה '},
-{title: ' אעצם (שבט) '},
-{title: ' אבירים '},
-{title: ' אבו עבדון (שבט)'},
-{title: ' אבו עמאר (שבט) '},
-{title: ' אבו עמרה (שבט) '},
-{title: ' אבו גוש '},
-{title: ' אבו גווייעד (שב) '},
-{title: ' אבו קרינאת (יישב) '},
-{title: ' אבו קורינאת (שב) '},
-{title: ' אבו רובייעה (שב) '},
-{title: ' אבו רוקייק (שבט '},
-{title: ' אבו סנאן '},
-{title: ' אבו סריחאן (שבט '},
-{title: ' אדמית '},
-{title: ' עדנים '},
-{title: ' אדרת '},
-{title: ' אדירים '},
-{title: ' עדי '},
-{title: ' אדורה '},
-{title: ' אפיניש (שבט) '},
-{title: ' אפק '},
-{title: ' אפיק '},
-{title: ' אפיקים '},
-{title: ' עפולה '},
-{title: ' עגור '},
-{title: ' אחווה '},
-{title: ' אחיעזר '},
-{title: ' אחיהוד '},
-{title: ' אחיסמך '},
-{title: ' אחיטוב '},
-{title: ' אחוזם '},
-{title: ' עכו '},
-{title: ' אל-עריאן '},
-{title: ' עלי זהב '},
-{title: ' אלפי מנשה '},
-{title: ' אלון הגליל '},
-{title: ' אלון שבות '},
-{title: ' אלוני אבא '},
-{title: ' אלוני הבשן '},
-{title: ' אלוני יצחק '},
-{title: ' אלונים '},
-{title: ' עלמה '},
-{title: ' אלמגור '},
-{title: ' אלמוג '},
-{title: ' עלמון '},
-{title: ' עלומים '},
-{title: ' אלומה '},
-{title: ' אלומות '},
-{title: ' אמציה '},
-{title: ' עמיר '},
-{title: ' אמירים '},
-{title: ' עמיעד '},
-{title: ' עמיעוז '},
-{title: ' עמינדב '},
-{title: ' עמיקם '},
-{title: ' אמנון '},
-{title: ' עמקה '},
-{title: ' עמוקה '},
-{title: ' אניעם '},
-{title: ' ערערה '},
-{title: ' ערערה-בנגב '},
-{title: ' ערד '},
-{title: ' עראמשה '},
-{title: ' ארבל '},
-{title: ' ארגמן '},
-{title: ' אריאל '},
-{title: ' ערב אל נעים '},
-{title: ' עראבה '},
-{title: ' ארסוף '},
-{title: ' ערוגות '},
-{title: ' אסד (שבט) '},
-{title: ' אספר '},
-{title: ' עשרת '},
-{title: ' אשלים '},
-{title: ' אשדוד '},
-{title: ' אשדות יעקב (איחד) '},
-{title: ' אשדות יעקב (מאוד) '},
-{title: ' אשרת '},
-{title: ' אשקלון '},
-{title: ' עטאוונה (שבט)',},
-{title: ' עטרת '},
-{title: ' עתלית '},
-{title: ' אטרש (שבט) '},
-{title: ' עצמון שגב '},
-{title: ' עבדון '},
-{title: ' אבנת '},
-{title: ' אביאל '},
-{title: ' אביעזר '},
-{title: ' אביגדור '},
-{title: ' אביחיל '},
-{title: ' אביטל '},
-{title: ' אביבים '},
-{title: ' אבני איתן '},
-{title: ' אבני חפץ '},
-{title: ' אבשלום '},
-{title: ' אבטליון '},
-{title: ' עיינות '},
-{title: ' איילת השחר '},
-{title: ' עזריה '},
-{title: ' אזור '},
-{title: ' עזריאל '},
-{title: ' עזריקם '},
-{title: ' בחן '},
-{title: ' בלפוריה '},
-{title: ' בר גיורא '},
-{title: ' בר יוחאי '},
-{title: ' ברעם '},
-{title: ' ברק '},
-{title: ' ברקת '},
-{title: ' ברקן '},
-{title: ' ברקאי '},
-{title: ' בסמ"ה '},
-{title: ' בסמת טבעון '},
-{title: ' בת עין '},
-{title: ' בת הדר '},
-{title: ' בת חפר '},
-{title: ' בת חן '},
-{title: ' בת שלמה '},
-{title: ' בת ים '},
-{title: ' בצרה '},
-{title: ' באר אורה '},
-{title: ' באר שבע '},
-{title: ' באר טוביה '},
-{title: ' באר יעקב '},
-{title: ' בארי '},
-{title: ' בארות יצחק '},
-{title: ' בארותיים '},
-{title: ' בית גן '},
-{title: ' בן עמי '},
-{title: ' בן שמן (מושב)',},
-{title: ' בן שמן (כפר נוע) '},
-{title: ' בן זכאי '},
-{title: ' בניה '},
-{title: ' בני עטרות '},
-{title: ' בני עי"ש '},
-{title: ' בני ברק '},
-{title: ' בני דרום '},
-{title: ' בני דרור '},
-{title: ' בני נצרים '},
-{title: ' בני ראם '},
-{title: ' בני יהודה '},
-{title: ' בני ציון '},
-{title: ' בקעות '},
-{title: ' בקוע '},
-{title: ' ברכה '},
-{title: ' ברכיה '},
-{title: ' ברור חיל '},
-{title: ' ברוש '},
-{title: ' בית אלפא '},
-{title: ' בית עריף '},
-{title: ' בית אריה '},
-{title: ' בית ברל '},
-{title: ' בית דגן '},
-{title: ' בית אל '},
-{title: ' בית אלעזרי '},
-{title: ' בית עזרא '},
-{title: ' בית גמליאל '},
-{title: ' בית גוברין '},
-{title: ' בית הערבה '},
-{title: ' בית העמק '},
-{title: ' בית הגדי '},
-{title: ' בית הלוי '},
-{title: ' בית חנן '},
-{title: ' בית חנניה '},
-{title: ' בית השיטה '},
-{title: ' בית חשמונאי '},
-{title: ' בית חירות '},
-{title: ' בית הלל '},
-{title: ' בית חלקיה '},
-{title: ' בית חורון '},
-{title: ' בית לחם הגלילית'},
-{title: ' בית מאיר '},
-{title: ' בית נחמיה '},
-{title: ' בית נקופה '},
-{title: ' בית ניר '},
-{title: ' בית אורן '},
-{title: ' בית עובד '},
-{title: ' בית קמה '},
-{title: ' בית קשת '},
-{title: ' בית רבן '},
-{title: ' בית רימון '},
-{title: ' בית שאן '},
-{title: ' בית שערים '},
-{title: ' בית שמש '},
-{title: ' בית שקמה '},
-{title: ' בית עוזיאל '},
-{title: ' בית ינאי '},
-{title: ' בית יהושע '},
-{title: ' בית יצחק-שער חפר '},
-{title: ' בית יוסף '},
-{title: ' בית זית '},
-{title: ' בית זיד '},
-{title: ' בית זרע '},
-{title: ' בית צבי '},
-{title: ' ביתר עילית '},
-{title: ' בצת '},
-{title: ' בענה '},
-{title: ' בנימינה-גבעת עדה '},
-{title: ' ביר אל-מכסור '},
-{title: ' ביריה '},
-{title: ' ביתן אהרן '},
-{title: ' בטחה '},
-{title: ' ביצרון '},
-{title: ' בני דקלים '},
-{title: ' בועיינה-נוגי דאת '},
-{title: ' בוקעאתא '},
-{title: ' בורגתה '},
-{title: ' בוסתן הגליל '},
-{title: ' דבוריה '},
-{title: ' דפנה '},
-{title: ' דחי '},
-{title: ' דאלית אל-כרמל',},
-{title: ' דליה '},
-{title: ' דלתון '},
-{title: ' דן '},
-{title: ' דברת '},
-{title: ' דגניה א' },
-{title: ' דגניה ב' },
-{title: ' דייר אל-אסד '},
-{title: ' דייר חנא '},
-{title: ' דייר ראפאת '},
-{title: ' דמיידה '},
-{title: ' דקל '},
-{title: ' דבירה '},
-{title: ' דבורה '},
-{title: ' דימונה '},
-{title: ' דישון '},
-{title: ' דולב '},
-{title: ' דור '},
-{title: ' דורות '},
-{title: ' דוב"ב '},
-{title: ' אפרת '},
-{title: ' עיילבון '},
-{title: ' עין אל-אסד '},
-{title: ' עין מאהל '},
-{title: ' עין נקובא '},
-{title: ' עין קנייא '},
-{title: ' עין ראפה '},
-{title: ' אלעזר '},
-{title: ' אל-רום '},
-{title: ' אילת '},
-{title: ' עלי '},
-{title: ' אלי-עד '},
-{title: ' אליפז '},
-{title: ' אליפלט '},
-{title: ' אלישמע '},
-{title: ' אילון '},
-{title: ' אלון מורה '},
-{title: ' אילות '},
-{title: ' אלקנה '},
-{title: ' אלקוש '},
-{title: ' אליכין '},
-{title: ' אליקים '},
-{title: ' אלישיב '},
-{title: ' אמונים '},
-{title: ' עין איילה '},
-{title: ' עין דור '},
-{title: ' עין גדי '},
-{title: ' עין גב '},
-{title: ' עין הבשור '},
-{title: ' עין העמק '},
-{title: ' עין החורש '},
-{title: ' עין המפרץ '},
-{title: ' עין הנצי"ב '},
-{title: ' עין חרוד (איחוד) '},
-{title: ' עין חרוד (מאוחד) '},
-{title: ' עין השלושה '},
-{title: ' עין השופט '},
-{title: ' עין חצבה '},
-{title: ' עין הוד '},
-{title: ' עין עירון '},
-{title: ' עין כרם-בי"ס חקלא '},
-{title: ' עין כרמל '},
-{title: ' עין שריד '},
-{title: ' עין שמר '},
-{title: ' עין תמר '},
-{title: ' עין ורד '},
-{title: ' עין יעקב '},
-{title: ' עין יהב '},
-{title: ' עין זיוון '},
-{title: ' עין צורים '},
-{title: ' עינת '},
-{title: ' ענב '},
-{title: ' ארז '},
-{title: ' אשבול '},
-{title: ' אשל הנשיא '},
-{title: ' אשחר '},
-{title: ' אשכולות '},
-{title: ' אשתאול '},
-{title: ' איתן '},
-{title: ' איתנים '},
-{title: ' אתגר '},
-{title: ' אבן מנחם '},
-{title: ' אבן ספיר '},
-{title: ' אבן שמואל '},
-{title: ' אבן יהודה '},
-{title: ' גלעד (אבן יצחק) '},
-{title: ' עברון '},
-{title: ' אייל '},
-{title: ' עץ אפרים '},
-{title: ' עזר '},
-{title: ' עזוז '},
-{title: ' פסוטה '},
-{title: ' פוריידיס '},
-{title: ' געש '},
-{title: ' געתון '},
-{title: ' גדיש '},
-{title: ' גדות '},
-{title: ' גלאון '},
-{title: ' גן הדרום '},
-{title: ' גן השומרון '},
-{title: ' גן חיים '},
-{title: ' גן נר '},
-{title: ' גן שלמה '},
-{title: ' גן שמואל '},
-{title: ' גן שורק '},
-{title: ' גן יבנה '},
-{title: ' גן יאשיה '},
-{title: ' גני עם '},
-{title: ' גני הדר '},
-{title: ' גני תקווה '},
-{title: ' גני יוחנן '},
-{title: ' גנות '},
-{title: ' גנות הדר '},
-{title: ' גת רימון '},
-{title: ' גת (קיבוץ) '},
-{title: ' גזית '},
-{title: ' גיאה '},
-{title: ' גאליה '},
-{title: ' גאולי תימן '},
-{title: ' גאולים '},
-{title: ' גדרה '},
-{title: ' גפן '},
-{title: ' גליל ים '},
-{title: ' גרופית '},
-{title: ' גשר '},
-{title: ' גשר הזיו '},
-{title: ' גשור '},
-{title: ' גבע '},
-{title: ' גבע כרמל '},
-{title: ' גבע בנימין '},
-{title: ' גברעם '},
-{title: ' גבת '},
-{title: ' גבים '},
-{title: ' גבולות '},
-{title: ' גזר '},
-{title: ' עגר '},
-{title: ' גיבתון '},
-{title: ' גדעונה '},
-{title: ' גילת '},
-{title: ' גלגל '},
-{title: ' גילון '},
-{title: ' גמזו '},
-{title: ' גינתון '},
-{title: ' גיניגר '},
-{title: ' גינוסר '},
-{title: ' גיתה '},
-{title: ' גיתית '},
-{title: ' גבעת אבני '},
-{title: ' גבעת ברנר '},
-{title: ' גבעת אלה '},
-{title: ' גבעת השלושה '},
-{title: ' גבעת חיים (איחד) '},
-{title: ' גבעת חיים (מאוד) '},
-{title: ' גבעת ח"ן '},
-{title: ' גבעת כ"ח '},
-{title: ' גבעת ניל"י '},
-{title: ' גבעת עוז '},
-{title: ' גבעת שפירא '},
-{title: ' גבעת שמש '},
-{title: ' גבעת שמואל '},
-{title: ' גבעת יערים '},
-{title: ' גבעת ישעיהו '},
-{title: ' גבעת יואב '},
-{title: ' גבעת זאב '},
-{title: ' גבעתיים '},
-{title: ' גבעתי '},
-{title: ' גבעולים '},
-{title: ' גבעון החדשה '},
-{title: ' גיזו '},
-{title: ' גונן '},
-{title: ' גורן '},
-{title: ' גורנות הגליל '},
-{title: ' הבונים '},
-{title: ' חד-נס '},
-{title: ' הדר עם '},
-{title: ' חדרה '},
-{title: ' חדיד '},
-{title: ' חפץ חיים '},
-{title: ' חגי '},
-{title: ' חגור '},
-{title: ' הגושרים '},
-{title: ' החותרים '},
-{title: ' חיפה '},
-{title: ' נוה צוף '},
-{title: ' חלוץ '},
-{title: ' המעפיל '},
-{title: ' חמדיה '},
-{title: ' חמאם '},
-{title: ' חמרה '},
-{title: ' חניתה '},
-{title: ' חנתון '},
-{title: ' חניאל '},
-{title: ' העוגן '},
-{title: ' האון '},
-{title: ' הר אדר '},
-{title: ' הר עמשא '},
-{title: ' הר גילה '},
-{title: ' הראל '},
-{title: ' הררית '},
-{title: ' חרשים '},
-{title: ' הרדוף '},
-{title: ' חריש '},
-{title: ' חרוצים '},
-{title: ' חשמונאים '},
-{title: ' הסוללים '},
-{title: ' חספין '},
-{title: ' חבצלת השרון '},
-{title: ' הוואשלה (שבט)'}, 
-{title: ' היוגב '},
-{title: ' חצב '},
-{title: ' חצרים '},
-{title: ' חצבה '},
-{title: ' חזון '},
-{title: ' חצור הגלילית '},
-{title: ' חצור-אשדוד '},
-{title: ' הזורעים '},
-{title: ' הזורע '},
-{title: ' חפצי-בה '},
-{title: ' חלץ '},
-{title: ' חמד '},
-{title: ' חרב לאת '},
-{title: ' חרמש '},
-{title: ' חירות '},
-{title: ' הרצליה '},
-{title: ' חבר '},
-{title: ' חיבת ציון '},
-{title: ' הילה '},
-{title: ' חיננית '},
-{title: ' הוד השרון '},
-{title: ' הודיות '},
-{title: ' הודיה '},
-{title: ' חופית '},
-{title: ' חגלה '},
-{title: ' חולית '},
-{title: ' חולון '},
-{title: ' חורשים '},
-{title: ' חוסן '},
-{title: ' הושעיה '},
-{title: ' חוג ייראת (דהר) '},
-{title: ' חולתה '},
-{title: ' חולדה '},
-{title: ' חוקוק '},
-{title: ' חורה '},
-{title: ' חורפיש '},
-{title: ' חוסנייה '},
-{title: ' הוזייל (שבט) '},
-{title: ' אעבלין '},
-{title: ' איבים '},
-{title: ' אבטין '},
-{title: ' עידן '},
-{title: ' אכסאל '},
-{title: ' אילניה '},
-{title: ' עילוט '},
-{title: ' עמנואל '},
-{title: ' עיר אובות '},
-{title: ' עספיא '},
-{title: ' איתמר '},
-{title: ' גת '},
-{title: ' גלגוליה '},
-{title: ' ירושלים '},
-{title: ' גש (גוש חלב)',},
-{title: ' גסר א-זרקא '},
-{title: ' גדיידה-מכר '},
-{title: ' גולס '},
-{title: ' גנאביב (שבט)',},
-{title: ' כעביה-טבאש-חגארה '},
-{title: ' כברי '},
-{title: ' כאבול '},
-{title: ' כדורי '},
-{title: ' כפר ברא '},
-{title: ' כפר כמא '},
-{title: ' כפר כנא '},
-{title: ' כפר מנדא '},
-{title: ' כפר מצר '},
-{title: ' כפר קרע '},
-{title: ' כפר קאסם '},
-{title: ' כפר יאסיף '},
-{title: ' כחל '},
-{title: ' כלנית '},
-{title: ' כמון '},
-{title: ' כנף '},
-{title: ' כנות '},
-{title: ' כאוכב אבו אל-הגא '},
-{title: ' כרי דשא '},
-{title: ' כרכום '},
-{title: ' כרמי יוסף '},
-{title: ' כרמי צור '},
-{title: ' כרמל '},
-{title: ' כרמיאל '},
-{title: ' כרמיה '},
-{title: ' כפר אדומים '},
-{title: ' כפר אחים '},
-{title: ' כפר אביב '},
-{title: ' כפר עבודה '},
-{title: ' כפר עזה '},
-{title: ' כפר ברוך '},
-{title: ' כפר ביאליק '},
-{title: ' כפר ביל"ו '},
-{title: ' כפר בן נון '},
-{title: ' כפר בלום '},
-{title: ' כפר דניאל '},
-{title: ' כפר עציון '},
-{title: ' כפר גלים '},
-{title: ' כפר גדעון '},
-{title: ' כפר גלעדי '},
-{title: ' כפר גליקסון '},
-{title: ' כפר חב"ד '},
-{title: ' כפר החורש '},
-{title: ' כפר המכבי '},
-{title: ' כפר הנגיד '},
-{title: ' כפר חנניה '},
-{title: ' כפר הנשיא '},
-{title: ' כפר הנוער הדתי'},
-{title: ' כפר האורנים '},
-{title: ' כפר הרי"ף '},
-{title: ' כפר הרא"ה '},
-{title: ' כפר חרוב '},
-{title: ' כפר חסידים א'}, 
-{title: ' כפר חסידים ב'}, 
-{title: ' כפר חיים '},
-{title: ' כפר הס '},
-{title: ' כפר חיטים '},
-{title: ' כפר חושן '},
-{title: ' כפר קיש '},
-{title: ' כפר מל"ל '},
-{title: ' כפר מסריק '},
-{title: ' כפר מימון '},
-{title: ' כפר מנחם '},
-{title: ' כפר מונש '},
-{title: ' כפר מרדכי '},
-{title: ' כפר נטר '},
-{title: ' כפר פינס '},
-{title: ' כפר ראש הנקרה'}, 
-{title: ' כפר רוזנואלד (רעית) '},
-{title: ' כפר רופין '},
-{title: ' כפר רות '},
-{title: ' כפר סבא '},
-{title: ' כפר שמאי '},
-{title: ' כפר שמריהו '},
-{title: ' כפר שמואל '},
-{title: ' כפר סילבר '},
-{title: ' כפר סירקין '},
-{title: ' כפר סאלד '},
-{title: ' כפר תפוח '},
-{title: ' כפר תבור '},
-{title: ' כפר טרומן '},
-{title: ' כפר אוריה '},
-{title: ' כפר ויתקין '},
-{title: ' כפר ורבורג '},
-{title: ' כפר ורדים '},
-{title: ' כפר יעבץ '},
-{title: ' כפר יחזקאל '},
-{title: ' כפר יהושע '},
-{title: ' כפר יונה '},
-{title: ' כפר זיתים '},
-{title: ' כפר זוהרים '},
-{title: ' כליל '},
-{title: ' כמהין '},
-{title: ' כרמים '},
-{title: ' כרם בן שמן '},
-{title: ' כרם בן זמרה '},
-{title: ' כרם מהר"ל '},
-{title: ' כרם שלום '},
-{title: ' כרם יבנה (ישיבה) '},
-{title: ' כסלון '},
-{title: ' חואלד (שבט) '},
-{title: ' כנרת (מושבה) '},
-{title: ' כנרת (קבוצה) '},
-{title: ' כישור '},
-{title: ' כסרא-סמיע '},
-{title: ' כיסופים '},
-{title: ' כוכב השחר '},
-{title: ' כוכב מיכאל '},
-{title: ' כוכב יעקב '},
-{title: ' כוכב יאיר '},
-{title: ' כורזים '},
-{title: ' כסיפה '},
-{title: ' להב '},
-{title: ' להבות הבשן '},
-{title: ' להבות חביבה '},
-{title: ' לכיש '},
-{title: ' לפיד '},
-{title: ' לפידות '},
-{title: ' לקיה '},
-{title: ' לביא '},
-{title: ' לבון '},
-{title: ' להבים '},
-{title: ' שריגים (לי-און '},
-{title: ' לימן '},
-{title: ' לבנים '},
-{title: ' לוד '},
-{title: ' לוחמי הגיטאות'}, 
-{title: ' לוטן '},
-{title: ' לוטם '},
-{title: ' לוזית '},
-{title: ' מעגן '},
-{title: ' מעגן מיכאל '},
-{title: ' מעלה אדומים '},
-{title: ' מעלה עמוס '},
-{title: ' מעלה אפרים '},
-{title: ' מעלה גמלא '},
-{title: ' מעלה גלבוע '},
-{title: ' מעלה החמישה '},
-{title: ' מעלה עירון '},
-{title: ' מעלה לבונה '},
-{title: ' מעלה מכמש '},
-{title: ' מעלות-תרשיחא '},
-{title: ' מענית '},
-{title: ' מעש '},
-{title: ' מעברות '},
-{title: ' מעגלים '},
-{title: ' מעון '},
-{title: ' מאור '},
-{title: ' מעוז חיים '},
-{title: ' מעין ברוך '},
-{title: ' מעין צבי '},
-{title: ' מבועים '},
-{title: ' מגן '},
-{title: ' מגן שאול '},
-{title: ' מגל '},
-{title: ' מגשימים '},
-{title: ' מחניים '},
-{title: ' צוקים '},
-{title: ' מחנה יתיר '},
-{title: ' מחסיה '},
-{title: ' מגד אל-כרום '},
-{title: ' מגדל שמס '},
-{title: ' מכחול '},
-{title: ' מלכישוע '},
-{title: ' מלכיה '},
-{title: ' מנוף '},
-{title: ' מנות '},
-{title: ' מנשית זבדה '},
-{title: ' מרגליות '},
-{title: ' מסעדה '},
-{title: ' מסעודין אל-עזאמה '},
-{title: ' משאבי שדה '},
-{title: ' משען '},
-{title: ' משכיות '},
-{title: ' מסלול '},
-{title: ' מסד '},
-{title: ' מסדה '},
-{title: ' משואה '},
-{title: ' משואות יצחק '},
-{title: ' מטע '},
-{title: ' מתן '},
-{title: ' מתת '},
-{title: ' מתתיהו '},
-{title: ' מבקיעים '},
-{title: ' מזכרת בתיה '},
-{title: ' מצליח '},
-{title: ' מזור '},
-{title: ' מזרעה '},
-{title: ' מצובה '},
-{title: ' מי עמי '},
-{title: ' מאיר שפיה '},
-{title: ' מעונה '},
-{title: ' מפלסים '},
-{title: ' מגדים '},
-{title: ' מגידו '},
-{title: ' מחולה '},
-{title: ' מייסר '},
-{title: ' מכורה '},
-{title: ' מלאה '},
-{title: ' מלילות '},
-{title: ' מנחמיה '},
-{title: ' מנרה '},
-{title: ' מנוחה '},
-{title: ' מירב '},
-{title: ' מרחביה (מושב)'}, 
-{title: ' מרחביה (קיבוץ)'},
-{title: ' מרכז שפירא '},
-{title: ' מרום גולן '},
-{title: ' מירון '},
-{title: ' מישר '},
-{title: ' משהד '},
-{title: ' מסילת ציון '},
-{title: ' מסילות '},
-{title: ' מיתר '},
-{title: ' מיטב '},
-{title: ' מטולה '},
-{title: ' מבשרת ציון '},
-{title: ' מבוא ביתר '},
-{title: ' מבוא דותן '},
-{title: ' מבוא חמה '},
-{title: ' מבוא חורון '},
-{title: ' מבוא מודיעים '},
-{title: ' מבואות ים '},
-{title: ' מצדות יהודה '},
-{title: ' מיצר '},
-{title: ' מצר '},
-{title: ' מעיליא '},
-{title: ' מדרך עוז '},
-{title: ' מדרשת בן גוריון '},
-{title: ' מדרשת רופין '},
-{title: ' מגדל '},
-{title: ' מגדל העמק '},
-{title: ' מגדל עוז '},
-{title: ' מגדלים '},
-{title: ' מכמנים '},
-{title: ' מכמורת '},
-{title: ' מקווה ישראל '},
-{title: ' משגב עם '},
-{title: ' משגב דב '},
-{title: ' משמר איילון '},
-{title: ' משמר דוד '},
-{title: ' משמר העמק '},
-{title: ' משמר הנגב '},
-{title: ' משמר השרון '},
-{title: ' משמר השבעה '},
-{title: ' משמר הירדן '},
-{title: ' משמרות '},
-{title: ' משמרת '},
-{title: ' מבטחים '},
-{title: ' מצפה '},
-{title: ' מצפה אבי"ב '},
-{title: ' מצפה נטופה '},
-{title: ' מצפה רמון '},
-{title: ' מצפה שלם '},
-{title: ' מצפה יריחו '},
-{title: ' מזרע '},
-{title: ' מודיעין עילית'}, 
-{title: ' מודיעין-מכבים-רעות '},
-{title: ' מולדת '},
-{title: ' מורן '},
-{title: ' מורשת '},
-{title: ' מוצא עילית '},
-{title: ' מגאר '},
-{title: ' מוקייבלה '},
-{title: ' נעלה '},
-{title: ' נען '},
-{title: ' נאעורה '},
-{title: ' נעמ"ה '},
-{title: ' אשבל '},
-{title: ' חמדת '},
-{title: ' נחל עוז '},
-{title: ' שיטים '},
-{title: ' נחלה '},
-{title: ' נהלל '},
-{title: ' נחליאל '},
-{title: ' נחם '},
-{title: ' נהריה '},
-{title: ' נחף '},
-{title: ' נחשולים '},
-{title: ' נחשון '},
-{title: ' נחשונים '},
-{title: ' נצאצרה (שבט) '},
-{title: ' נטף '},
-{title: ' נטור '},
-{title: ' נווה '},
-{title: ' נצרת '},
-{title: ' נוף הגליל '},
-{title: ' נאות גולן '},
-{title: ' נאות הכיכר '},
-{title: ' נאות מרדכי '},
-{title: ' נעורים '},
-{title: ' נגבה '},
-{title: ' נחלים '},
-{title: ' נהורה '},
-{title: ' נחושה '},
-{title: ' ניין '},
-{title: ' נס עמים '},
-{title: ' נס הרים '},
-{title: ' נס ציונה '},
-{title: ' נשר '},
-{title: ' נטע '},
-{title: ' נטעים '},
-{title: ' נתניה '},
-{title: ' נתיב העשרה '},
-{title: ' נתיב הגדוד '},
-{title: ' נתיב הל"ה '},
-{title: ' נתיב השיירה '},
-{title: ' נתיבות '},
-{title: ' נטועה '},
-{title: ' נבטים '},
-{title: ' נווה אטי"ב '},
-{title: ' נווה אבות '},
-{title: ' נווה דניאל '},
-{title: ' נווה איתן '},
-{title: ' נווה חריף '},
-{title: ' נווה אילן '},
-{title: ' נווה מיכאל '},
-{title: ' נווה מבטח '},
-{title: ' נווה שלום '},
-{title: ' נווה אור '},
-{title: ' נווה ים '},
-{title: ' נווה ימין '},
-{title: ' נווה ירק '},
-{title: ' נווה זוהר '},
-{title: ' נצר סרני '},
-{title: ' ניל"י '},
-{title: ' ניר עם '},
-{title: ' ניר עקיבא '},
-{title: ' ניר בנים '},
-{title: ' ניר דוד (תל עמר) '},
-{title: ' ניר אליהו '},
-{title: ' ניר עציון '},
-{title: ' ניר גלים '},
-{title: ' ניר ח"ן '},
-{title: ' ניר משה '},
-{title: ' ניר עוז '},
-{title: ' ניר יפה '},
-{title: ' ניר ישראל '},
-{title: ' ניר יצחק '},
-{title: ' ניר צבי '},
-{title: ' נערן '},
-{title: ' נירים '},
-{title: ' נירית '},
-{title: ' ניצן '},
-{title: ' ניצן ב '},
-{title: ' ניצנה (קהילת חינוך) '},
-{title: ' ניצני עוז '},
-{title: ' ניצני סיני '},
-{title: ' ניצנים '},
-{title: ' נועם '},
-{title: ' נופך '},
-{title: ' נופים '},
-{title: ' נופית '},
-{title: ' נוגה '},
-{title: ' נוקדים '},
-{title: ' נורדיה '},
-{title: ' נוב '},
-{title: ' נורית '},
-{title: ' אודם '},
-{title: ' אופקים '},
-{title: ' עופר '},
-{title: ' עופרה '},
-{title: ' אוהד '},
-{title: ' עולש '},
-{title: ' אומן '},
-{title: ' עומר '},
-{title: ' אומץ '},
-{title: ' אור עקיבא '},
-{title: ' אור הגנוז '},
-{title: ' אור הנר '},
-{title: ' אור יהודה '},
-{title: ' אורה '},
-{title: ' אורנים '},
-{title: ' אורנית '},
-{title: ' אורות '},
-{title: ' אורטל '},
-{title: ' עתניאל '},
-{title: ' עוצם '},
-{title: ' פעמי תש"ז '},
-{title: ' פלמחים '},
-{title: ' פארן '},
-{title: ' פרדס חנה-כרכור'},
-{title: ' פרדסיה '},
-{title: ' פרוד '},
-{title: ' פטיש '},
-{title: ' פדיה '},
-{title: ' פדואל '},
-{title: ' פדויים '},
-{title: ' פלך '},
-{title: ' פני חבר '},
-{title: ' פקיעין (בוקייעה) '},
-{title: ' פקיעין חדשה '},
-{title: ' פרזון '},
-{title: ' פרי גן '},
-{title: ' פסגות '},
-{title: ' פתח תקווה '},
-{title: ' פתחיה '},
-{title: ' פצאל '},
-{title: ' פורת '},
-{title: ' פוריה עילית '},
-{title: ' פוריה - כפר עבדה'}, 
-{title: ' פוריה - נווה עבד '},
-{title: ' קבועה (שבט) '},
-{title: ' קדרים '},
-{title: ' קדימה-צורן '},
-{title: ' קלנסווה '},
-{title: ' קליה '},
-{title: ' קרני שומרון '},
-{title: ' קוואעין (שבט)'}, 
-{title: ' קצרין '},
-{title: ' קדר '},
-{title: ' קדמה '},
-{title: ' קדומים '},
-{title: ' קלע '},
-{title: ' קלחים '},
-{title: ' קיסריה '},
-{title: ' קשת '},
-{title: ' קטורה '},
-{title: ' קבוצת יבנה '},
-{title: ' קדמת צבי '},
-{title: ' קדרון '},
-{title: ' קרית ענבים '},
-{title: ' קרית ארבע '},
-{title: ' קרית אתא '},
-{title: ' קרית ביאליק '},
-{title: ' קרית עקרון '},
-{title: ' קרית גת '},
-{title: ' קרית מלאכי '},
-{title: ' קרית מוצקין '},
-{title: ' קרית נטפים '},
-{title: ' קרית אונו '},
-{title: ' קרית שלמה '},
-{title: ' קרית שמונה '},
-{title: ' קרית טבעון '},
-{title: ' קרית ים '},
-{title: ' קרית יערים '},
-{title: ' קרית יערים(מוסד) '},
-{title: ' קוממיות '},
-{title: ' קורנית '},
-{title: ' קודייראת א-צאנ(שבט) '},
-{title: ' רעננה '},
-{title: ' רהט '},
-{title: ' רם-און '},
-{title: ' רמת דוד '},
-{title: ' רמת גן '},
-{title: ' רמת הכובש '},
-{title: ' רמת השרון '},
-{title: ' רמת השופט '},
-{title: ' רמת מגשימים '},
-{title: ' רמת רחל '},
-{title: ' רמת רזיאל '},
-{title: ' רמת ישי '},
-{title: ' רמת יוחנן '},
-{title: ' רמת צבי '},
-{title: ' ראמה '},
-{title: ' רמלה '},
-{title: ' רמות '},
-{title: ' רמות השבים '},
-{title: ' רמות מאיר '},
-{title: ' רמות מנשה '},
-{title: ' רמות נפתלי '},
-{title: ' רנן '},
-{title: ' רקפת '},
-{title: ' ראס עלי '},
-{title: ' רביד '},
-{title: ' רעים '},
-{title: ' רגבים '},
-{title: ' רגבה '},
-{title: ' ריחן '},
-{title: ' רחוב '},
-{title: ' רחובות '},
-{title: ' ריחאניה '},
-{title: ' ריינה '},
-{title: ' רכסים '},
-{title: ' רשפים '},
-{title: ' רתמים '},
-{title: ' רבדים '},
-{title: ' רבבה '},
-{title: ' רביבים '},
-{title: ' רווחה '},
-{title: ' רוויה '},
-{title: ' רימונים '},
-{title: ' רינתיה '},
-{title: ' ראשון לציון '},
-{title: ' רשפון '},
-{title: ' רועי '},
-{title: ' ראש העין '},
-{title: ' ראש פינה '},
-{title: ' ראש צורים '},
-{title: ' רותם '},
-{title: ' רוחמה '},
-{title: ' רומת הייב '},
-{title: ' רומאנה '},
-{title: ' סעד '},
-{title: ' סער '},
-{title: ' סאגור '},
-{title: ' סחנין '},
-{title: ' סלעית '},
-{title: ' סלמה '},
-{title: ' סמר '},
-{title: ' צנדלה '},
-{title: ' ספיר '},
-{title: ' שריד '},
-{title: ' סאסא '},
-{title: ' סביון '},
-{title: ' סואעד (כמאנה) שבט) '},
-{title: ' סואעד (חמרייה)'},
-{title: ' סייד (שבט) '},
-{title: ' שדי אברהם '},
-{title: ' שדה בוקר '},
-{title: ' שדה דוד '},
-{title: ' שדה אליעזר '},
-{title: ' שדה אליהו '},
-{title: ' שדי חמד '},
-{title: ' שדה אילן '},
-{title: ' שדה משה '},
-{title: ' שדה נחום '},
-{title: ' שדה נחמיה '},
-{title: ' שדה ניצן '},
-{title: ' שדי תרומות '},
-{title: ' שדה עוזיהו '},
-{title: ' שדה ורבורג '},
-{title: ' שדה יעקב '},
-{title: ' שדה יצחק '},
-{title: ' שדה יואב '},
-{title: ' שדה צבי '},
-{title: ' שדרות '},
-{title: ' שדות מיכה '},
-{title: ' שדות ים '},
-{title: ' שגב-שלום '},
-{title: ' סגולה '},
-{title: ' שניר '},
-{title: ' שעב '},
-{title: ' שעל '},
-{title: ' שעלבים '},
-{title: ' שער אפרים '},
-{title: ' שער העמקים '},
-{title: ' שער הגולן '},
-{title: ' שער מנשה '},
-{title: ' שערי תקווה '},
-{title: ' שדמות דבורה '},
-{title: ' שדמות מחולה '},
-{title: ' שפיר '},
-{title: ' שחר '},
-{title: ' שחרות '},
-{title: ' שלווה במדבר '},
-{title: ' שלווה '},
-{title: ' שמרת '},
-{title: ' שמיר '},
-{title: ' שני '},
-{title: ' שקד '},
-{title: ' שרונה '},
-{title: ' שרשרת '},
-{title: ' שבי שומרון '},
-{title: ' שבי ציון '},
-{title: ' שאר ישוב '},
-{title: ' שדמה '},
-{title: ' שפרעם '},
-{title: ' שפיים '},
-{title: ' שפר '},
-{title: ' שייח דנון '},
-{title: ' שכניה '},
-{title: ' שלומי '},
-{title: ' שלוחות '},
-{title: ' שקף '},
-{title: ' שתולה '},
-{title: ' שתולים '},
-{title: ' שזור '},
-{title: ' שיבולים '},
-{title: ' שבלי - אום אל-נם '},
-{title: ' שילת '},
-{title: ' שילה '},
-{title: ' שמעה '},
-{title: ' נאות סמדר '},
-{title: ' שואבה '},
-{title: ' שוהם '},
-{title: ' שומרה '},
-{title: ' שומריה '},
-{title: ' שוקדה '},
-{title: ' שורשים '},
-{title: ' שורש '},
-{title: ' שושנת העמקים '},
-{title: ' צוקי ים '},
-{title: ' שובל '},
-{title: ' שובה '},
-{title: ' סתריה '},
-{title: ' סופה '},
-{title: ' סולם '},
-{title: ' סוסיה '},
-{title: ' תעוז '},
-{title: ' טל שחר '},
-{title: ' טל-אל '},
-{title: ' תלמי ביל"ו '},
-{title: ' תלמי אלעזר '},
-{title: ' תלמי אליהו '},
-{title: ' תלמי יפה '},
-{title: ' תלמי יחיאל '},
-{title: ' תלמי יוסף '},
-{title: ' טלמון '},
-{title: ' טמרה '},
-{title: ' טמרה (יזרעאל)'}, 
-{title: ' תראבין א-צאנע שבט) '},
-{title: ' תרום '},
-{title: ' טייבה '},
-{title: ' טייבה (בעמק) '},
-{title: ' תאשור '},
-{title: ' טפחות '},
-{title: ' תל עדשים '},
-{title: ' תל אביב - יפו'}, 
-{title: ' תל מונד '},
-{title: ' תל קציר '},
-{title: ' תל שבע '},
-{title: ' תל תאומים '},
-{title: ' תל יצחק '},
-{title: ' תל יוסף '},
-{title: ' טללים '},
-{title: ' תלמים '},
-{title: ' תלם '},
-{title: ' טנא '},
-{title: ' תנובות '},
-{title: ' תקוע '},
-{title: ' תקומה '},
-{title: ' טבריה '},
-{title: ' תדהר '},
-{title: ' תפרח '},
-{title: ' תימורים '},
-{title: ' תמרת '},
-{title: ' טירת כרמל '},
-{title: ' טירת יהודה '},
-{title: ' טירת צבי '},
-{title: ' טירה '},
-{title: ' תירוש '},
-{title: ' תומר '},
-{title: ' טובא-זנגריה '},
-{title: ' טורעאן '},
-{title: ' תושיה '},
-{title: ' תובל '},
-{title: ' אודים '},
-{title: ' אום אל-פחם '},
-{title: ' אום אל-קוטוף '},
-{title: ' עוקבי (בנו עוקבה) '},
-{title: ' אורים '},
-{title: ' אושה '},
-{title: ' עוזה '},
-{title: ' עוזייר '},
-{title: ' ורדון '},
-{title: ' ורד יריחו '},
-{title: ' יעד '},
-{title: ' יערה '},
-{title: ' יעל '},
-{title: ' יד בנימין '},
-{title: ' יד חנה '},
-{title: ' יד השמונה '},
-{title: ' יד מרדכי '},
-{title: ' יד נתן '},
-{title: ' יד רמב"ם '},
-{title: ' יפיע '},
-{title: ' יפית '},
-{title: ' יגל '},
-{title: ' יגור '},
-{title: ' יהל '},
-{title: ' יכיני '},
-{title: ' יאנוח-גת '},
-{title: ' ינוב '},
-{title: ' יקיר '},
-{title: ' יקום '},
-{title: ' ירדנה '},
-{title: ' ירחיב '},
-{title: ' ירקונה '},
-{title: ' יסעור '},
-{title: ' ישרש '},
-{title: ' יתד '},
-{title: ' יבנה '},
-{title: ' יבנאל '},
-{title: ' יציץ '},
-{title: ' יעף '},
-{title: ' ידידה '},
-{title: ' כפר ידידיה '},
-{title: ' יחיעם '},
-{title: ' יהוד-מונוסון '},
-{title: ' ירוחם '},
-{title: ' ישע '},
-{title: ' יסודות '},
-{title: ' יסוד המעלה '},
-{title: ' יבול '},
-{title: ' יפעת '},
-{title: ' יפתח '},
-{title: ' ינון '},
-{title: ' יראון '},
-{title: ' ירכא '},
-{title: ' ישעי '},
-{title: ' ייט"ב '},
-{title: ' יצהר '},
-{title: ' יזרעאל '},
-{title: ' יודפת '},
-{title: ' יונתן '},
-{title: ' יקנעם עילית '},
-{title: ' יקנעם (מושבה)'}, 
-{title: ' יושיביה '},
-{title: ' יטבתה '},
-{title: ' יובל '},
-{title: ' יובלים '},
-{title: ' זבארגה (שבט) '},
-{title: ' צפרירים '},
-{title: ' צפריה '},
-{title: ' זנוח '},
-{title: ' זרזיר '},
-{title: ' זבדיאל '},
-{title: ' צאלים '},
-{title: ' צפת '},
-{title: ' זכריה '},
-{title: ' צלפון '},
-{title: ' זמר '},
-{title: ' זרחיה '},
-{title: ' זרועה '},
-{title: ' צרופה '},
-{title: ' זיתן '},
-{title: ' זכרון יעקב '},
-{title: ' זמרת '},
-{title: ' ציפורי '},
-{title: ' זיקים '},
-{title: ' צבעון '},
-{title: ' צופר '},
-{title: ' צופית '},
-{title: ' צופיה '},
-{title: ' צוחר '},
-{title: ' זוהר '},
-{title: ' צרעה '},
-{title: ' צובה '},
-{title: ' צופים '},
-{title: ' צור הדסה '},
-{title: ' צור משה '},
-{title: ' צור נתן '},
-{title: ' צור יצחק '},
-{title: ' צוריאל '},
-{title: ' צורית '},
-{title: ' צביה '},
-{title: ' סנסנה '},
-{title: ' אירוס '},
-{title: ' אליאב '},
-{title: ' כרמי קטיף '},
-{title: ' שבי דרום '},
-{title: ' נמרוד '},
-{title: ' רחלים '},
-{title: ' גני מודיעין '},
-{title: ' עמיחי '},
-{title: ' מבואות יריחו '},
-{title: ' שיזף         '},  
-];
+
 export default EmployeeForm

@@ -21,14 +21,10 @@ import {
   Route,
   Link,
 } from "react-router-dom";
-import {
-  useMatch
-} from "react-router-dom";
-import Opinion from '../Chats/Massage';
-import Chats from '../Massages/Chat';
 import SignOut from '../SignOut/SignOut';
-import OpinionNew from '../OpinoinNew/OpinionNew';
 import Massage from '../Chats/Massage';
+import OpinionEmp from '../OpinionEmp/opinionEmp';
+import { Tooltip } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -185,6 +181,7 @@ export default function EmployeeBar() {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
+            
             <IconButton
               size="large"
               edge="start"
@@ -213,10 +210,13 @@ export default function EmployeeBar() {
             </Search>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <IconButton size="large" aria-label="show 4 new mails" color="inherit"
+              <Tooltip title="חוות דעת">
+              <IconButton size="large" aria-label="opinion" color="inherit"
                 onClick={(e) => { window.location.assign(`/employee-bar/opinion`) }}>
                 <InsertEmoticonIcon />
               </IconButton>
+              </Tooltip>
+              <Tooltip title="התראות">
               <IconButton
                 size="large"
                 aria-label="show 17 new notifications"
@@ -226,12 +226,16 @@ export default function EmployeeBar() {
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
+              </Tooltip>
+              <Tooltip title='דואר'>
               <IconButton size="large" aria-label="show 4 new mails" color="inherit"
                 onClick={(e) => { window.location.assign(`/employee-bar/massages`) }}>
                 <Badge badgeContent={8} color="error">
                   <MailIcon />
                 </Badge>
               </IconButton>
+              </Tooltip>
+              <Tooltip title='פרופיל'>
               <IconButton
                 size="large"
                 edge="end"
@@ -243,6 +247,7 @@ export default function EmployeeBar() {
               >
                 <AccountCircle />
               </IconButton>
+              </Tooltip>
             </Box>
             <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
               <IconButton
@@ -263,7 +268,7 @@ export default function EmployeeBar() {
       </Box>
 
       <Routes>
-        <Route path={`opinion`} element={<OpinionNew />} />
+        <Route path={`opinion`} element={<OpinionEmp />} />
         <Route path={`massages`} element={<Massage />} />
 
       </Routes>

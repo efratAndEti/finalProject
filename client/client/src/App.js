@@ -87,14 +87,14 @@ function App() {
           <Route path="/sample" element={<Sample />} />
           <Route path="/sign-up" element={<SignUp onSignUp={changeLogin} />} />
           <Route path="/sign-out" element={<SignOut onSignOut={changeLogin} />} />
-          <Route path="/log-in" element={<LogIn />} />
+          <Route path="/log-in" element={<LogIn onLogin={changeLogin} />} />
           <Route path="/sign-out" element={<SignOut />} />
           <Route path="/opinion" element={<Opinion />} />
           <Route path="/opinion-new" element={<OpinionNew />} />
 
            <Route path="/massages" element={<Chats />} />
           <Route path="/employee-bar/*" element={<EmployeeBar />} />
-          <Route path="/client-bar" element={<ClientBar />} />
+          <Route path="/client-bar/*" element={<ClientBar />} />
           <Route path="/search" element={<SearchEmp />} />
           <Route path="/about" element={<AboutTheWeb />} />
           <Route path="/employee-form" element={<EmployeeForm />} />

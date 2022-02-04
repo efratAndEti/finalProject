@@ -16,8 +16,14 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
-
-
+import OpinionNew from '../OpinoinNew/OpinionNew';
+import Massage from '../Chats/Massage';
+import {
+  Routes,
+  Route,
+  Link,
+} from "react-router-dom";
+import SearchEmp from '../Search/Search';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -158,6 +164,7 @@ export default function ClientBar() {
   );
 
   return (
+    <>
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
@@ -190,11 +197,11 @@ export default function ClientBar() {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
           <IconButton size="large" aria-label="search employee" color="inherit" 
-            onClick={(e)=>{window.location.assign('http://localhost:3000/search')}}>
+            onClick={(e)=>{window.location.assign(`/client-bar/search`)}}>
                  <SearchIcon/>
             </IconButton>
             <IconButton size="large" aria-label="show opinion" color="inherit" 
-            onClick={(e)=>{window.location.assign('http://localhost:3000/opinion')}}>
+            onClick={(e)=>{window.location.assign(`/client-bar/opinion`)}}>
                 <InsertEmoticonIcon/>
             </IconButton>
             <IconButton
@@ -207,7 +214,7 @@ export default function ClientBar() {
               </Badge>
             </IconButton>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit" 
-            onClick={(e)=>{window.location.assign('http://localhost:3000/massages')}}>
+            onClick={(e)=>{window.location.assign(`/client-bar/massages`)}}>
               <Badge badgeContent={8} color="error">
                 <MailIcon />
               </Badge>
@@ -241,5 +248,12 @@ export default function ClientBar() {
       {renderMobileMenu}
       {renderMenu}
     </Box>
+          <Routes>
+          <Route path={`opinion`} element={<OpinionNew />} e/>
+          <Route path={`massages`} element={<Massage />} />
+          <Route path={`search`} element={<SearchEmp />} />
+  
+        </Routes>
+        </>
   );
 }

@@ -16,9 +16,11 @@ const labels = {
   5: 'Excellent+',
 };
 
-export default function HoverRating() {
+export default function HoverRating(props) {
   const [value, setValue] = React.useState(0);
   const [hover, setHover] = React.useState(-1);
+  const { handleOnChange } = props;
+
 
   return (
     <Box
@@ -34,7 +36,8 @@ export default function HoverRating() {
         precision={0.5}
         onChange={(event, newValue) => {
           setValue(newValue);
-          alert("לעדכן את הדרגה בטבלת חוות דעת")
+          handleOnChange(newValue);
+          // alert("לעדכן את הדרגה בטבלת חוות דעת")
         }}
         onChangeActive={(event, newHover) => {
           setHover(newHover);

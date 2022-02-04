@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
@@ -9,43 +10,44 @@ import { AppBar, Button, Dialog, DialogActions, DialogContent, DialogContentText
 import HoverRating from './Rate';
 import CloseIcon from '@mui/icons-material/Close';
 import { typography } from '@mui/system';
+import axios from 'axios';
 
 
 
 
 
-const images = [
-    {
-        url: '../../pictures/1.jpg' ,
-        title: 'עובד 1',
-        width: '20%',
-        var: '4',
-      },
-      {
-        url: '/static/images/buttons/burgers.jpg',
-        title: 'Worker B',
-        width: '20%',
-        var: '3.5',
-      },
-      {
-        url: '/static/images/buttons/camera.jpg',
-        title: 'Camera',
-        width: '20%',
-        var: '5',
-      },
-      {
-        url: '/static/images/buttons/camera.jpg',
-        title: 'Camera',
-        width: '20%',
-        var: '1.5',
-      },
-      {
-        url: '/static/images/buttons/camera.jpg',
-        title: 'Camera',
-        width: '20%',
-        var: '1.5',
-      },
-];
+// const images = [
+//   {
+//     url: '../../pictures/1.jpg',
+//     title: 'עובד 1',
+//     width: '20%',
+//     var: '4',
+//   },
+//   {
+//     url: '/static/images/buttons/burgers.jpg',
+//     title: 'Worker B',
+//     width: '20%',
+//     var: '3.5',
+//   },
+//   {
+//     url: '/static/images/buttons/camera.jpg',
+//     title: 'Camera',
+//     width: '20%',
+//     var: '5',
+//   },
+//   {
+//     url: '/static/images/buttons/camera.jpg',
+//     title: 'Camera',
+//     width: '20%',
+//     var: '1.5',
+//   },
+//   {
+//     url: '/static/images/buttons/camera.jpg',
+//     title: 'Camera',
+//     width: '20%',
+//     var: '1.5',
+//   },
+// ];
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: 'relative',
@@ -112,147 +114,194 @@ const ImageMarked = styled('span')(({ theme }) => ({
 }));
 
 export default function OpinionNew() {
-    const [open, setOpen] = React.useState(false);
-    const [value,setValue]=React.useState("");
-    const [empName,setEmpName]=React.useState('');
-
-    const handleClickOpen = (e) => {
-        // alert(e.target.innerText);
-        // console.log(e)
-        // console.log(e.target.value)
-        // console.log(e.target.innerText)
-
-      setOpen(true);
-      setEmpName(e.target.innerText)
-    };
-  
-    const handleClose = () => {
-      setOpen(false);
-    };
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
+  const [empName, setEmpName] = React.useState('');
 
 
-    // const newOpinion=()=>{
-    //     alert('openDialog');
-    //     return(
-    //     <Dialog open={open} onClose={handleClose}>
-    //     <DialogTitle>Add Opinion</DialogTitle>
-    //     <DialogContent>
-    //       <DialogContentText>
-    //         Rate <HoverRating/>
-    //       </DialogContentText>
-    //       <TextField
-    //         autoFocus
-    //         margin="dense"
-    //         id="name"
-    //         label="tell us more"
-    //         type="text"
-    //         fullWidth
-    //         variant="standard"
-    //         multiline="true"
-    //         required="true"
-    //         value={value}
-    //         onChange={handleChange}
-            
-    //       />
-    //     </DialogContent>
-    //     <DialogActions>
-    //       <Button onClick={handleClose}>Cancel</Button>
-    //       <Button disabled={disabled} onClick={handleCloseAdd}>Add</Button>
-    //     </DialogActions>
-    //   </Dialog>);
-    // }
-    function generateRandomColor()
-{
-    var randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+  const [opinions, setOpinions] = useState([]);
+  const [client, setClient] = useState(null);
+  const [empOpinions, setEmpOpinions] = useState([]);
+  const [empId, setEmpId] = useState(null);
+
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    const clientStr = localStorage.getItem("client");
+    const clientObj = JSON.parse(clientStr);
+    setClient(clientObj);
+
+    axios.get(`http://localhost:8080/getAvgOpinions`).then((res) => {
+      console.log(res.data);
+      setOpinions(res.data);
+    })
+  }, [])
+
+
+  useEffect(() => {
+    const arr = opinions.map(o => { return { empId: o.emp_id, url: "", title: o.first_name + ' ' + o.last_name, width: '40%', var: o.avg } })
+    console.log("avg images: ", arr);
+    setImages(arr);
+  }, [opinions])
+
+
+  const handleClickOpen = (e, empId) => {
+    // alert(e.target.innerText);
+    console.log(empId);
+    setEmpId(empId);
+    // console.log(e.target.innerText)
+
+    axios.get(`http://localhost:8080/getOpinionById/${empId}`).then((res) => {
+      console.log(res.data);
+      setEmpOpinions(res.data);
+    })
+
+    setOpen(true);
+    setEmpName(e.target.innerText)
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const addOpinionToGui = (o) => {
+    const arr = [...empOpinions];
+    arr.push({
+      idOpinion: 0, clientId: o.client, empId: o.emp, rank: o.rank, description: o.desc,
+      first_name: client.first_name,
+      last_name: client.last_name
+    })
+    setEmpOpinions(arr);
+  }
+
+
+  // const newOpinion=()=>{
+  //     alert('openDialog');
+  //     return(
+  //     <Dialog open={open} onClose={handleClose}>
+  //     <DialogTitle>Add Opinion</DialogTitle>
+  //     <DialogContent>
+  //       <DialogContentText>
+  //         Rate <HoverRating/>
+  //       </DialogContentText>
+  //       <TextField
+  //         autoFocus
+  //         margin="dense"
+  //         id="name"
+  //         label="tell us more"
+  //         type="text"
+  //         fullWidth
+  //         variant="standard"
+  //         multiline="true"
+  //         required="true"
+  //         value={value}
+  //         onChange={handleChange}
+
+  //       />
+  //     </DialogContent>
+  //     <DialogActions>
+  //       <Button onClick={handleClose}>Cancel</Button>
+  //       <Button disabled={disabled} onClick={handleCloseAdd}>Add</Button>
+  //     </DialogActions>
+  //   </Dialog>);
+  // }
+  function generateRandomColor() {
+    var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
     return randomColor;
     //random color will be freshly served
-}
+  }
 
   return (
-      
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
-      {images.map((image) => (
-        <ImageButton
-        onClick={handleClickOpen}
-          focusRipple
-          key={image.title}
-          style={{
-            width: image.width,
-          }}
-        >
-          <ImageSrc style={{ 
-            //   backgroundImage: `url(${image.url})`
-            backgroundColor: `${generateRandomColor()}`
-               }} />
-          <ImageBackdrop className="MuiImageBackdrop-root" />
-          <Image>
-            <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              sx={{
-                position: 'relative',
-                p: 4,
-                pt: 2,
-                pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+
+    <>
+
+      {client == null ? <div>טוען</div> :
+
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
+          {images.map((image) => (
+            <ImageButton
+              onClick={(e) => { handleClickOpen(e, image.empId) }}
+              focusRipple
+              key={image.title}
+              style={{
+                width: image.width,
               }}
             >
-                
-              {image.title}
-              <br/>
-              <Rating name="read-only"   precision={0.5} value={image.var} readOnly />
+              <ImageSrc style={{
+                //   backgroundImage: `url(${image.url})`
+                backgroundColor: `${generateRandomColor()}`
+              }} />
+              <ImageBackdrop className="MuiImageBackdrop-root" />
+              <Image>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  sx={{
+                    position: 'relative',
+                    p: 4,
+                    pt: 2,
+                    pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                  }}
+                >
 
-              <ImageMarked className="MuiImageMarked-root" />
-            </Typography>
-           
-          </Image>
+                  {image.title}
+                  <br />
+                  <Rating name="read-only" precision={0.5} value={image.var} readOnly />
 
-          
-          
-        </ImageButton>
-      ))
-      }
-             <Dialog open={open} onClose={handleClose}>
-             <AppBar sx={{ position: 'relative' }}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              {empName} Opinoin
-            </Typography>
-            </Toolbar>
+                  <ImageMarked className="MuiImageMarked-root" />
+                </Typography>
+
+              </Image>
+
+
+
+            </ImageButton>
+          ))
+          }
+          <Dialog open={open} onClose={handleClose}>
+            <AppBar sx={{ position: 'relative' }}>
+              <Toolbar>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  onClick={handleClose}
+                  aria-label="close"
+                >
+                  <CloseIcon />
+                </IconButton>
+                <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                  {empName} Opinoin
+                </Typography>
+              </Toolbar>
             </AppBar>
-           
-        {/* <DialogTitle>opinion</DialogTitle> */}
-        <DialogContent>
-          <DialogContentText>
-           
-          </DialogContentText>
-          <Typography >
-              here nedd to be all the last opinion
-              <Divider>opinoin 1</Divider>
-                   
-                 <div><Rating name="read-only"   precision={0.5} value='3' readOnly /></div> 
-                 <>תאור  -----------------------------------
-                   ----------------------------------</>
-           
-                   <Divider>opinoin 2</Divider>
-                   <Divider>opinoin 3</Divider>
+
+            {/* <DialogTitle>opinion</DialogTitle> */}
+            <DialogContent>
+              <DialogContentText>
+
+              </DialogContentText>
+              <Typography >
+                here nedd to be all the last opinion
+
+                {empOpinions.map(o => <>
+                  <Divider>{o.first_name + ' ' + o.last_name}</Divider>
+                  <div><Rating name="read-only" precision={0.5} value={o.rank} readOnly /></div>
+                  <p>{o.description}</p>
+                </>)}
               </Typography>
-        </DialogContent>
-        <DialogActions>
-          {/* <Button onClick={handleClose}>Cancel</Button> */}
-          <Grid xs={11} align="right">
-                        <Fab color="primary" aria-label="add"><Add /></Fab>
-                    </Grid>
-        </DialogActions>
-      </Dialog>
-    </Box>
+            </DialogContent>
+            <DialogActions>
+              {/* <Button onClick={handleClose}>Cancel</Button> */}
+              <Grid xs={11} align="right">
+                <Fab color="primary" aria-label="add"><Add clientId={client.id_client} empId={empId} addOpinionToGui={addOpinionToGui} /></Fab>
+              </Grid>
+            </DialogActions>
+          </Dialog>
+        </Box>
+
+      }
+    </>
+
   );
 }

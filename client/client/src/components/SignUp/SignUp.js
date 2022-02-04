@@ -83,14 +83,20 @@ export default function SignUp(props) {
 
   const AddUser = () => {
     var today = new Date(),
-    date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+      date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
     const body = {
-      email, password, kind, lastName, firstName,date
+      email, password, kind, lastName, firstName, date
     }
     axios.post('http://localhost:8080/addUser', body).then((res) => {
       console.log(res);
-      body.id = res.data.insertId;
+      const result = res.data;
+      if (result.success == false) {
+        alert(result.massage);
+        return;
+      }
+
+      body.id = result.insertId;
       console.log(body);
       const userStr = JSON.stringify(body);
       localStorage.setItem("user", userStr);
@@ -103,11 +109,11 @@ export default function SignUp(props) {
   }
 
   const ifCanged = () => {
-    if(error==false )
-    if (email && password && lastName && firstName ) {
-      console.log("disabled:false");
-      setDisabled(false);
-    }
+    if (error == false)
+      if (email && password && lastName && firstName) {
+        console.log("disabled:false");
+        setDisabled(false);
+      }
   }
 
   const sendTo = () => {
@@ -125,15 +131,15 @@ export default function SignUp(props) {
       password: data.get('password'),
     });
   };
-  const [error,setError]=React.useState('');
+  const [error, setError] = React.useState('');
 
-  const handleEmail=(e)=>{
-    const re=/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
+  const handleEmail = (e) => {
+    const re = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
     if (re.test((e.target.value)))
       setError('');
     else
-    setError('אנא הכנס מייל תקין');
-      setEmail(e.target.value);
+      setError('אנא הכנס מייל תקין');
+    setEmail(e.target.value);
   }
 
   return (
@@ -183,8 +189,8 @@ export default function SignUp(props) {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                error={error}
-                helperText={error}
+                  error={error}
+                  helperText={error}
                   value={email}
                   onChange={(e) => { handleEmail(e); ifCanged() }}
                   required="true"

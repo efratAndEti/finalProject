@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { loginUser } from '../../services/user.service';
+import axios from 'axios';
 
 function Copyright(props) {
 
@@ -36,10 +37,13 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function LogIn() {
+export default function LogIn(props) {
+  const { onLogin } = props;
+
   // const [users, setUsers] = React.useState([]);
   const [userName, setUserName] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [user, setUser] = React.useState(null);
   const handleSubmit = async (event) => {
     event.preventDefault();
     // const data = new FormData(event.currentTarget);
@@ -53,15 +57,67 @@ export default function LogIn() {
     if (result.success == true) {
       alert("success");
       console.log("user: ", result.user);
-
+      setUser(result.user);
+      //שמירה ללוקל סטורג'
+      const userStr = JSON.stringify(result.user);
+      localStorage.setItem("user", userStr);
+      //עדכון התפריט
+      onLogin();
+      //מעבר לקומפוננטה
+      sendTo();
     }
-    else
-    {
+    else {
       alert("not success");
       console.log("failed: ", result.massage);
     }
 
   };
+
+  const sendTo = () => {
+
+    //לאן להעביר את המשתמש?
+    const u = JSON.parse(localStorage.getItem("user"));
+
+
+    if (u.user_kind == 0) {
+      //אם הסוג של המשתמש עובד
+      //שליפת פרטי עובד
+      // אם קיים - עובר ללוח
+      //אם לא - עובר לטופס פרטים
+      axios.get(`http://localhost:8080/getEmployeeByUserId/${u.id}`).then((res) => {
+        const empDetails = res.data;
+        if (empDetails == "") {
+          alert("עליך למלא טופס רישום")
+          window.location.assign('http://localhost:3000/employee-form');
+        }
+        else {
+          alert("זוהית בהצלחה");
+          localStorage.setItem("employee", JSON.stringify(empDetails))
+          window.location.assign('http://localhost:3000/employee-bar');
+        }
+      });
+    }
+    else {
+      //אם הסוג של המשתמש מעביד
+      //שליפת פרטי מעביד
+      // אם קיים - עובר ללוח
+      //אם לא - עובר לטופס פרטים
+
+      axios.get(`http://localhost:8080/getClientByUserId/${u.id}`).then((res) => {
+        const clientDetails = res.data;
+        if (clientDetails == "") {
+          alert("עליך למלא טופס רישום")
+          window.location.assign('http://localhost:3000/client-form');
+        }
+        else {
+          alert("זוהית בהצלחה");
+          localStorage.setItem("client", JSON.stringify(clientDetails))
+          window.location.assign('http://localhost:3000/client-bar');
+        }
+      });    }
+
+
+  }
   // React.useEffect(async () => {
   //   console.log("getting data from server");
 
