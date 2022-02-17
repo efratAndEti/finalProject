@@ -22,9 +22,10 @@ import {
   Link,
 } from "react-router-dom";
 import SignOut from '../SignOut/SignOut';
-import Massage from '../Chats/Massage';
 import OpinionEmp from '../OpinionEmp/opinionEmp';
 import { Tooltip } from '@mui/material';
+import EmployeePage from '../UserPages/EmployeePage';
+import MyMassagesPage from '../MyChat/MyMassagesPage';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -67,8 +68,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function EmployeeBar() {
-  const userStr = localStorage.getItem("user");
-  const user = JSON.parse(userStr);
+ 
+  const [emp, setEmp] = React.useState(null);
+
+  React.useEffect(() => {
+      const e = JSON.parse(localStorage.getItem("employee"));
+      setEmp(e);
+  }, [])
+
 
   // let { path, url } = useMatch();
   // console.log("path: ", path);
@@ -117,7 +124,7 @@ export default function EmployeeBar() {
       onClose={handleMenuClose}
     >
 
-      <MenuItem onClick={handleMenuClose}> {user.firstName} {user.lastName}</MenuItem>
+      <MenuItem onClick={handleMenuClose}> {emp?emp.firstName:""} {emp?emp.lastName:""}</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
       <MenuItem onClick={handleMenuClose}><SignOut/></MenuItem>
     </Menu>
@@ -179,7 +186,7 @@ export default function EmployeeBar() {
 
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+        <AppBar position="static" style={{ background: '#006064' }}>
           <Toolbar>
             
             <IconButton
@@ -199,7 +206,7 @@ export default function EmployeeBar() {
             >
               Emploee
             </Typography>
-            <Search>
+            {/* <Search>
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
@@ -207,7 +214,7 @@ export default function EmployeeBar() {
                 placeholder="Search…"
                 inputProps={{ 'aria-label': 'search' }}
               />
-            </Search>
+            </Search> */}
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <Tooltip title="חוות דעת">
@@ -269,7 +276,8 @@ export default function EmployeeBar() {
 
       <Routes>
         <Route path={`opinion`} element={<OpinionEmp />} />
-        <Route path={`massages`} element={<Massage />} />
+        <Route path={`massages`} element={< MyMassagesPage id={emp?emp.emp_id:0} />} />
+        <Route path={``} element={<EmployeePage />} />
 
       </Routes>
     </>

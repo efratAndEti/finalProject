@@ -1,0 +1,20 @@
+{
+   "languages": [
+    {
+        "english_name": "Hebrew",
+        "hebrew_name": "עברית"
+    },
+    {
+        "english_name": "English",
+        "hebrew_name": "אנגלית"
+    },
+    {
+        "english_name": "Indish",
+        "hebrew_name": "הודית"
+    },
+    {
+        "english_name": "Ruusian",
+        "hebrew_name": "רוסית"
+    }
+]
+}

@@ -16,18 +16,17 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
-import OpinionNew from '../OpinoinNew/OpinionNew';
-import ClientPage from '../UserPages/ClientPage';
-
-import Massage from '../Chats/Massage';
 import {
   Routes,
   Route,
   Link,
 } from "react-router-dom";
-import SearchEmp from '../Search/Search';
-import MyMassagesPage from '../MyChat/MyMassagesPage';
-import { useEffect } from 'react';
+import SignOut from '../SignOut/SignOut';
+import Massage from '../Chats/Massage';
+import OpinionEmp from '../OpinionEmp/opinionEmp';
+import { Tooltip } from '@mui/material';
+import EmployeePage from '../UserPages/EmployeePage';
+import ManagerPage from '../UserPages/ManagerPage';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -69,18 +68,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function ClientBar() {
+export default function ManagerBar() {
+  const userStr = localStorage.getItem("user");
+  const user = JSON.parse(userStr);
 
-  const [client, setClient] = React.useState(null);
-
+  // let { path, url } = useMatch();
+  // console.log("path: ", path);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
-
-  useEffect(() => {
-      const c = JSON.parse(localStorage.getItem("client"));
-      setClient(c);
-  }, [])
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -100,7 +95,11 @@ export default function ClientBar() {
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
-  };
+  }; 
+  const signout=()=>{
+    
+    handleMenuClose();
+  }
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -119,8 +118,10 @@ export default function ClientBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+
+      <MenuItem onClick={handleMenuClose}> פרופיל המנהל</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}><SignOut /></MenuItem>
     </Menu>
   );
 
@@ -177,10 +178,12 @@ export default function ClientBar() {
   );
 
   return (
+
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" style={{ background: '#006064' }}>
+        <AppBar position="static">
           <Toolbar>
+            
             <IconButton
               size="large"
               edge="start"
@@ -196,27 +199,26 @@ export default function ClientBar() {
               component="div"
               sx={{ display: { xs: 'none', sm: 'block' } }}
             >
-              Client
+              Manager
             </Typography>
-            {/* <Search> */}
-              {/* <SearchIconWrapper>
+            <Search>
+              <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
               <StyledInputBase
                 placeholder="Search…"
                 inputProps={{ 'aria-label': 'search' }}
-              /> */}
-            {/* </Search> */}
+              />
+            </Search>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <IconButton size="large" aria-label="search employee" color="inherit"
-                onClick={(e) => { window.location.assign(`/client-bar/search`) }}>
-                <SearchIcon />
-              </IconButton>
-              <IconButton size="large" aria-label="show opinion" color="inherit"
-                onClick={(e) => { window.location.assign(`/client-bar/opinion`) }}>
+              <Tooltip title="חוות דעת">
+              <IconButton size="large" aria-label="opinion" color="inherit"
+                onClick={(e) => { window.location.assign(`/employee-bar/opinion`) }}>
                 <InsertEmoticonIcon />
               </IconButton>
+              </Tooltip>
+              <Tooltip title="התראות">
               <IconButton
                 size="large"
                 aria-label="show 17 new notifications"
@@ -226,12 +228,16 @@ export default function ClientBar() {
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
+              </Tooltip>
+              <Tooltip title='דואר'>
               <IconButton size="large" aria-label="show 4 new mails" color="inherit"
-                onClick={(e) => { window.location.assign(`/client-bar/massages`) }}>
+                onClick={(e) => { window.location.assign(`/employee-bar/massages`) }}>
                 <Badge badgeContent={8} color="error">
                   <MailIcon />
                 </Badge>
               </IconButton>
+              </Tooltip>
+              <Tooltip title='פרופיל'>
               <IconButton
                 size="large"
                 edge="end"
@@ -243,6 +249,7 @@ export default function ClientBar() {
               >
                 <AccountCircle />
               </IconButton>
+              </Tooltip>
             </Box>
             <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
               <IconButton
@@ -261,11 +268,10 @@ export default function ClientBar() {
         {renderMobileMenu}
         {renderMenu}
       </Box>
+
       <Routes>
-        <Route path={`opinion`} element={<OpinionNew />} />
-        <Route path={`massages`} element={< MyMassagesPage id={client?client.id_client:0} />} />
-        <Route path={`search`} element={<SearchEmp />} />
-        <Route path={``} element={<ClientPage />} />
+ 
+        <Route path={``} element={<ManagerPage />} />
 
       </Routes>
     </>

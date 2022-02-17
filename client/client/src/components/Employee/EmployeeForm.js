@@ -1,4 +1,4 @@
-import { Autocomplete, Button, FormControl, FormControlLabel, FormLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, Stack, TextField } from '@mui/material';
+import { Alert, AlertTitle, Autocomplete, Button, FormControl, FormControlLabel, FormLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, Snackbar, Stack, TextField } from '@mui/material';
 import { Box, minWidth } from '@mui/system';
 import React, { useState } from 'react';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -10,7 +10,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import rtlPlugin from 'stylis-plugin-rtl';
-import {cities} from './../../assets/cities.json';
+import { cities } from './../../assets/cities.json';
+import MuiAlert from '@mui/material/Alert';
+import axios from 'axios';
 
 const EmployeeForm = () => {
 
@@ -29,7 +31,7 @@ const EmployeeForm = () => {
   const [preNumber, setPreNumber] = useState('None');
   const [birth_date, setBirthDate] = useState();
 
-  const citiesNames = cities.city.map(c=>c.hebrew_name);
+  const citiesNames = cities.city.map(c => c.hebrew_name);
 
   const [disabled, setDisabled] = React.useState(true);
   const theme = createTheme({
@@ -76,22 +78,63 @@ const EmployeeForm = () => {
   // };
   const ifNum = (event) => {
     const re = /^[0-9\b]+$/;
-    if (event.target.value.length != 7 || !re.test(event.target.value)) {
+    if ( !re.test(event.target.value)) {
       setErrorNum('מספר טלפון לא תקין')
-      setNumber(preNumber + event.target.value);
+      
     }
     else {
       setErrorNum('')
-      setNumber('');
+      
     }
+    setNumber( event.target.value);
 
   };
   const saveEmp = () => {
+    const last_name=user.last_name;
+    const first_name=user.first_name;
+    const mail=user.user_name;
+    const user_id=user.id ;
+    const password=user.password;
+    const body=  { emp_id, last_name,first_name,  end_visa_period, kind, gender, address, city, number, password, mail, birth_date,user_id}
+      axios.post('http://localhost:8080/addEmployee', body).then((res) => {
+        console.log(res);
+        const result = res.data;
+        if (result.success == false) {
+          alert(result.massage);
+          return;
+        }
+alert(city);
+alert(address);
+        const empStr = JSON.stringify(body);
+        localStorage.setItem("employee", userStr);
+        console.log(body);})
     alert('save the emp in db and save lockal storage');
     window.location.assign('http://localhost:3000/employee-bar');
   }
+  // const Alert = React.forwardRef(function Alert(props, ref) {
+  //   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  // });
+  const [open, setOpen] = useState(true);
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
   const [loading, setLoading] = React.useState(false);
   function handleClick() {
+
+    if (!emp_id) {
+        <Snackbar open='true' autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          
+          This is a success message!
+        </Alert>
+       </Snackbar>
+
+      return
+    }
     setLoading(true);
     saveEmp();
   }
@@ -137,7 +180,7 @@ const EmployeeForm = () => {
             label="שם פרטי"
             // value={emp_id}
             variant="standard"
-            defaultValue={user.firstName}
+            defaultValue={user.first_name}
           />
           <TextField
             required
@@ -145,7 +188,7 @@ const EmployeeForm = () => {
             label="שם משפחה"
             // value={emp_id}
             variant="standard"
-            defaultValue={user.lastName}
+            defaultValue={user.last_name}
           />
         </div>
         <div>
@@ -209,7 +252,7 @@ const EmployeeForm = () => {
             onChange={ifNum}
             helperText={errorNum}
           />
-          <FormControl  >
+          {/* <FormControl  >
             <InputLabel id="demo-simple-select-label">קידומת</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -225,8 +268,8 @@ const EmployeeForm = () => {
               <MenuItem value={'057'}>057</MenuItem>
               <MenuItem value={'058'}>058</MenuItem>
               {/* <MenuItem value={058}>058</MenuItem> */}
-            </Select>
-          </FormControl>
+            {/* </Select>
+          </FormControl> */} 
           {/* </Grid> */}
 
         </div>
@@ -235,7 +278,7 @@ const EmployeeForm = () => {
           id="filled-required"
           label="מייל"
           variant="standard"
-          defaultValue={user.email}
+          defaultValue={user.user_name}
         />
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker

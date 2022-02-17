@@ -1,0 +1,17 @@
+#list li{
+    height:10%;
+    padding:10px;
+    
+    background-color: rgba(128, 128, 128, 0.247);
+
+}
+#list li:hover{
+    background-color: rgba(128, 128, 128, 0.089);
+
+}
+
+
+#list{
+    list-style-type: none;
+}
+

@@ -96,11 +96,10 @@ export default function SignUp(props) {
         return;
       }
 
-      body.id = result.insertId;
-      console.log(body);
-      const userStr = JSON.stringify(body);
+      const user = result.user;
+      console.log(user);
+      const userStr = JSON.stringify(user);
       localStorage.setItem("user", userStr);
-      console.log(body);
       onSignUp();
       sendTo();
 

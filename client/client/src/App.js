@@ -26,20 +26,37 @@ import SignOut from './components/SignOut/SignOut';
 import Home from './components/Home/Home';
 import ClientForm from './components/Client/ClientForm';
 import OpinionNew from './components/OpinoinNew/OpinionNew';
+import ClientPage from './components/UserPages/ClientPage';
+import Manager from './components/Manager/Manager';
+import ManagerBar from './components/Manager/Manager';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
     const userStr = localStorage.getItem("user");
     const user = JSON.parse(userStr);
     if (user != null)
+    {
       setIsLoggedIn(true);
+      setUser(user);
+    }
   }, []);
+
+  useEffect(() => {
+    const userStr = localStorage.getItem("user");
+    const user = JSON.parse(userStr);
+    setUser(user);
+  }, [isLoggedIn])
+
   const changeLogin = () => {
+    const userStr = localStorage.getItem("user");
+    const user = JSON.parse(userStr);
+    setUser(user);
     setIsLoggedIn(!isLoggedIn);
+    
   }
-  const userStr = localStorage.getItem("user");
-  const user = JSON.parse(userStr);
+
 
   return (
 
@@ -52,8 +69,8 @@ function App() {
               <Link to="/">Home</Link>
             </li>
             <li id='li'>
-                    <Link to="/about">About</Link>
-                  </li>
+              <Link to="/about">About</Link>
+            </li>
             {
               isLoggedIn == false ?
                 <><li id='li'>
@@ -62,19 +79,26 @@ function App() {
                   <li id='li'>
                     <Link to="/log-in">LogIn</Link>
                   </li></>
-                  
-                : user.kind==1 ? <>
+
+                : user.user_kind == 1 ? <>
                   <li id='li'>
                     <Link to="/client-bar">Client Bar</Link>
                   </li>
-                  <li><SignOut onSignOut={changeLogin}/></li>
-                </>:
-                <>
-                 <li id='li'>
-                 <Link to="/employee-bar">Employee Bar</Link>
-               </li>
-               <li><SignOut onSignOut={changeLogin}/></li>
-             </>
+                  <li><SignOut onSignOut={changeLogin} /></li>
+                </> :user.user_kind == 0?
+                  <>
+                    <li id='li'>
+                      <Link to="/employee-bar">Employee Bar</Link>
+                    </li>
+                    <li><SignOut onSignOut={changeLogin} /></li>
+                  </>
+                  :
+                  <>
+                   <li id='li'>
+                      <Link to="/manager-bar">Manager</Link>
+                    </li>
+                    <li><SignOut onSignOut={changeLogin} /></li>
+                  </>
             }
 
           </ul>
@@ -92,20 +116,23 @@ function App() {
           <Route path="/opinion" element={<Opinion />} />
           <Route path="/opinion-new" element={<OpinionNew />} />
 
-           <Route path="/massages" element={<Chats />} />
+          <Route path="/massages" element={<Chats />} />
           <Route path="/employee-bar/*" element={<EmployeeBar />} />
           <Route path="/client-bar/*" element={<ClientBar />} />
+          <Route path="/manager-bar/*" element={<ManagerBar />} />
+
           <Route path="/search" element={<SearchEmp />} />
           <Route path="/about" element={<AboutTheWeb />} />
           <Route path="/employee-form" element={<EmployeeForm />} />
           <Route path="/client-form" element={<ClientForm />} />
+          <Route path="/client-page" element={<ClientPage />} />
 
           <Route path="/" element={<Home />} />
 
           <Route path="*" element={<Page404 />} />
 
         </Routes>
-        
+
       </div>
     </Router>
 

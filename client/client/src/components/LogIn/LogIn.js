@@ -14,6 +14,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { loginUser } from '../../services/user.service';
 import axios from 'axios';
+import MuiAlert from '@mui/material/Alert';
+import { Snackbar } from '@mui/material';
 
 function Copyright(props) {
 
@@ -33,19 +35,18 @@ function Copyright(props) {
     </Typography>
   );
 }
-
-
 const theme = createTheme();
 
 export default function LogIn(props) {
   const { onLogin } = props;
-
   // const [users, setUsers] = React.useState([]);
   const [userName, setUserName] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [user, setUser] = React.useState(null);
   const handleSubmit = async (event) => {
     event.preventDefault();
+    // handleClick();
+
     // const data = new FormData(event.currentTarget);
     // // eslint-disable-next-line no-console
     // console.log({
@@ -68,17 +69,30 @@ export default function LogIn(props) {
     }
     else {
       alert("not success");
+      setOpen(true);
       console.log("failed: ", result.massage);
     }
 
   };
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+  const [open, setOpen] = React.useState(false);
 
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
   const sendTo = () => {
-
     //לאן להעביר את המשתמש?
     const u = JSON.parse(localStorage.getItem("user"));
-
-
     if (u.user_kind == 0) {
       //אם הסוג של המשתמש עובד
       //שליפת פרטי עובד
@@ -87,7 +101,13 @@ export default function LogIn(props) {
       axios.get(`http://localhost:8080/getEmployeeByUserId/${u.id}`).then((res) => {
         const empDetails = res.data;
         if (empDetails == "") {
-          alert("עליך למלא טופס רישום")
+          alert("עליך למלא טופס רישום");
+
+          //   <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          //   <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          //     This is a success message!
+          //   </Alert>
+          // </Snackbar>
           window.location.assign('http://localhost:3000/employee-form');
         }
         else {
@@ -95,14 +115,14 @@ export default function LogIn(props) {
           localStorage.setItem("employee", JSON.stringify(empDetails))
           window.location.assign('http://localhost:3000/employee-bar');
         }
+
       });
     }
-    else {
+    else if(u.user_kind==1) {
       //אם הסוג של המשתמש מעביד
       //שליפת פרטי מעביד
       // אם קיים - עובר ללוח
       //אם לא - עובר לטופס פרטים
-
       axios.get(`http://localhost:8080/getClientByUserId/${u.id}`).then((res) => {
         const clientDetails = res.data;
         if (clientDetails == "") {
@@ -114,10 +134,14 @@ export default function LogIn(props) {
           localStorage.setItem("client", JSON.stringify(clientDetails))
           window.location.assign('http://localhost:3000/client-bar');
         }
-      });    }
-
-
+      });
+    }
+    else if(u.user_kind==2)
+    {
+      window.location.assign('http://localhost:3000/manager-bar');
+    }
   }
+
   // React.useEffect(async () => {
   //   console.log("getting data from server");
 
@@ -190,6 +214,9 @@ export default function LogIn(props) {
               id="password"
               autoComplete="current-password"
             />
+            <Snackbar open={open}>
+              <Alert severity="error">שם משתמש או סיסמא שגויים</Alert>
+            </Snackbar>
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"

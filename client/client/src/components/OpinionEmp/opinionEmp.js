@@ -4,8 +4,9 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import { ButtonBase, Divider, Rating, Typography } from '@mui/material';
+import { ButtonBase, Divider, IconButton, Rating, Tooltip, Typography } from '@mui/material';
 import axios from 'axios';
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 
 
 
@@ -111,7 +112,9 @@ const OpinionEmp = () => {
 
   }, [opinions])
 
-
+const report=()=>{
+  alert("report to man")
+}
   return (
     <Grid container spacing={2} columns={16}>
       {emp == null ? <div>טוען</div> :
@@ -157,14 +160,21 @@ const OpinionEmp = () => {
             </ImageButton>
           </Grid>
           <Grid item xs={8}>
-            <Typography >
+            <Typography style={{textAlign:'center'}}>
               <h3>here need to be all the opinion</h3>
 
 
               {opinions.map(o => <>
                 <Divider>{o.first_name + ' ' + o.last_name}</Divider>
+                <Box sx={{ p: 2}}>
                 <div><Rating name="read-only" precision={0.5} value={o.rank} readOnly /></div>
                 <p>{o.description}</p>
+                <Tooltip title="דווח על חוות דעת" arrow>
+                <IconButton onClick={report}>
+                <ReportProblemIcon color="error"/>
+                </IconButton >
+                </Tooltip>
+                </Box>
               </>)}
 
             </Typography>

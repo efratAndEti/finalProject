@@ -118,38 +118,39 @@ export default function OpinionNew() {
   const [value, setValue] = React.useState("");
   const [empName, setEmpName] = React.useState('');
 
-
+  const [images, setImages] = useState([]);
   const [opinions, setOpinions] = useState([]);
   const [client, setClient] = useState(null);
+
   const [empOpinions, setEmpOpinions] = useState([]);
   const [empId, setEmpId] = useState(null);
+  const [canResopnse, setCanResponse] = useState(false);
 
-  const [images, setImages] = useState([]);
+
 
   useEffect(() => {
     const clientStr = localStorage.getItem("client");
     const clientObj = JSON.parse(clientStr);
     setClient(clientObj);
-
-    axios.get(`http://localhost:8080/getAvgOpinions`).then((res) => {
-      console.log(res.data);
+    console.log(clientObj);
+    axios.get(`http://localhost:8080/getAvgOpinions/${clientObj.id_client}`).then((res) => {
+      console.log("avg opinions ", res.data);
       setOpinions(res.data);
     })
   }, [])
 
 
   useEffect(() => {
-    const arr = opinions.map(o => { return { empId: o.emp_id, url: "", title: o.first_name + ' ' + o.last_name, width: '40%', var: o.avg } })
+    const arr = opinions.map(o => { return { empId: o.emp_id, url: "", title: o.first_name + ' ' + o.last_name, width: '25%', var: o.avg, canResponse: o.canResponse } })
     console.log("avg images: ", arr);
     setImages(arr);
   }, [opinions])
 
 
-  const handleClickOpen = (e, empId) => {
-    // alert(e.target.innerText);
-    console.log(empId);
+  const handleClickOpen = (e, empId, can) => {
+    
     setEmpId(empId);
-    // console.log(e.target.innerText)
+    setCanResponse(can);
 
     axios.get(`http://localhost:8080/getOpinionById/${empId}`).then((res) => {
       console.log(res.data);
@@ -220,7 +221,7 @@ export default function OpinionNew() {
         <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
           {images.map((image) => (
             <ImageButton
-              onClick={(e) => { handleClickOpen(e, image.empId) }}
+              onClick={(e) => { handleClickOpen(e, image.empId, image.canResponse) }}
               focusRipple
               key={image.title}
               style={{
@@ -294,7 +295,7 @@ export default function OpinionNew() {
             <DialogActions>
               {/* <Button onClick={handleClose}>Cancel</Button> */}
               <Grid xs={11} align="right">
-                <Fab color="primary" aria-label="add"><Add clientId={client.id_client} empId={empId} addOpinionToGui={addOpinionToGui} /></Fab>
+            { canResopnse == false?<></> :  <Fab color="primary" aria-label="add"><Add clientId={client.id_client} empId={empId} addOpinionToGui={addOpinionToGui} canResponse={ canResopnse} /></Fab>}
               </Grid>
             </DialogActions>
           </Dialog>

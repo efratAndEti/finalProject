@@ -10,7 +10,7 @@ import SaveIcon from '@mui/icons-material/Save';
 
 const ClientForm =()=>{
          
-    const [emp_id,setEmpId]=useState();
+    const [id_client,setIdClient]=useState();
     const [error,setError]=useState('');
     const [errorNum,setErrorNum]=useState('');
     const userStr = localStorage.getItem("user");
@@ -25,7 +25,8 @@ const ClientForm =()=>{
 
     const [disabled, setDisabled] = React.useState(true);
     
-
+    // id_client, last_name, first_name, birth_date, disability_perc, eligibility_hours, client_status, gender, 
+    // phone, mail, address, city, DegreeOfNursing, HoursOut, HoursOutPrice, empType, user_id
     const ifLegal= (event)=>{
         const re = /^[0-9\b]+$/;
             if(event.target.value.length!=9 || !re.test(event.target.value)){
@@ -33,7 +34,7 @@ const ClientForm =()=>{
             }
             else
                 setError(''); 
-        setEmpId(event.target.value)   
+        setIdClient(event.target.value)   
         };
     const changeGender = (event) => {
             if (event.target.value == 'male')
@@ -50,21 +51,21 @@ const ClientForm =()=>{
         };
     const ifNum= (event)=>{
             const re = /^[0-9\b]+$/;
-                if(event.target.value.length!=7 || !re.test(event.target.value)){
+                if(!re.test(event.target.value)){
                         setErrorNum('מספר טלפון לא תקין')
                     }
                     else
                         setErrorNum('')
-            setNumber(preNumber+event.target.value);
+            setNumber(event.target.value);
         };
-    const saveEmp=()=>{
+    const saveClient=()=>{
         alert('save the emp in db and save lockal storage');
-        window.location.assign('http://localhost:3000/employee-bar');
+        window.location.assign('http://localhost:3000/client-bar');
     }
     const [loading, setLoading] = React.useState(false);
     function handleClick() {
       setLoading(true);
-      saveEmp();
+      saveClient();
     }
   
 
@@ -75,15 +76,13 @@ const ClientForm =()=>{
         noValidate
         autoComplete="off"
         >
-          {/* //-emp_id, -last_name, -first_name, -end_visa_period, -type, status_emp, 
-          //-genus, -address, -city, -phone, password, mail, birth_date */}
             <div>
             <TextField
             required
             error={error}
             id="filled-required"
             label="תעודת זהות"
-            value={emp_id}
+            value={id_client}
             variant="standard"
             onChange={ifLegal}
             helperText={error}
@@ -137,7 +136,7 @@ const ClientForm =()=>{
         <div >
        {/* sx={{ minWidth: 120 }
         <Grid sx={minWidth}> */}
-        <FormControl >
+        {/* <FormControl >
             <InputLabel id="demo-simple-select-label">קידומת</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -153,8 +152,8 @@ const ClientForm =()=>{
               <MenuItem value={'057'}>057</MenuItem>
               <MenuItem value={'058'}>058</MenuItem>
               {/* <MenuItem value={058}>058</MenuItem> */}
-              </Select>
-              </FormControl>
+              {/* </Select>
+              </FormControl> */} 
               {/* </Grid> */}
               <TextField
                       required

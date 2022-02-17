@@ -36,7 +36,7 @@ export default function SignOut(props) {
   return (
     <div>
         <ThemeProvider theme={whiteTheme}>
-      <Button variant="outlined" onClick={handleClickOpen} color="primary" >
+      <Button variant="outlined" onClick={handleClickOpen} color="primary" style={{ color: '#0097a7' }} >
         Sign Out
       </Button>
       </ThemeProvider>

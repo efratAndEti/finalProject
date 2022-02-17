@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import HoverRating from './Rate';
 import axios from "axios";
@@ -11,6 +11,14 @@ export default function Add(props) {
   const [dis, setDis] = useState(false);
   const userStr = localStorage.getItem("user");
   const user = JSON.parse(userStr);
+
+  useEffect(() => {
+        const canResponse = props.canResponse;
+        console.log(props);
+        setDis(!canResponse);
+  }, [])
+
+
   const ifClient = () => {
     if (user.kind == 0)
       setDis(true);
@@ -39,9 +47,9 @@ export default function Add(props) {
       client: props.clientId, emp: props.empId, rank: rank, desc: value
     };
     console.log("body to opinion", body)
-    axios.post(`http://localhost:8080/addOpinion`,body).then((res) => {
-          if(res.data.insertId)
-            props.addOpinionToGui(body);
+    axios.post(`http://localhost:8080/addOpinion`, body).then((res) => {
+      if (res.data.insertId)
+        props.addOpinionToGui(body);
     })
 
   };
@@ -57,9 +65,9 @@ export default function Add(props) {
 
   return (
     <div>
-      <Button disabled={dis} onClick={handleClickOpen} disabled={dis}>
+      {dis == true?<></>:<Button disabled={dis} onClick={handleClickOpen} disabled={dis}>
         <AddIcon htmlColor="white" />
-      </Button>
+      </Button>}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add Opinion</DialogTitle>
         <DialogContent>

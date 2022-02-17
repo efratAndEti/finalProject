@@ -3,8 +3,8 @@ import React from "react";
 // import { Paper } from "@material-ui/core";
 import { TextInput } from "./TextInput.js";
 import { createStyles, Paper } from "@mui/material";
-import { MessageLeft, MessageRight } from "./Massage.js";
-import { makeStyles,Theme } from "@mui/styles";
+import { MessageLeft, MessageRight , SystemMessage} from "./Massage.js";
+import { makeStyles, Theme } from "@mui/styles";
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -42,15 +42,48 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-export default function Chats() {
+export default function Chats(props) {
+  const { massages, currentUser, otherUser } = props;
+  console.log(currentUser);
   const classes = useStyles();
   return (
     <div className={classes.container}>
       <Paper className={classes.paper} zDepth={2}>
         <Paper id="style-1" className={classes.messagesBody}>
-          <MessageLeft
+
+          {
+            massages.map(m => {
+              // if(m.kind !="standart")
+              // {
+              //     return(<SystemMessage
+                    
+              //       />)
+              // }
+              // else 
+              if (m.from_m != currentUser.id_client)
+                return (<MessageRight
+                  message={m.title  + m.content}
+                  timestamp={m.date}
+                  photoURL="https://lh3.googleusercontent.com/a-/AOh14Gi4vkKYlfrbJ0QLJTg_DLjcYyyK7fYoWRpz2r4s=s96-c"
+                  displayName={otherUser.first_name + ' ' + otherUser.last_name}
+                  avatarDisp={true}
+                />)
+              else
+                return (<MessageLeft
+                  message={m.title  + m.content}
+                  timestamp={m.date}
+                  photoURL="https://lh3.googleusercontent.com/a-/AOh14Gi4vkKYlfrbJ0QLJTg_DLjcYyyK7fYoWRpz2r4s=s96-c"
+                  displayName={currentUser.first_name + " " + currentUser.last_name}
+                  avatarDisp={false}
+                />
+
+                )
+            })
+          }
+
+          {/* <MessageLeft
             message="hi how are you?"
-           // timestamp="MM/DD 00:00"
+            // timestamp="MM/DD 00:00"
             photoURL="https://lh3.googleusercontent.com/a-/AOh14Gi4vkKYlfrbJ0QLJTg_DLjcYyyK7fYoWRpz2r4s=s96-c"
             displayName="Joy Rpy"
             avatarDisp={true}
@@ -75,9 +108,9 @@ export default function Chats() {
             photoURL="https://lh3.googleusercontent.com/a-/AOh14Gi4vkKYlfrbJ0QLJTg_DLjcYyyK7fYoWRpz2r4s=s96-c"
             displayName="me"
             avatarDisp={false}
-          />
+          /> */}
         </Paper>
-        <TextInput />
+        <TextInput from_m={currentUser.id_client} to_m={otherUser.emp_id}/>
       </Paper>
     </div>
   );
