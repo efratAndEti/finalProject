@@ -272,6 +272,12 @@ app.post(("/addOpinion"), async (req, res) => {
 //     console.log(req.params);
 
 // })
+app.get("/getReportOpinions", async (req, res) => {
+    await promiseQuery(`SELECT  o.*, c.first_name as c_first ,c.last_name as c_last,e.first_name,e.last_name
+    FROM db.opinion o join client c on o.clientId=c.id_client
+    join employee e on e.emp_id=o.empId
+    where report=1`)
+})
 app.get("/getOpinion", async (req, res) => {
     await promiseQuery(`select * from opinion`)
 })
