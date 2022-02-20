@@ -26,6 +26,9 @@ import OpinionEmp from '../OpinionEmp/opinionEmp';
 import { Tooltip } from '@mui/material';
 import EmployeePage from '../UserPages/EmployeePage';
 import MyMassagesPage from '../MyChat/MyMassagesPage';
+import UpdatePages from '../UpdateEmp/UpdatePage';
+import Preference from '../Preference/preference';
+import UpdateStatus from '../UpdateEmp/UpdateStatus';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -276,6 +279,9 @@ export default function EmployeeBar() {
 
       <Routes>
         <Route path={`opinion`} element={<OpinionEmp />} />
+        <Route path={`preference`} element={<Preference />} />
+        <Route path={`update`} element={<UpdatePages />} />
+        <Route path={`updateStatus`} element={<UpdateStatus />} />
         <Route path={`massages`} element={< MyMassagesPage id={emp?emp.emp_id:0} />} />
         <Route path={``} element={<EmployeePage />} />
 

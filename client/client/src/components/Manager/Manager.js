@@ -27,6 +27,7 @@ import OpinionEmp from '../OpinionEmp/opinionEmp';
 import { Tooltip } from '@mui/material';
 import EmployeePage from '../UserPages/EmployeePage';
 import ManagerPage from '../UserPages/ManagerPage';
+import ManagerOpinion from './ManagerOpinoin';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -69,211 +70,212 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function ManagerBar() {
-  const userStr = localStorage.getItem("user");
-  const user = JSON.parse(userStr);
+   const userStr = localStorage.getItem("user");
+   const user = JSON.parse(userStr);
 
-  // let { path, url } = useMatch();
-  // console.log("path: ", path);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  // // let { path, url } = useMatch();
+  // // console.log("path: ", path);
+  // const [anchorEl, setAnchorEl] = React.useState(null);
+  // const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  // const isMenuOpen = Boolean(anchorEl);
+  // const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleProfileMenuOpen = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
+  // const handleMobileMenuClose = () => {
+  //   setMobileMoreAnchorEl(null);
+  // };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
+  // const handleMenuClose = () => {
+  //   setAnchorEl(null);
+  //   handleMobileMenuClose();
+  // };
 
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  }; 
-  const signout=()=>{
+  // const handleMobileMenuOpen = (event) => {
+  //   setMobileMoreAnchorEl(event.currentTarget);
+  // }; 
+  // const signout=()=>{
     
-    handleMenuClose();
-  }
+  //   handleMenuClose();
+  // }
 
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
+  // const menuId = 'primary-search-account-menu';
+  // const renderMenu = (
+  //   <Menu
+  //     anchorEl={anchorEl}
+  //     anchorOrigin={{
+  //       vertical: 'top',
+  //       horizontal: 'right',
+  //     }}
+  //     id={menuId}
+  //     keepMounted
+  //     transformOrigin={{
+  //       vertical: 'top',
+  //       horizontal: 'right',
+  //     }}
+  //     open={isMenuOpen}
+  //     onClose={handleMenuClose}
+  //   >
 
-      <MenuItem onClick={handleMenuClose}> פרופיל המנהל</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleMenuClose}><SignOut /></MenuItem>
-    </Menu>
-  );
+  //     <MenuItem onClick={handleMenuClose}> פרופיל המנהל</MenuItem>
+  //     <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+  //     <MenuItem onClick={handleMenuClose}><SignOut /></MenuItem>
+  //   </Menu>
+  // );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
+  // const mobileMenuId = 'primary-search-account-menu-mobile';
+  // const renderMobileMenu = (
+  //   <Menu
+  //     anchorEl={mobileMoreAnchorEl}
+  //     anchorOrigin={{
+  //       vertical: 'top',
+  //       horizontal: 'right',
+  //     }}
+  //     id={mobileMenuId}
+  //     keepMounted
+  //     transformOrigin={{
+  //       vertical: 'top',
+  //       horizontal: 'right',
+  //     }}
+  //     open={isMobileMenuOpen}
+  //     onClose={handleMobileMenuClose}
+  //   >
+  //     <MenuItem>
+  //       <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+  //         <Badge badgeContent={4} color="error">
+  //           <MailIcon />
+  //         </Badge>
+  //       </IconButton>
+  //       <p>Messages</p>
+  //     </MenuItem>
+  //     <MenuItem>
+  //       <IconButton
+  //         size="large"
+  //         aria-label="show 17 new notifications"
+  //         color="inherit"
+  //       >
+  //         <Badge badgeContent={17} color="error">
+  //           <NotificationsIcon />
+  //         </Badge>
+  //       </IconButton>
+  //       <p>Notifications</p>
+  //     </MenuItem>
+  //     <MenuItem onClick={handleProfileMenuOpen}>
+  //       <IconButton
+  //         size="large"
+  //         aria-label="account of current user"
+  //         aria-controls="primary-search-account-menu"
+  //         aria-haspopup="true"
+  //         color="inherit"
+  //       >
+  //         <AccountCircle />
+  //       </IconButton>
+  //       <p>Profile</p>
+  //     </MenuItem>
+  //   </Menu>
+  // );
 
-  return (
+   return (
 
-    <>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
+  //   <>
+  //     <Box sx={{ flexGrow: 1 }}>
+  //       <AppBar position="static">
+  //         <Toolbar>
             
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ display: { xs: 'none', sm: 'block' } }}
-            >
-              Manager
-            </Typography>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </Search>
-            <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <Tooltip title="חוות דעת">
-              <IconButton size="large" aria-label="opinion" color="inherit"
-                onClick={(e) => { window.location.assign(`/employee-bar/opinion`) }}>
-                <InsertEmoticonIcon />
-              </IconButton>
-              </Tooltip>
-              <Tooltip title="התראות">
-              <IconButton
-                size="large"
-                aria-label="show 17 new notifications"
-                color="inherit"
-              >
-                <Badge badgeContent={17} color="error">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-              </Tooltip>
-              <Tooltip title='דואר'>
-              <IconButton size="large" aria-label="show 4 new mails" color="inherit"
-                onClick={(e) => { window.location.assign(`/employee-bar/massages`) }}>
-                <Badge badgeContent={8} color="error">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-              </Tooltip>
-              <Tooltip title='פרופיל'>
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              </Tooltip>
-            </Box>
-            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-              <IconButton
-                size="large"
-                aria-label="show more"
-                aria-controls={mobileMenuId}
-                aria-haspopup="true"
-                onClick={handleMobileMenuOpen}
-                color="inherit"
-              >
-                <MoreIcon />
-              </IconButton>
-            </Box>
-          </Toolbar>
-        </AppBar>
-        {renderMobileMenu}
-        {renderMenu}
-      </Box>
+  //           <IconButton
+  //             size="large"
+  //             edge="start"
+  //             color="inherit"
+  //             aria-label="open drawer"
+  //             sx={{ mr: 2 }}
+  //           >
+  //             <MenuIcon />
+  //           </IconButton>
+  //           <Typography
+  //             variant="h6"
+  //             noWrap
+  //             component="div"
+  //             sx={{ display: { xs: 'none', sm: 'block' } }}
+  //           >
+  //             Manager
+  //           </Typography>
+  //           <Search>
+  //             <SearchIconWrapper>
+  //               <SearchIcon />
+  //             </SearchIconWrapper>
+  //             <StyledInputBase
+  //               placeholder="Search…"
+  //               inputProps={{ 'aria-label': 'search' }}
+  //             />
+  //           </Search>
+  //           <Box sx={{ flexGrow: 1 }} />
+  //           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+  //             <Tooltip title="חוות דעת">
+  //             <IconButton size="large" aria-label="opinion" color="inherit"
+  //               onClick={(e) => { window.location.assign(`/employee-bar/opinion`) }}>
+  //               <InsertEmoticonIcon />
+  //             </IconButton>
+  //             </Tooltip>
+  //             <Tooltip title="התראות">
+  //             <IconButton
+  //               size="large"
+  //               aria-label="show 17 new notifications"
+  //               color="inherit"
+  //             >
+  //               <Badge badgeContent={17} color="error">
+  //                 <NotificationsIcon />
+  //               </Badge>
+  //             </IconButton>
+  //             </Tooltip>
+  //             <Tooltip title='דואר'>
+  //             <IconButton size="large" aria-label="show 4 new mails" color="inherit"
+  //               onClick={(e) => { window.location.assign(`/employee-bar/massages`) }}>
+  //               <Badge badgeContent={8} color="error">
+  //                 <MailIcon />
+  //               </Badge>
+  //             </IconButton>
+  //             </Tooltip>
+  //             <Tooltip title='פרופיל'>
+  //             <IconButton
+  //               size="large"
+  //               edge="end"
+  //               aria-label="account of current user"
+  //               aria-controls={menuId}
+  //               aria-haspopup="true"
+  //               onClick={handleProfileMenuOpen}
+  //               color="inherit"
+  //             >
+  //               <AccountCircle />
+  //             </IconButton>
+  //             </Tooltip>
+  //           </Box>
+  //           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+  //             <IconButton
+  //               size="large"
+  //               aria-label="show more"
+  //               aria-controls={mobileMenuId}
+  //               aria-haspopup="true"
+  //               onClick={handleMobileMenuOpen}
+  //               color="inherit"
+  //             >
+  //               <MoreIcon />
+  //             </IconButton>
+  //           </Box>
+  //         </Toolbar>
+  //       </AppBar>
+  //       {renderMobileMenu}
+  //       {renderMenu}
+  //     </Box>
 
       <Routes>
- 
+        <Route path={`opinion`} element={<ManagerOpinion />} />
         <Route path={``} element={<ManagerPage />} />
+        
 
       </Routes>
-    </>
+    
   );
 }

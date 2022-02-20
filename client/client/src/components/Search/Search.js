@@ -139,7 +139,7 @@ const SearchEmp = () => {
 
     return (
         <div>
-            <Grid container spacing={0} columns={9}>
+            <Grid container spacing={0} columns={9} >
                 <Grid item xs={3} style={{ backgroundColor: '#0097a7', minHeight: '80vh' }}>
                     <div style={{ margin: 'auto', width: '94%', minHeight: '100%', backgroundColor: '#ffffffc4', textAlign: 'center' }}>
                         {
@@ -194,7 +194,7 @@ const SearchEmp = () => {
 
                     </div>
                 </Grid>
-                <Grid item xs={3} style={{ backgroundColor: 'white', minHeight: '80vh' }}>
+                <Grid item xs={3} style={{ backgroundColor: 'white', minHeight: '80vh' }} >
                     <div style={{ margin: 'auto', width: '94%', minHeight: '100%', backgroundColor: '#ffffffc4' }}>
                         {emps.map(e =>
                             <ul id='list' style={{textAlign:'center'}} >

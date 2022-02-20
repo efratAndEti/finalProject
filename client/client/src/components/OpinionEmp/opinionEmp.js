@@ -161,7 +161,7 @@ const report=()=>{
           </Grid>
           <Grid item xs={8}>
             <Typography style={{textAlign:'center'}}>
-              <h3>here need to be all the opinion</h3>
+              <h3>חוות דעת</h3>
 
 
               {opinions.map(o => <>

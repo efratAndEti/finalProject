@@ -29,6 +29,8 @@ import OpinionNew from './components/OpinoinNew/OpinionNew';
 import ClientPage from './components/UserPages/ClientPage';
 import Manager from './components/Manager/Manager';
 import ManagerBar from './components/Manager/Manager';
+import ManagerOpinion from './components/Manager/ManagerOpinoin';
+import UpdatePages from './components/UpdateEmp/UpdatePage';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
@@ -63,39 +65,39 @@ function App() {
     <Router>
       <div>
 
-        <nav>
-          <ul id='ul'>
-            <li id='li'>
-              <Link to="/">Home</Link>
+        <nav dir='rtl'>
+          <ul id='ul' dir='rtl'>
+            <li id='li' >
+              <Link to="/">בית</Link>
             </li>
             <li id='li'>
-              <Link to="/about">About</Link>
+              <Link to="/about">אודות</Link>
             </li>
             {
               isLoggedIn == false ?
                 <><li id='li'>
-                  <Link to="/sign-up">SignUp</Link>
+                  <Link to="/sign-up">הרשם</Link>
                 </li>
                   <li id='li'>
-                    <Link to="/log-in">LogIn</Link>
+                    <Link to="/log-in">הכנס</Link>
                   </li></>
 
                 : user.user_kind == 1 ? <>
                   <li id='li'>
-                    <Link to="/client-bar">Client Bar</Link>
+                    <Link to="/client-bar">לקוח</Link>
                   </li>
                   <li><SignOut onSignOut={changeLogin} /></li>
                 </> :user.user_kind == 0?
                   <>
                     <li id='li'>
-                      <Link to="/employee-bar">Employee Bar</Link>
+                      <Link to="/employee-bar">עובד</Link>
                     </li>
                     <li><SignOut onSignOut={changeLogin} /></li>
                   </>
                   :
                   <>
                    <li id='li'>
-                      <Link to="/manager-bar">Manager</Link>
+                      <Link to="/manager-bar">מנהל</Link>
                     </li>
                     <li><SignOut onSignOut={changeLogin} /></li>
                   </>
@@ -121,12 +123,13 @@ function App() {
           <Route path="/client-bar/*" element={<ClientBar />} />
           <Route path="/manager-bar/*" element={<ManagerBar />} />
 
+          <Route path="/update" element={<UpdatePages />} />
           <Route path="/search" element={<SearchEmp />} />
           <Route path="/about" element={<AboutTheWeb />} />
           <Route path="/employee-form" element={<EmployeeForm />} />
           <Route path="/client-form" element={<ClientForm />} />
           <Route path="/client-page" element={<ClientPage />} />
-
+          <Route path="/man-op" element={<ManagerOpinion />} />
           <Route path="/" element={<Home />} />
 
           <Route path="*" element={<Page404 />} />

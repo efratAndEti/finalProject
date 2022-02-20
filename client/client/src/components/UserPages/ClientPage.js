@@ -91,7 +91,7 @@ const ClientPage = () => {
         <Grid container spacing={2} columns={12}>
 
             <Grid item xs={3}>
-                <ImageButton focusRipple key={1} style={{ width: '100%', }}>
+                <ImageButton focusRipple key={1} style={{ width: '100%', height:'40vh', backgroundColor:'#b2ebf2'}}>
                     <ImageSrc style={{ backgroundColor: `${'light-blue'}` }} />
                     <ImageBackdrop className="MuiImageBackdrop-root" />
                     <Image>
@@ -104,8 +104,8 @@ const ClientPage = () => {
                 </ImageButton>
             </Grid>
             <Grid item xs={6}>
-                <ImageButton onClick={goToSearch} focusRipple key={1} style={{ width: '100%', }}>
-                    <ImageSrc style={{ backgroundColor: `${'#1976d2b8'}` }} />
+                <ImageButton onClick={goToSearch} focusRipple key={1} style={{ width: '100%',height:'40vh' ,backgroundColor:'#26c6da'}}>
+                    <ImageSrc style={{ backgroundColor: `${'#26c6da'}` }} />
                     <ImageBackdrop className="MuiImageBackdrop-root" />
                     <Image>
                         <Typography component="span" variant="subtitle1" color="inherit" sx={{ position: 'relative', p: 4, pt: 2, pb: (theme) => `calc(${theme.spacing(1)} + 6px)`, }} >
@@ -117,12 +117,25 @@ const ClientPage = () => {
                 </ImageButton>
             </Grid>
             <Grid item xs={3}>
-                <ImageButton focusRipple key={1} style={{ width: '100%', }}>
+                <ImageButton focusRipple key={1} style={{ width: '100%',height:'40vh',backgroundColor:'#0097a7' }}>
                     <ImageSrc style={{ backgroundColor: `${'light-blue'}` }} />
                     <ImageBackdrop className="MuiImageBackdrop-root" />
                     <Image>
                         <Typography component="span" variant="subtitle1" color="inherit" sx={{ position: 'relative', p: 4, pt: 2, pb: (theme) => `calc(${theme.spacing(1)} + 6px)`, }} >
                             הודעות
+                            <br />
+                            <ImageMarked className="MuiImageMarked-root" />
+                        </Typography>
+                    </Image>
+                </ImageButton>
+            </Grid>
+            <Grid item xs={12}>
+                <ImageButton focusRipple key={1} style={{ width: '100%',height:'40vh' ,backgroundColor:'#006064'}}>
+                    <ImageSrc style={{ backgroundColor: `${'light-blue'}` }} />
+                    <ImageBackdrop className="MuiImageBackdrop-root" />
+                    <Image>
+                        <Typography component="span" variant="subtitle1" color="inherit" sx={{ position: 'relative', p: 4, pt: 2, pb: (theme) => `calc(${theme.spacing(1)} + 6px)`, }} >
+                            עדכון פרטים
                             <br />
                             <ImageMarked className="MuiImageMarked-root" />
                         </Typography>

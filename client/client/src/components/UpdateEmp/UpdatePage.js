@@ -80,19 +80,19 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 
-const EmployeePage = () => {
+const UpdatePages = () => {
 
     return (
         <Grid container spacing={2} columns={9}>
 
-            <Grid item xs={6}>
-                <ImageButton focusRipple key={1} style={{ width: '100%', height:'40vh' }} 
+            <Grid item xs={3}>
+                <ImageButton focusRipple key={1} style={{ width: '100%'}} 
                 onClick={(e) => { window.location.assign(`/employee-bar/update`) }}>
                     <ImageSrc style={{ backgroundColor: `${'#e0f7fa'}` }} />
                     <ImageBackdrop className="MuiImageBackdrop-root" />
                     <Image>
                         <Typography component="span" variant="subtitle1" color="inherit" sx={{ position: 'relative', p: 4, pt: 2, pb: (theme) => `calc(${theme.spacing(1)} + 6px)`, }} >
-                            עדכון פרטים
+                             עדכון פרטים אישיים
                             <br />
                             <ImageMarked className="MuiImageMarked-root" />
                         </Typography>
@@ -100,14 +100,14 @@ const EmployeePage = () => {
                 </ImageButton>
             </Grid>
             <Grid item xs={3}>
-                <ImageButton focusRipple key={1} style={{ width: '100%', height:'40vh' }}
-                 onClick={(e) => { window.location.assign(`/employee-bar/massages`) }}>
+                <ImageButton focusRipple key={1} style={{ width: '100%' }}
+                 onClick={(e) => { window.location.assign(`/employee-bar/updateStatus`) }}>
                     <ImageSrc style={{ backgroundColor: `${'#80deea'}` }} 
                     />
                     <ImageBackdrop className="MuiImageBackdrop-root" />
                     <Image>
                         <Typography component="span" variant="subtitle1" color="inherit" sx={{ position: 'relative', p: 4, pt: 2, pb: (theme) => `calc(${theme.spacing(1)} + 6px)`, }} >
-                            הודעות
+                              עדכון סטטוס
                             <br />
                             <ImageMarked className="MuiImageMarked-root" />
                         </Typography>
@@ -115,38 +115,22 @@ const EmployeePage = () => {
                 </ImageButton>
             </Grid>
             <Grid item xs={3}>
-                <ImageButton focusRipple key={1} style={{ width: '100%', height:'40vh' }}
+                <ImageButton focusRipple key={1} style={{ width: '100%' }}
                  onClick={(e) => { window.location.assign(`/employee-bar/preference`) }}>
                     <ImageSrc style={{ backgroundColor: `${'#00bcd4'}` }} 
                    />
                     <ImageBackdrop className="MuiImageBackdrop-root" />
                     <Image>
                         <Typography component="span" variant="subtitle1" color="inherit" sx={{ position: 'relative', p: 4, pt: 2, pb: (theme) => `calc(${theme.spacing(1)} + 6px)`, }} >
-                        הוספת העדפות  
+                        עדכון העדפות  
                             <br />
                             <ImageMarked className="MuiImageMarked-root" />
                         </Typography>
                     </Image>
                 </ImageButton>
-            </Grid>
-            <Grid item xs={6}>
-                <ImageButton focusRipple key={1} style={{ width: '100%',height:'40vh' }}
-                onClick={(e) => { window.location.assign(`/employee-bar/opinion`) }}>
-                    <ImageSrc style={{ backgroundColor: `${'#006064'}` }} />
-                    <ImageBackdrop className="MuiImageBackdrop-root" />
-                    <Image>
-                        <Typography component="span" variant="subtitle1" color="inherit" sx={{ position: 'relative', p: 4, pt: 2, pb: (theme) => `calc(${theme.spacing(1)} + 6px)`, }} >
-                            חוות דעת 
-                            <br />
-                            <ImageMarked className="MuiImageMarked-root" />
-                        </Typography>
-                    </Image>
-                </ImageButton>
-            </Grid>
-           
-           
+            </Grid>         
         </Grid>
     );
 }
 
-export default EmployeePage;
+export default UpdatePages;

@@ -18,7 +18,10 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import OpinionNew from '../OpinoinNew/OpinionNew';
 import ClientPage from '../UserPages/ClientPage';
-
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+import rtlPlugin from 'stylis-plugin-rtl';
 import Massage from '../Chats/Massage';
 import {
   Routes,
@@ -28,6 +31,16 @@ import {
 import SearchEmp from '../Search/Search';
 import MyMassagesPage from '../MyChat/MyMassagesPage';
 import { useEffect } from 'react';
+import { Fade } from '@mui/material';
+
+const theme = createTheme({
+  direction: 'rtl', // Both here and <body dir="rtl">
+});
+// Create rtl cache
+const cacheRtl = createCache({
+  key: 'muirtl',
+  stylisPlugins: [rtlPlugin],
+});
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -78,8 +91,8 @@ export default function ClientBar() {
 
 
   useEffect(() => {
-      const c = JSON.parse(localStorage.getItem("client"));
-      setClient(c);
+    const c = JSON.parse(localStorage.getItem("client"));
+    setClient(c);
   }, [])
 
   const isMenuOpen = Boolean(anchorEl);
@@ -119,11 +132,20 @@ export default function ClientBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <CacheProvider value={cacheRtl}>
+      <MenuItem dir='rtl'onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem dir='rtl' onClick={handleMenuClose}>My account</MenuItem>
+      </CacheProvider>
     </Menu>
   );
-
+  const [anchorElB, setAnchorElB] = React.useState(null);
+  const openB = Boolean(anchorElB);
+  const handleClick = (event) => {
+    setAnchorElB(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorElB(null);
+  };
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
@@ -154,6 +176,7 @@ export default function ClientBar() {
           size="large"
           aria-label="show 17 new notifications"
           color="inherit"
+          onClick={handleClick}
         >
           <Badge badgeContent={17} color="error">
             <NotificationsIcon />
@@ -199,7 +222,7 @@ export default function ClientBar() {
               Client
             </Typography>
             {/* <Search> */}
-              {/* <SearchIconWrapper>
+            {/* <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
               <StyledInputBase
@@ -221,11 +244,27 @@ export default function ClientBar() {
                 size="large"
                 aria-label="show 17 new notifications"
                 color="inherit"
+                onClick={handleClick}
               >
-                <Badge badgeContent={17} color="error">
+                <Badge badgeContent={2} color="error">
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
+              <Menu
+                id="fade-menu"
+                MenuListProps={{
+                  'aria-labelledby': 'fade-button',
+                }}
+                anchorEl={anchorElB}
+                open={openB}
+                onClose={handleClose}
+                TransitionComponent={Fade}
+              >
+
+                <MenuItem onClick={handleClose} style={{color:'#0097a7'}}>אתה יכול להוסיף חוות דעת</MenuItem>
+                <MenuItem onClick={handleClose} style={{color:'#0097a7'}}>נוסף עובד חדש למערכת</MenuItem>
+                {/* <MenuItem onClick={handleClose}>Logout</MenuItem> */}
+              </Menu>
               <IconButton size="large" aria-label="show 4 new mails" color="inherit"
                 onClick={(e) => { window.location.assign(`/client-bar/massages`) }}>
                 <Badge badgeContent={8} color="error">
@@ -263,7 +302,7 @@ export default function ClientBar() {
       </Box>
       <Routes>
         <Route path={`opinion`} element={<OpinionNew />} />
-        <Route path={`massages`} element={< MyMassagesPage id={client?client.id_client:0} />} />
+        <Route path={`massages`} element={< MyMassagesPage id={client ? client.id_client : 0} />} />
         <Route path={`search`} element={<SearchEmp />} />
         <Route path={``} element={<ClientPage />} />
 

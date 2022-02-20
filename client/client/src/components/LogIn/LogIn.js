@@ -16,7 +16,9 @@ import { loginUser } from '../../services/user.service';
 import axios from 'axios';
 import MuiAlert from '@mui/material/Alert';
 import { Snackbar } from '@mui/material';
-
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+import rtlPlugin from 'stylis-plugin-rtl';
 function Copyright(props) {
 
   const routeChange = () => {
@@ -43,8 +45,18 @@ export default function LogIn(props) {
   const [userName, setUserName] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [user, setUser] = React.useState(null);
+  const theme = createTheme({
+    direction: 'rtl', // Both here and <body dir="rtl">
+  });
+  // Create rtl cache
+  const cacheRtl = createCache({
+    key: 'muirtl',
+    stylisPlugins: [rtlPlugin],
+  });
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+
     // handleClick();
 
     // const data = new FormData(event.currentTarget);
@@ -170,6 +182,7 @@ export default function LogIn(props) {
   }
 
   return (
+    <CacheProvider value={cacheRtl}>
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -185,7 +198,7 @@ export default function LogIn(props) {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            כניסה
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -195,7 +208,7 @@ export default function LogIn(props) {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="כתובת מייל"
               name="email"
               autoComplete="email"
               autoFocus
@@ -209,7 +222,7 @@ export default function LogIn(props) {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="סיסמא"
               type="password"
               id="password"
               autoComplete="current-password"
@@ -217,10 +230,10 @@ export default function LogIn(props) {
             <Snackbar open={open}>
               <Alert severity="error">שם משתמש או סיסמא שגויים</Alert>
             </Snackbar>
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
             <Button
               // onClick={findUser}
               type="submit"
@@ -228,17 +241,17 @@ export default function LogIn(props) {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+          אישור
             </Button>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
-                  Forgot password?
+                  ?שכחת סיסמא
                 </Link>
               </Grid>
               <Grid item>
                 <Link href="http://localhost:3000/sign-up" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {"אין לך חשבון? הירשם"}
                 </Link>
               </Grid>
             </Grid>
@@ -247,5 +260,6 @@ export default function LogIn(props) {
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
+    </CacheProvider>
   );
 }

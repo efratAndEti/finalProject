@@ -6,6 +6,8 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { ButtonBase, Divider, Rating, Typography } from '@mui/material';
 import axios from 'axios';
+import ManagerOpinion from '../Manager/ManagerOpinoin';
+import { Route, Routes } from 'react-router';
 
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
@@ -87,8 +89,8 @@ const ManagerPage = () => {
             <Grid container spacing={2} columns={9}>
 
                 <Grid item xs={3}>
-                    <ImageButton focusRipple key={1} style={{ width: '100%',height:'40vh' }}>
-                        <ImageSrc style={{ backgroundColor: `${'light-blue'}` }} />
+                    <ImageButton onClick={(e) => { window.location.assign(`/manager-bar/opinion`) }}focusRipple key={1} style={{ width: '100%',height:'45vh' }}>
+                        <ImageSrc style={{ backgroundColor: `${'#00acc1'}` }} />
                         <ImageBackdrop className="MuiImageBackdrop-root" />
                         <Image>
                             <Typography component="span" variant="subtitle1" color="inherit" sx={{ position: 'relative', p: 4, pt: 2, pb: (theme) => `calc(${theme.spacing(1)} + 6px)`, }} >
@@ -101,8 +103,8 @@ const ManagerPage = () => {
                 </Grid>
 
                 <Grid item xs={3}>
-                    <ImageButton focusRipple key={1} style={{ width: '100%',height:'40vh'}}>
-                        <ImageSrc style={{ backgroundColor: `${'#1976d2b8'}` }} />
+                    <ImageButton focusRipple key={1} style={{ width: '100%',height:'45vh'}}>
+                        <ImageSrc style={{ backgroundColor: `${'#006064'}` }} />
                         <ImageBackdrop className="MuiImageBackdrop-root" />
                         <Image>
                             <Typography component="span" variant="subtitle1" color="inherit" sx={{ position: 'relative', p: 4, pt: 2, pb: (theme) => `calc(${theme.spacing(1)} + 6px)`, }} >
@@ -114,8 +116,8 @@ const ManagerPage = () => {
                     </ImageButton>
                 </Grid>
                 <Grid item xs={3}>
-                    <ImageButton focusRipple key={1} style={{ width: '100%',height:'40vh' }}>
-                        <ImageSrc style={{ backgroundColor: `${'#1976d2b8'}` }} />
+                    <ImageButton focusRipple key={1} style={{ width: '100%',height:'45vh' }}>
+                        <ImageSrc style={{ backgroundColor: `${'#00838f'}` }} />
                         <ImageBackdrop className="MuiImageBackdrop-root" />
                         <Image>
                             <Typography component="span" variant="subtitle1" color="inherit" sx={{ position: 'relative', p: 4, pt: 2, pb: (theme) => `calc(${theme.spacing(1)} + 6px)`, }} >
@@ -132,7 +134,7 @@ const ManagerPage = () => {
 
                 <Grid item xs={6}>
                     <ImageButton focusRipple key={1} style={{ width: '100%',height:'40vh' }}>
-                        <ImageSrc style={{ backgroundColor: `${'#1976d2b8'}` }} />
+                        <ImageSrc style={{ backgroundColor: `${'#80deea'}` }} />
                         <ImageBackdrop className="MuiImageBackdrop-root" />
                         <Image>
                             <Typography component="span" variant="subtitle1" color="inherit" sx={{ position: 'relative', p: 4, pt: 2, pb: (theme) => `calc(${theme.spacing(1)} + 6px)`, }} >
@@ -145,7 +147,7 @@ const ManagerPage = () => {
                 </Grid>
                 <Grid item xs={3}>
                     <ImageButton focusRipple key={1} style={{ width: '100%', height:'40vh'}}>
-                        <ImageSrc style={{ backgroundColor: `${'#1976d2b8'}` }} />
+                        <ImageSrc style={{ backgroundColor: `${'#006064'}` }} />
                         <ImageBackdrop className="MuiImageBackdrop-root" />
                         <Image>
                             <Typography component="span" variant="subtitle1" color="inherit" sx={{ position: 'relative', p: 4, pt: 2, pb: (theme) => `calc(${theme.spacing(1)} + 6px)`, }} >
@@ -156,6 +158,9 @@ const ManagerPage = () => {
                     </ImageButton>
                 </Grid>
             </Grid>
+            {/* <Routes>
+                  <Route path={`opinion`} element={<ManagerOpinion />} />
+            </Routes> */}
         </>
     );
 }

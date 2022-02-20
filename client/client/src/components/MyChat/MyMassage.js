@@ -182,11 +182,20 @@ export const MySystemMessage = (props) => {
     const to_m = props.to_m;
    //לשלוח ב mychat
     const makeChanges = (kind, from_m, to_m, ok)=>{
+    //     const body ={kind, from_m, to_m, ok}
+    //     axios.put('http://localhost:8080/changeStatus', body).then((res) => {
+    //     console.log(res);
+    //     const result = res.data;
+    //     if (result.success == false) {
+    //       alert(result.massage);
+    //       return;
+    //     }
+    // }
         //כאן לפי הסוג של ההןדעה ולפי המשתנה ok
         //תוכלו לדעת אילו שינויים לבצע בדאטה בייס
         //ואיזה הודעות חדשות ליצור
         //תשתמשו ב"ממי" ול-"למי" כדי לעדכן את הדאטה בייס
-        alert("שינויים שצריך");
+    
     }
    
     return (
