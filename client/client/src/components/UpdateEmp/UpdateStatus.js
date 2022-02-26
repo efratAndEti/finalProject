@@ -9,7 +9,20 @@ import { CacheProvider } from "@emotion/react";
 
 
 
-const UpdateStatus = () => {
+const UpdateStatus = (props) => {
+
+
+    //user_kind
+    // useEffect(() => {
+    //     const userStr = localStorage.getItem("user");
+    //     const user = JSON.parse(userStr);
+    //   if(user.user_kind==0)
+    //     const empStr = localStorage.getItem("employee");
+    //     const employee = JSON.parse(empStr);
+    //     setEmp(employee);
+    // })
+
+
     const theme = createTheme({
         direction: 'rtl', // Both here and <body dir="rtl">
     });
@@ -20,16 +33,19 @@ const UpdateStatus = () => {
     });
     const [why, setWhy] = React.useState('');
     const [dis, setDis] = React.useState(true);
+    const [reason, setReason] = React.useState();
 
     const handleChange = (event) => {
-        if (event.target.value == 5)
-            setDis(false);
-        else
-            setDis(true);
         setWhy(event.target.value);
+        console.log(event)
+        if (event.target.value == 4 || event.target.value == 5)
+            setReason(3);
+        else
+            setReason(event.target.value);
     };
-    const ChangeStatus=()=>{
-        alert("change the status")
+    const ChangeStatus = () => {
+        alert(reason);
+        props.onChangeStatus(reason);
     }
 
     return (
@@ -56,16 +72,17 @@ const UpdateStatus = () => {
                                         label="סיבת השינוי"
                                         onChange={handleChange}
                                     >
-                                        <MenuItem value={1} dir='rtl'>אישור עבודה</MenuItem>
-                                        <MenuItem value={2} dir='rtl'>פטירה</MenuItem>
-                                        <MenuItem value={3} dir='rtl'>החלמה</MenuItem>
-                                        <MenuItem value={4} dir='rtl'>פיטורים</MenuItem>
-                                        <MenuItem value={5} dir='rtl'>אחר</MenuItem>
+                                        <MenuItem value={1} dir='rtl' >אישור עבודה</MenuItem>
+                                        <MenuItem value={3} dir='rtl'>פטירה</MenuItem>
+                                        <MenuItem value={4} dir='rtl'>החלמה</MenuItem>
+                                        <MenuItem value={5} dir='rtl'>פיטורים</MenuItem>
+
+                                        {/* <MenuItem value={5} dir='rtl'>אחר</MenuItem> */}
                                     </Select>
                                 </FormControl>
                             </Box>
-                            <br /><br />
-                            <TextField disabled={dis} id="standard-basic" label="פירוט" variant="standard" />
+                            {/* <br /><br />
+                            <TextField disabled={dis} id="standard-basic" label="פירוט" variant="standard" /> */}
 
 
                             <br /><br /> <br /><br /> <br /><br />

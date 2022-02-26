@@ -6,19 +6,40 @@ import createCache from '@emotion/cache';
 import rtlPlugin from 'stylis-plugin-rtl';
 import { CacheProvider } from "@emotion/react";
 import axios from "axios";
+import { alignProperty } from "@mui/material/styles/cssUtils";
 
 
 
 
-const Preference = () => {
+const UpdatePreference = () => {
 
-    const [error, setError] = React.useState();
-    const [emp_id, setEmpId] = useState();
+
+
+    // useEffect(() => {
+    //     const userStr = localStorage.getItem("user");
+    //     const user = JSON.parse(userStr);
+    //     const use;
+    //     if (user.id == 1) {
+
+
+    //     }
+    //     else {
+    //         const empStr = localStorage.getItem("employee");
+    //         use = JSON.parse(empStr);
+    //     }
+
+    //     setU(use);
+    // })
+
+   
+    // const [emp_id, setEmpId] = useState();
     const [gender, setGender] = useState();
+    
+
     const [desPerc, setDesPerc] = useState();
     const [age, setAge] = useState();
     const [hour, setHour] = useState();
-
+    const [statusClient,setStatus]=useState();
     const [emp, setEmp] = React.useState(null);
     const [pref,setPref]=useState([]);
     useEffect(() => {
@@ -31,12 +52,13 @@ const Preference = () => {
             setPref(res.data.preference)
             else
             setPref(0)
-         console.log(pref)
+            console.log(pref)
         })
+        
         
     }, [])
     
-
+   
 
 
     const theme = createTheme({
@@ -48,33 +70,37 @@ const Preference = () => {
         stylisPlugins: [rtlPlugin],
     })
     const ChangePref = () => {
-        alert("change the status")
-    }
-    const ifLegal = (event) => {
-        const re = /^[0-9\b]+$/;
-        if (event.target.value.length != 9 || !re.test(event.target.value)) {
-            setError('תעודת זהות לא תקינה')
+        let id=pref[0].idpreferences
+        
+        const obj ={
+            id,
+            gender,
+            age,
+            desPerc,
+            hour,
+            statusClient
         }
-        else
-            setError('')
-        setEmpId(event.target.value)
+        axios.put("http://localhost:8080/updatePreferences", obj).then((res) => {
+            alert("הודעה על הזמנה לראיון נשלחה ללקוח")
+        })
+        alert("chnge pref and send to home")
     }
+
     const changeGender = (event) => {
         if (event.target.value == 'male')
             setGender(0);
         else
             setGender(1);
     };
-
+    // age: 80
+    // disabllity_perc: 50
+    // emp_id: "3243"
+    // gender: 0
+    // hours_in_day: null
+    // idpreferences: 1
+    // status_client: 2
     return (
-        pref.length>0 ?<>
-        <br/><br/>
-        <Card style={{textAlign:'center'}}>
-        יש לך העדפות, עבור לטופס עדכון העדפות
-        <br/><br/><br/>
-        <Button variant="contained" style={{background: '#006064'}} onClick={(e)=>{window.location.assign(`/employee-bar/update-preference`)}}>עדכון העדפות</Button>
-        <br/><br/>
-        </Card></>:
+       pref.length>0?
         <Grid
             container
             spacing={24}
@@ -86,24 +112,12 @@ const Preference = () => {
                 <Grid item xs={7} >
                     <Card style={{ width: '50vw', height: '100vh', textAlign: 'center', align: 'center' }}>
                         <CardContent>
-                            <Typography variant="h5" component="div">העדפות</Typography>
-                            {/* // hours_in_day, status_client, */}
-                            <TextField
-                                required
-                                error={error}
-                                id="filled-required"
-                                label="תעודת זהות"
-                                value={emp_id}
-                                variant="standard"
-                                onChange={ifLegal}
-                                helperText={error}
-                            />
                             <CardContent >
                                 <FormControl component="fieldset" dir="rtl">
                                     <FormLabel component="legend">מין</FormLabel>
-                                    <RadioGroup row aria-label="gender" name="row-radio-buttons-group" value={gender} onChange={changeGender}>
-                                        <FormControlLabel value="female" control={<Radio />} label="זכר" />
-                                        <FormControlLabel value="male" control={<Radio />} label="נקבה" />
+                                    <RadioGroup row aria-label="gender" name="row-radio-buttons-group" defaultValue={pref[0].gender==1?"female":"male"} onChange={changeGender}>
+                                        <FormControlLabel value="male" control={<Radio />} label="זכר" />
+                                        <FormControlLabel value="female" control={<Radio />} label="נקבה" />
                                     </RadioGroup>
                                 </FormControl>
                             </CardContent>
@@ -116,8 +130,9 @@ const Preference = () => {
                                         shrink: true,
                                     }}
                                     variant="standard"
-                                    //value={desPerc}
-                                    onClick={(e) => { setDesPerc(e.target.value) }}
+                                    //pref?:
+                                    defaultValue={pref[0].disabllity_perc}
+                                    onChange={(e) => { setDesPerc(e.target.value);console.log(e.target.value);}}
                                 />
                                 <>                                                                                                      </>
                                 <TextField
@@ -128,8 +143,8 @@ const Preference = () => {
                                         shrink: true,
                                     }}
                                     variant="standard"
-                                    //value={desPerc}
-                                    onClick={(e) => { setAge(e.target.value) }}
+                                    defaultValue={pref[0].age}
+                                    onChange={(e) => { setAge(e.target.value) }}
                                 />
                             </CardContent>
                             <CardContent>
@@ -142,7 +157,7 @@ const Preference = () => {
                                     }}
                                     variant="standard"
                                     helperText="לעובדי מטב"
-                                    //value={desPerc}
+                                    defaultValue={pref[0].hours_in_day}
                                     onClick={(e) => { setHour(e.target.value) }} />
                             </CardContent>
                             <CardContent>
@@ -151,21 +166,22 @@ const Preference = () => {
                                     סטטוס מטופל
                                 </InputLabel>
                                 <NativeSelect
-                                    defaultValue={""}
+                                    defaultValue={pref[0].status_client}
                                     inputProps={{
                                         name: 'age',
                                         id: 'uncontrolled-native',
                                     }}
-                                    style={{width:'20vw'}}
+                                    style={{ width: '20vw' }}
+                                    onChange={(e)=>setStatus(e.target.value)}
                                 >   <option value={""}></option>
-                                    <option value={10}>תסמונת</option>
-                                    <option value={20}>סיעודי מלא</option>
-                                    <option value={30}>סיעודי חלקי</option>
+                                    <option value={3}>תסמונת</option>
+                                    <option value={1}>סיעודי מלא</option>
+                                    <option value={2}>סיעודי חלקי</option>
                                 </NativeSelect>
                             </CardContent>
-                            <br /><br /> 
+                            <br /><br />
                             <Grid style={{ textAlign: 'center' }}>
-                                <Button variant="contained" size="large" onClick={ChangePref}style={{ background: '#006064' }}>
+                                <Button variant="contained" size="large" onClick={ChangePref} style={{ background: '#006064' }}>
                                     שמירה
                                 </Button>
                             </Grid>
@@ -174,7 +190,8 @@ const Preference = () => {
                     </Card>
                 </Grid>
             </CacheProvider>
-        </Grid>
+        </Grid>:<>אין לך העדפות, עבור למילוי העדפות
+                   <br/> <Button>הכנסת העדפות</Button></>
     );
 }
-export default Preference
+export default UpdatePreference

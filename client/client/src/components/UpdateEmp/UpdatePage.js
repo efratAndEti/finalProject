@@ -116,7 +116,7 @@ const UpdatePages = () => {
             </Grid>
             <Grid item xs={3}>
                 <ImageButton focusRipple key={1} style={{ width: '100%' }}
-                 onClick={(e) => { window.location.assign(`/employee-bar/preference`) }}>
+                 onClick={(e) => { window.location.assign(`/employee-bar/update-preference`) }}>
                     <ImageSrc style={{ backgroundColor: `${'#00bcd4'}` }} 
                    />
                     <ImageBackdrop className="MuiImageBackdrop-root" />

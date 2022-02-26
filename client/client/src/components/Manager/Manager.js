@@ -28,6 +28,8 @@ import { Tooltip } from '@mui/material';
 import EmployeePage from '../UserPages/EmployeePage';
 import ManagerPage from '../UserPages/ManagerPage';
 import ManagerOpinion from './ManagerOpinoin';
+import EmploeeView from './employeeView';
+import ClientView from './clientView';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -272,6 +274,8 @@ export default function ManagerBar() {
 
       <Routes>
         <Route path={`opinion`} element={<ManagerOpinion />} />
+        <Route path={`employee-view`} element={<EmploeeView />} />
+        <Route path={`client-view`} element={<ClientView />} />
         <Route path={``} element={<ManagerPage />} />
         
 

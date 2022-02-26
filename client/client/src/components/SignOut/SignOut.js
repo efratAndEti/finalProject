@@ -1,4 +1,4 @@
-import { Button, MenuItem } from '@mui/material';
+import { Button, IconButton, MenuItem, Tooltip } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -9,12 +9,14 @@ import React, { useState } from 'react';
 import { createTheme } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 import { ThemeProvider } from '@mui/styles';
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function SignOut(props) {
-    const {onSignOut}=props;
+  const { onSignOut } = props;
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -25,20 +27,22 @@ export default function SignOut(props) {
     setOpen(false);
   };
   const handleChange = () => {
-      onSignOut();
-      localStorage.clear();
-      setOpen(false);
-      window.location.assign('http://localhost:3000/');
+    onSignOut();
+    localStorage.clear();
+    setOpen(false);
+    window.location.assign('http://localhost:3000/');
   };
-  const whiteTheme = createTheme({ palette: { primary:{ main:grey[50] }} })
+  const whiteTheme = createTheme({ palette: { primary: { main: grey[50] } } })
 
 
   return (
     <div>
-        <ThemeProvider theme={whiteTheme}>
-      <Button variant="outlined" onClick={handleClickOpen} color="primary" style={{ color: '#0097a7' }} >
-        Sign Out
-      </Button>
+      <ThemeProvider theme={whiteTheme}>
+        <IconButton variant="outlined" onClick={handleClickOpen} color="primary" style={{ color: '#0097a7' }} >
+          <Tooltip title="התנתק">
+            <PowerSettingsNewIcon />
+          </Tooltip>
+        </IconButton>
       </ThemeProvider>
       {/* <MenuItem onClick={handleClickOpen}>Sign Out</MenuItem> */}
       <Dialog

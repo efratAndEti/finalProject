@@ -31,6 +31,7 @@ import Manager from './components/Manager/Manager';
 import ManagerBar from './components/Manager/Manager';
 import ManagerOpinion from './components/Manager/ManagerOpinoin';
 import UpdatePages from './components/UpdateEmp/UpdatePage';
+import EmploeeView from './components/Manager/employeeView';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
@@ -112,7 +113,7 @@ function App() {
 
           <Route path="/sample" element={<Sample />} />
           <Route path="/sign-up" element={<SignUp onSignUp={changeLogin} />} />
-          <Route path="/sign-out" element={<SignOut onSignOut={changeLogin} />} />
+          <Route path="/sign-out" element={<SignOut onSignOut={changeLogin}  />} />
           <Route path="/log-in" element={<LogIn onLogin={changeLogin} />} />
           <Route path="/sign-out" element={<SignOut />} />
           <Route path="/opinion" element={<Opinion />} />
@@ -130,6 +131,7 @@ function App() {
           <Route path="/client-form" element={<ClientForm />} />
           <Route path="/client-page" element={<ClientPage />} />
           <Route path="/man-op" element={<ManagerOpinion />} />
+          <Route path="/emp-view" element={<EmploeeView />} />
           <Route path="/" element={<Home />} />
 
           <Route path="*" element={<Page404 />} />

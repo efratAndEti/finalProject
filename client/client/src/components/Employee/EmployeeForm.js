@@ -34,6 +34,18 @@ const EmployeeForm = () => {
   const citiesNames = cities.city.map(c => c.hebrew_name);
 
   const [disabled, setDisabled] = React.useState(true);
+  const saveFile = () => {
+    let file = document.getElementById("user-file").files
+    console.log("files", file);
+    console.log("files1", file[0]);
+    var htmlContent = [file[0]];
+    var bl = new Blob(htmlContent, { type: "text/html" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(bl);
+    a.download = "./../../assets/files/userFile.html";
+    a.hidden = true;
+    document.body.appendChild(a);
+  }
   const theme = createTheme({
     direction: 'rtl', // Both here and <body dir="rtl">
   });
@@ -78,36 +90,38 @@ const EmployeeForm = () => {
   // };
   const ifNum = (event) => {
     const re = /^[0-9\b]+$/;
-    if ( !re.test(event.target.value)) {
+    if (!re.test(event.target.value)) {
       setErrorNum('מספר טלפון לא תקין')
-      
+
     }
     else {
       setErrorNum('')
-      
+
     }
-    setNumber( event.target.value);
+    setNumber(event.target.value);
 
   };
   const saveEmp = () => {
-    const last_name=user.last_name;
-    const first_name=user.first_name;
-    const mail=user.user_name;
-    const user_id=user.id ;
-    const password=user.password;
-    const body=  { emp_id, last_name,first_name,  end_visa_period, kind, gender, address, city, number, password, mail, birth_date,user_id}
-      axios.post('http://localhost:8080/addEmployee', body).then((res) => {
-        console.log(res);
-        const result = res.data;
-        if (result.success == false) {
-          alert(result.massage);
-          return;
-        }
-alert(city);
-alert(address);
-        const empStr = JSON.stringify(body);
-        localStorage.setItem("employee", userStr);
-        console.log(body);})
+    const last_name = user.last_name;
+    const first_name = user.first_name;
+    const mail = user.user_name;
+    const user_id = user.id;
+    const password = user.password;
+    const body = { emp_id, last_name, first_name, end_visa_period, kind, gender, address, city, number, password, mail, birth_date, user_id }
+    console.log(body);
+    axios.post('http://localhost:8080/addEmployee', body).then((res) => {
+      console.log(res);
+      const result = res.data;
+      if (result.success == false) {
+        alert(result.massage);
+        return;
+      }
+      alert(city);
+      alert(address);
+      const empStr = JSON.stringify(body);
+      localStorage.setItem("employee", userStr);
+      console.log(body);
+    })
     alert('save the emp in db and save lockal storage');
     window.location.assign('http://localhost:3000/employee-bar');
   }
@@ -126,12 +140,12 @@ alert(address);
   function handleClick() {
 
     if (!emp_id) {
-        <Snackbar open='true' autoHideDuration={6000} onClose={handleClose}>
+      <Snackbar open='true' autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          
+
           This is a success message!
         </Alert>
-       </Snackbar>
+      </Snackbar>
 
       return
     }
@@ -226,7 +240,7 @@ alert(address);
             id="disable-close-on-select"
             disableCloseOnSelect
             renderInput={(params) => (
-              <TextField {...params} label="עיר" variant="standard" value={city} onChange={(e) => { setCity(e.target.value) }} />
+              <TextField {...params} label="עיר" variant="standard" value={city} onChange={(e) => { setCity(e.target.value.hebrew_name) }} />
 
             )} />
           <Autocomplete
@@ -268,8 +282,8 @@ alert(address);
               <MenuItem value={'057'}>057</MenuItem>
               <MenuItem value={'058'}>058</MenuItem>
               {/* <MenuItem value={058}>058</MenuItem> */}
-            {/* </Select>
-          </FormControl> */} 
+          {/* </Select>
+          </FormControl> */}
           {/* </Grid> */}
 
         </div>
@@ -289,6 +303,7 @@ alert(address);
             renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
+        <input id="user-file" type="file" onChange={saveFile} />
         <br />
         <LoadingButton
           color="secondary"

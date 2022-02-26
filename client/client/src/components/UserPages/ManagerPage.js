@@ -103,7 +103,7 @@ const ManagerPage = () => {
                 </Grid>
 
                 <Grid item xs={3}>
-                    <ImageButton focusRipple key={1} style={{ width: '100%',height:'45vh'}}>
+                    <ImageButton onClick={(e) => { window.location.assign(`/manager-bar/employee-view`) }} focusRipple key={1} style={{ width: '100%',height:'45vh'}}>
                         <ImageSrc style={{ backgroundColor: `${'#006064'}` }} />
                         <ImageBackdrop className="MuiImageBackdrop-root" />
                         <Image>
@@ -116,7 +116,7 @@ const ManagerPage = () => {
                     </ImageButton>
                 </Grid>
                 <Grid item xs={3}>
-                    <ImageButton focusRipple key={1} style={{ width: '100%',height:'45vh' }}>
+                    <ImageButton onClick={(e) => { window.location.assign(`/manager-bar/client-view`) }}focusRipple key={1} style={{ width: '100%',height:'45vh' }}>
                         <ImageSrc style={{ backgroundColor: `${'#00838f'}` }} />
                         <ImageBackdrop className="MuiImageBackdrop-root" />
                         <Image>

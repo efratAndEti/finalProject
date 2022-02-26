@@ -23,12 +23,16 @@ import {
 } from "react-router-dom";
 import SignOut from '../SignOut/SignOut';
 import OpinionEmp from '../OpinionEmp/opinionEmp';
-import { Tooltip } from '@mui/material';
+import { Alert, Snackbar, Tooltip } from '@mui/material';
 import EmployeePage from '../UserPages/EmployeePage';
 import MyMassagesPage from '../MyChat/MyMassagesPage';
 import UpdatePages from '../UpdateEmp/UpdatePage';
 import Preference from '../Preference/preference';
 import UpdateStatus from '../UpdateEmp/UpdateStatus';
+import UpdatePreference from '../UpdateEmp/UpdatePreference';
+import HomeIcon from '@mui/icons-material/Home';
+import axios from 'axios';
+
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -71,12 +75,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function EmployeeBar() {
- 
+
   const [emp, setEmp] = React.useState(null);
 
   React.useEffect(() => {
-      const e = JSON.parse(localStorage.getItem("employee"));
-      setEmp(e);
+    const e = JSON.parse(localStorage.getItem("employee"));
+    setEmp(e);
   }, [])
 
 
@@ -84,10 +88,23 @@ export default function EmployeeBar() {
   // console.log("path: ", path);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+  const [status, setStatus] = React.useState();
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -103,9 +120,44 @@ export default function EmployeeBar() {
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
-  }; 
-  const signout=()=>{
-    
+  };
+
+  const handleStatusChanged = (val) => {
+    setStatus(val);
+    const status=val
+    const id = emp.emp_id;
+    axios.put(`http://localhost:8080/UpdateEmpStatus/${id}/${status}`).then((res) => {
+      console.log(res);
+    })
+    handleClick();
+    setTimeout(function(){
+      window.location.assign(`/employee-bar/`)
+   }, 3000);
+    //שינוי סטטוס ושליחת הודעה ללקוח אם מאשר את השינוי, אם כן משנה גם ללקוח, אפ לא משנה רק לעובד
+    // const emploeeId
+    //איך מעבירים משהו מהבן לאבא
+  };
+  // const sendMassage=()=>{
+  //   const obj = {
+  //     from_m: {
+  //         id: client.id_client,
+  //         first_name: client.first_name,
+  //         last_name: client.last_name
+  //     },
+  //     to_m: {
+  //         id: selectedEmp.emp_id,
+  //         first_name: selectedEmp.first_name,
+  //         last_name: selectedEmp.last_name
+  //     },
+  //     kind: "startTry"
+  // }
+  // axios.post("http://localhost:8080/addSystemMassage", obj).then((res) => {
+  //     alert("הודעה על הזמנה לראיון נשלחה ללקוח")
+  // })
+  // }
+
+  const signout = () => {
+
     handleMenuClose();
   }
 
@@ -127,9 +179,9 @@ export default function EmployeeBar() {
       onClose={handleMenuClose}
     >
 
-      <MenuItem onClick={handleMenuClose}> {emp?emp.firstName:""} {emp?emp.lastName:""}</MenuItem>
+      <MenuItem onClick={handleMenuClose}> {emp ? emp.firstName : ""} {emp ? emp.lastName : ""}</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleMenuClose}><SignOut/></MenuItem>
+      <MenuItem onClick={handleMenuClose}><SignOut /></MenuItem>
     </Menu>
   );
 
@@ -191,7 +243,7 @@ export default function EmployeeBar() {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" style={{ background: '#006064' }}>
           <Toolbar>
-            
+
             <IconButton
               size="large"
               edge="start"
@@ -221,42 +273,48 @@ export default function EmployeeBar() {
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <Tooltip title="חוות דעת">
-              <IconButton size="large" aria-label="opinion" color="inherit"
-                onClick={(e) => { window.location.assign(`/employee-bar/opinion`) }}>
-                <InsertEmoticonIcon />
-              </IconButton>
+                <IconButton size="large" aria-label="opinion" color="inherit"
+                  onClick={(e) => { window.location.assign(`/employee-bar/opinion`) }}>
+                  <InsertEmoticonIcon />
+                </IconButton>
               </Tooltip>
               <Tooltip title="התראות">
-              <IconButton
-                size="large"
-                aria-label="show 17 new notifications"
-                color="inherit"
-              >
-                <Badge badgeContent={17} color="error">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
+                <IconButton
+                  size="large"
+                  aria-label="show 17 new notifications"
+                  color="inherit"
+                >
+                  <Badge badgeContent={17} color="error">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
               </Tooltip>
               <Tooltip title='דואר'>
-              <IconButton size="large" aria-label="show 4 new mails" color="inherit"
-                onClick={(e) => { window.location.assign(`/employee-bar/massages`) }}>
-                <Badge badgeContent={8} color="error">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
+                <IconButton size="large" aria-label="show 4 new mails" color="inherit"
+                  onClick={(e) => { window.location.assign(`/employee-bar/massages`) }}>
+                  <Badge badgeContent={8} color="error">
+                    <MailIcon />
+                  </Badge>
+                </IconButton>
               </Tooltip>
               <Tooltip title='פרופיל'>
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title='בית'>
+                <IconButton size="large" aria-label="show 4 new mails" color="inherit"
+                  onClick={(e) => { window.location.assign(`/employee-bar/`) }}>
+                  <HomeIcon />
+                </IconButton>
               </Tooltip>
             </Box>
             <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
@@ -275,14 +333,21 @@ export default function EmployeeBar() {
         </AppBar>
         {renderMobileMenu}
         {renderMenu}
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="info" sx={{ width: '100%' }}>
+            הסטטוס שונה בהצלחה
+          </Alert>
+        </Snackbar>
+
       </Box>
 
       <Routes>
         <Route path={`opinion`} element={<OpinionEmp />} />
         <Route path={`preference`} element={<Preference />} />
+        <Route path={`update-preference`} element={<UpdatePreference />} />
         <Route path={`update`} element={<UpdatePages />} />
-        <Route path={`updateStatus`} element={<UpdateStatus />} />
-        <Route path={`massages`} element={< MyMassagesPage id={emp?emp.emp_id:0} />} />
+        <Route path={`updateStatus`} element={<UpdateStatus onChangeStatus={handleStatusChanged} />} />
+        <Route path={`massages`} element={< MyMassagesPage id={emp ? emp.emp_id : 0} />} />
         <Route path={``} element={<EmployeePage />} />
 
       </Routes>
