@@ -26,6 +26,18 @@ app.get("/status/getStatuses", async (req, res) => {
     res.send(status);
 })
 
+app.put("/UpdateEmpStatus/:id/:status", async (req, res) => {
+    console.log(req.params);
+    const { id ,status} = req.params;
+    
+    const update=await promiseQuery(`UPDATE employee 
+    SET status_emp=${status}
+    WHERE emp_id=${id}`);
+
+    res.send(update);
+
+})
+
 
 //---------------------------------------------employee---------------------
 
@@ -272,11 +284,33 @@ app.post(("/addOpinion"), async (req, res) => {
 //     console.log(req.params);
 
 // })
+
+app.delete("/deleteOpinion/:id", async (req, res) => {
+    const { id } = req.params;
+    
+    const del=await promiseQuery(`DELETE FROM opinion where idOpinion=${id}`);
+
+
+    res.send(del);
+
+})
+///check how get 2 values!!!!!!!!!!
+app.put("/changeReport/:id/:eId", async (req, res) => {
+    const { id } = req.params;
+    
+    const del=await promiseQuery(`UPDATE opinion 
+    SET report=0 
+    WHERE empId=${id}`);
+
+    res.send(del);
+
+})
 app.get("/getReportOpinions", async (req, res) => {
-    await promiseQuery(`SELECT  o.*, c.first_name as c_first ,c.last_name as c_last,e.first_name,e.last_name
+    const opinions=await promiseQuery(`SELECT  o.*, c.first_name as c_first ,c.last_name as c_last,e.first_name,e.last_name
     FROM db.opinion o join client c on o.clientId=c.id_client
     join employee e on e.emp_id=o.empId
-    where report=1`)
+    where report=1`);
+    res.send(opinions);
 })
 app.get("/getOpinion", async (req, res) => {
     await promiseQuery(`select * from opinion`)
@@ -414,7 +448,11 @@ app.get("/getClientByUserId/:id", async (req, res) => {
     else
         res.send(empDetails[0]);
 })
-
+app.get("/getClients", async (req, res) => {
+    
+    const empDetails = await promiseQuery(`SELECT * FROM client `);
+    res.send(empDetails);
+})
 
 
 //צריך לחשוב על אפשרות לקבל רמת דחיפות של העדפה
@@ -487,3 +525,28 @@ app.get("/getListOfEmps/:id", async (req, res) => {
 
 
 })
+
+//------------------preference----------------------
+app.get("/getPreferenceById/:id", async (req, res) => {
+
+    const { id } = req.params;
+    const query = `select * from preferences where emp_id='${id}'`;
+    const preference = await promiseQuery(query);
+    if (preference == null)
+    res.send({ success: false, massage: "אין העדפות"  });
+    else
+    res.send({ success: true, preference: preference });
+  
+})
+app.put("/updatePreferences", async (req, res) => {
+    console.log(req.params);
+    const {id,gender,age,desPerc,hour,statusClient} = req.body;
+    
+    const update=await promiseQuery(`update preferences
+    set disabllity_perc=${desPerc} , gender=${gender},age=${age},status_client=${statusClient},hours_in_day=${hour}
+    where idpreferences=${id}`);
+
+    res.send(update);
+
+})
+
