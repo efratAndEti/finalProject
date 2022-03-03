@@ -112,12 +112,14 @@ const OpinionEmp = () => {
 
   }, [opinions])
 
-const report=()=>{
-  alert("report to man")
-}
+  const report = () => {
+    alert("report to man")
+  }
+  
   return (
     <Grid container spacing={2} columns={16}>
       {emp == null ? <div>טוען</div> :
+
         <>
           <Grid item xs={8}>
             <ImageButton
@@ -160,24 +162,33 @@ const report=()=>{
             </ImageButton>
           </Grid>
           <Grid item xs={8}>
-            <Typography style={{textAlign:'center'}}>
-              <h3>חוות דעת</h3>
+            {opinions.length == 0 ?
+              <Typography style={{ textAlign: 'center' }}>
+                <h3>חוות דעת</h3>
+                <>נראה כי עדיין לא נכתבו חוות דעת</><br/>
+                <iframe src="https://giphy.com/embed/h4OGa0npayrJX2NRPT" width="200" height="200" frameBorder="0" class="giphy-embed" allowFullScreen>
+                </iframe>
+
+              </Typography> :
+              <Typography style={{ textAlign: 'center' }}>
+                <h3>חוות דעת</h3>
 
 
-              {opinions.map(o => <>
-                <Divider>{o.first_name + ' ' + o.last_name}</Divider>
-                <Box sx={{ p: 2}}>
-                <div><Rating name="read-only" precision={0.5} value={o.rank} readOnly /></div>
-                <p>{o.description}</p>
-                <Tooltip title="דווח על חוות דעת" arrow>
-                <IconButton onClick={report}>
-                <ReportProblemIcon color="error"/>
-                </IconButton >
-                </Tooltip>
-                </Box>
-              </>)}
+                {opinions.map(o => <>
+                  <Divider>{o.first_name + ' ' + o.last_name}</Divider>
+                  <Box sx={{ p: 2 }}>
+                    <div><Rating name="read-only" precision={0.5} value={o.rank} readOnly /></div>
+                    <p>{o.description}</p>
+                    <Tooltip title="דווח על חוות דעת" arrow>
+                      <IconButton onClick={report}>
+                        <ReportProblemIcon color="error" />
+                      </IconButton >
+                    </Tooltip>
+                  </Box>
+                </>)}
 
-            </Typography>
+              </Typography>
+            }
           </Grid>
         </>
       }

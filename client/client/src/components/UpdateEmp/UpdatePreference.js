@@ -31,34 +31,41 @@ const UpdatePreference = () => {
     //     setU(use);
     // })
 
-   
+
     // const [emp_id, setEmpId] = useState();
     const [gender, setGender] = useState();
-    
+
 
     const [desPerc, setDesPerc] = useState();
     const [age, setAge] = useState();
     const [hour, setHour] = useState();
-    const [statusClient,setStatus]=useState();
+    const [statusClient, setStatus] = useState();
     const [emp, setEmp] = React.useState(null);
-    const [pref,setPref]=useState([]);
+    const [pref, setPref] = useState([]);
     useEffect(() => {
         const e = JSON.parse(localStorage.getItem("employee"));
         setEmp(e);
-        const id=e.emp_id;
+        const id = e.emp_id;
         axios.get(`http://localhost:8080/getPreferenceById/${id}`).then((res) => {
             console.log(res.data);
-            if(res.data.success==true)
-            setPref(res.data.preference)
+            if (res.data.success == true)
+                setPref(res.data.preference);
             else
-            setPref(0)
-            console.log(pref)
+                setPref(0);
+            console.log(pref);
+            if (pref.length > 0) {
+                setDesPerc(res.data.preference[0].disabllity_perc);
+                setAge(res.data.preference[0].age);
+                setGender(res.data.preference[0].gender);
+                setHour(res.data.preference[0].hours_in_day);
+                setStatus(res.data.preference[0].status_client);
+            }
         })
-        
-        
+
+
     }, [])
-    
-   
+
+
 
 
     const theme = createTheme({
@@ -70,9 +77,9 @@ const UpdatePreference = () => {
         stylisPlugins: [rtlPlugin],
     })
     const ChangePref = () => {
-        let id=pref[0].idpreferences
-        
-        const obj ={
+        let id = pref[0].idpreferences
+
+        const obj = {
             id,
             gender,
             age,
@@ -81,7 +88,7 @@ const UpdatePreference = () => {
             statusClient
         }
         axios.put("http://localhost:8080/updatePreferences", obj).then((res) => {
-            alert("הודעה על הזמנה לראיון נשלחה ללקוח")
+            console.log(res);
         })
         alert("chnge pref and send to home")
     }
@@ -100,98 +107,112 @@ const UpdatePreference = () => {
     // idpreferences: 1
     // status_client: 2
     return (
-       pref.length>0?
-        <Grid
-            container
-            spacing={24}
-            justify="center"
-            alignItems="center"
-            justifyContent="center"
-            padding={3}>
-            <CacheProvider value={cacheRtl}>
-                <Grid item xs={7} >
-                    <Card style={{ width: '50vw', height: '100vh', textAlign: 'center', align: 'center' }}>
-                        <CardContent>
-                            <CardContent >
-                                <FormControl component="fieldset" dir="rtl">
-                                    <FormLabel component="legend">מין</FormLabel>
-                                    <RadioGroup row aria-label="gender" name="row-radio-buttons-group" defaultValue={pref[0].gender==1?"female":"male"} onChange={changeGender}>
-                                        <FormControlLabel value="male" control={<Radio />} label="זכר" />
-                                        <FormControlLabel value="female" control={<Radio />} label="נקבה" />
-                                    </RadioGroup>
-                                </FormControl>
-                            </CardContent>
+        pref.length > 0 ?
+            <Grid
+                container
+                spacing={24}
+                justify="center"
+                alignItems="center"
+                justifyContent="center"
+                padding={3}>
+                <CacheProvider value={cacheRtl}>
+                    <Grid item xs={7} >
+                        <Card style={{ width: '50vw', height: '100vh', textAlign: 'center', align: 'center' }}>
                             <CardContent>
-                                <TextField
-                                    id="standard-number"
-                                    label="אחוזי נכות"
-                                    type="number"
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    variant="standard"
-                                    //pref?:
-                                    defaultValue={pref[0].disabllity_perc}
-                                    onChange={(e) => { setDesPerc(e.target.value);console.log(e.target.value);}}
-                                />
-                                <>                                                                                                      </>
-                                <TextField
-                                    id="standard-number"
-                                    label="גיל"
-                                    type="number"
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    variant="standard"
-                                    defaultValue={pref[0].age}
-                                    onChange={(e) => { setAge(e.target.value) }}
-                                />
-                            </CardContent>
-                            <CardContent>
-                                <TextField
-                                    id="standard-number"
-                                    label="שעות ביום"
-                                    type="number"
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                    variant="standard"
-                                    helperText="לעובדי מטב"
-                                    defaultValue={pref[0].hours_in_day}
-                                    onClick={(e) => { setHour(e.target.value) }} />
-                            </CardContent>
-                            <CardContent>
+                                <CardContent >
+                                    <FormControl component="fieldset" dir="rtl">
+                                        <FormLabel component="legend">מין</FormLabel>
+                                        <RadioGroup row aria-label="gender" name="row-radio-buttons-group" defaultValue={pref[0].gender == 1 ? "female" : "male"} onChange={changeGender}>
+                                            <FormControlLabel value="male" control={<Radio />} label="זכר" />
+                                            <FormControlLabel value="female" control={<Radio />} label="נקבה" />
+                                        </RadioGroup>
+                                    </FormControl>
+                                </CardContent>
+                                <CardContent>
+                                    <TextField
+                                        id="standard-number"
+                                        label="אחוזי נכות"
+                                        type="number"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        variant="standard"
+                                        //pref?:
+                                        defaultValue={pref[0].disabllity_perc}
+                                        onChange={(e) => { setDesPerc(e.target.value); console.log(e.target.value); }}
+                                    />
+                                    <>                                                                                                      </>
+                                    <TextField
+                                        id="standard-number"
+                                        label="גיל"
+                                        type="number"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        variant="standard"
+                                        defaultValue={pref[0].age}
+                                        onChange={(e) => { setAge(e.target.value) }}
+                                    />
+                                </CardContent>
+                                <CardContent>
+                                    <TextField
+                                        id="standard-number"
+                                        label="שעות ביום"
+                                        type="number"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        variant="standard"
+                                        helperText="לעובדי מטב"
+                                        defaultValue={pref[0].hours_in_day}
+                                        onClick={(e) => { setHour(e.target.value) }} />
+                                </CardContent>
+                                <CardContent>
 
-                                <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                    סטטוס מטופל
-                                </InputLabel>
-                                <NativeSelect
-                                    defaultValue={pref[0].status_client}
-                                    inputProps={{
-                                        name: 'age',
-                                        id: 'uncontrolled-native',
-                                    }}
-                                    style={{ width: '20vw' }}
-                                    onChange={(e)=>setStatus(e.target.value)}
-                                >   <option value={""}></option>
-                                    <option value={3}>תסמונת</option>
-                                    <option value={1}>סיעודי מלא</option>
-                                    <option value={2}>סיעודי חלקי</option>
-                                </NativeSelect>
+                                    <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                                        סטטוס מטופל
+                                    </InputLabel>
+                                    <NativeSelect
+                                        defaultValue={pref[0].status_client}
+                                        inputProps={{
+                                            name: 'age',
+                                            id: 'uncontrolled-native',
+                                        }}
+                                        style={{ width: '20vw' }}
+                                        onChange={(e) => setStatus(e.target.value)}
+                                    >   <option value={""}></option>
+                                        <option value={3}>תסמונת</option>
+                                        <option value={1}>סיעודי מלא</option>
+                                        <option value={2}>סיעודי חלקי</option>
+                                    </NativeSelect>
+                                </CardContent>
+                                <br /><br />
+                                <Grid style={{ textAlign: 'center' }}>
+                                    <Button variant="contained" size="large" onClick={ChangePref} style={{ background: '#006064' }}>
+                                        שמירה
+                                    </Button>
+                                </Grid>
                             </CardContent>
-                            <br /><br />
-                            <Grid style={{ textAlign: 'center' }}>
-                                <Button variant="contained" size="large" onClick={ChangePref} style={{ background: '#006064' }}>
-                                    שמירה
-                                </Button>
-                            </Grid>
-                        </CardContent>
 
-                    </Card>
+                        </Card>
+                    </Grid>
+                </CacheProvider>
+            </Grid> :
+            <Grid justify="center"
+                alignItems="center"
+                justifyContent="center" container spacing={1} style={{ textAlign: 'center', width: '100vw' }}>
+                <Grid item sx={12}>
+
+
+
+                    <br /><strong> אין לך העדפות, עבור למילוי העדפות</strong>
+                    <br /><br /><Button size="small" style={{ background: '#006064' }} variant="contained" size="large" onClick={() => { window.location.assign(`/employee-bar/preference`) }}>
+                        הכנסת העדפות
+                    </Button>
+
                 </Grid>
-            </CacheProvider>
-        </Grid>:<>אין לך העדפות, עבור למילוי העדפות
-                   <br/> <Button>הכנסת העדפות</Button></>
+            </Grid>
+
     );
 }
 export default UpdatePreference

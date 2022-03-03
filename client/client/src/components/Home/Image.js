@@ -9,29 +9,15 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
+import img1 from '../../pictures/1.jpg'
+import img2 from '../../pictures/2.jpg'
+import img3 from '../../pictures/3.jpg'
+import img4 from '../../pictures/4.jpg'
+
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const images = [
-  {
-   // label: 'San Francisco – Oakland Bay Bridge, United States',
-
-    url:'C:/Users/1/Desktop/computers/projectFiles/project/client/client/src/pictures/1.jpg',
-  },
-  {
-    //label: 'Bird',
-    title: 'picture',
-    url: 'src/pictures/pexels-kampus-production-7551633.jpg',
-  },
-  {
-   // label: 'Bali, Indonesia',
-    imgPath:
-      'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250&q=80',
-  },
-  {
-   // label: 'Goč, Serbia',
-    imgPath:
-      'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
-  },
+img1,img2,img3,img4
 ];
 
 function SwipeableTextMobileStepper() {
@@ -52,17 +38,20 @@ function SwipeableTextMobileStepper() {
   };
 
   return (
-    <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
+    
+    <Box sx={{ maxWidth: 400, flexGrow: 1 }} style={{textAlign:'center',width:'80vw',height:'65vh'}}>
       <Paper
         square
         elevation={0}
         sx={{
           display: 'flex',
           alignItems: 'center',
-          height: 50,
+          height: 100,
           pl: 2,
           bgcolor: 'background.default',
+          
         }}
+        
       >
         <Typography>{images[activeStep].label}</Typography>
       </Paper>
@@ -84,7 +73,7 @@ function SwipeableTextMobileStepper() {
                   overflow: 'hidden',
                   width: '100%',
                 }}
-                src={step.imgPath}
+                src={step}
                 alt={step.label}
               />
             ) : null}

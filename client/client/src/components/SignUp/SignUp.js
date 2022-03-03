@@ -45,14 +45,16 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { FormControl, Radio, RadioGroup } from '@mui/material';
 import { wait } from '@testing-library/react';
-
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+import rtlPlugin from 'stylis-plugin-rtl';
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="http://localhost:3000">
+        Ogen
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -63,6 +65,14 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp(props) {
+  const theme = createTheme({
+    direction: 'rtl', // Both here and <body dir="rtl">
+  });
+  // Create rtl cache
+  const cacheRtl = createCache({
+    key: 'muirtl',
+    stylisPlugins: [rtlPlugin],
+  });
   const { onSignUp } = props;
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
@@ -117,7 +127,7 @@ export default function SignUp(props) {
 
   const sendTo = () => {
     if (kind)
-      window.location.assign('http://localhost:3000/client-bar');
+      window.location.assign('http://localhost:3000/client-form');
     else
       window.location.assign('http://localhost:3000/employee-form');
   }
@@ -142,125 +152,131 @@ export default function SignUp(props) {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
+    <CacheProvider value={cacheRtl}>
+      <ThemeProvider theme={theme}>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              הירשם
+            </Typography>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+              <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  value={firstName}
-                  onChange={(e) => { setFirstName(e.target.value); ifCanged() }}
-                  autoComplete="given-name"
-                  name="firstName"
-                  required="true"
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  value={lastName}
-                  onChange={(e) => { setLastName(e.target.value); ifCanged() }}
-                  required="true"
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  error={error}
-                  helperText={error}
-                  value={email}
-                  onChange={(e) => { handleEmail(e); ifCanged() }}
-                  required="true"
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  value={password}
-                  onChange={(e) => { setPassword(e.target.value); ifCanged() }}
-                  requiredrequired="true"
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
-              </Grid>
-              {/* <Grid item xs={12}>
+                  <TextField
+                    value={lastName}
+                    onChange={(e) => { setLastName(e.target.value); ifCanged() }}
+                    required="true"
+                    fullWidth
+                    id="lastName"
+                    label="שם משפחה"
+                    name="lastName"
+                    autoComplete="family-name"
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    value={firstName}
+                    onChange={(e) => { setFirstName(e.target.value); ifCanged() }}
+                    autoComplete="given-name"
+                    name="firstName"
+                    required="true"
+                    fullWidth
+                    id="firstName"
+                    label="שם פרטי"
+                    autoFocus
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    error={error}
+                    helperText={error}
+                    value={email}
+                    onChange={(e) => { handleEmail(e); ifCanged() }}
+                    required="true"
+                    fullWidth
+                    id="email"
+                    label="כתובת מייל"
+                    name="email"
+                    autoComplete="email"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    value={password}
+                    onChange={(e) => { setPassword(e.target.value); ifCanged() }}
+                    requiredrequired="true"
+                    fullWidth
+                    name="password"
+                    label="סיסמא"
+                    type="password"
+                    id="password"
+                    autoComplete="new-password"
+                  />
+                </Grid>
+                {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid> */}
-              <Grid>
-                <FormControl component="fieldset">
-                  {/* <FormLabel component="legend">סוג</FormLabel> */}
-                  <RadioGroup
-                    aria-label="kind"
-                    name="controlled-radio-buttons-group"
-                    value={kind}
-                    onChange={handleChange}
-                  >
-                    <FormControlLabel value="client" control={<Radio />} label="מטופל" />
-                    <FormControlLabel value="employee" control={<Radio />} label="עובד" />
-                  </RadioGroup>
-                </FormControl>
+                <Grid dir='rtl'style={{textAlign:'center'}}>
+                  <FormControl dir='rtl' component="fieldset">
+                    {/* <FormLabel component="legend">סוג</FormLabel> */}
+                    <RadioGroup
+                      row
+                      dir='rtl'
+                      aria-label="kind"
+                      name="controlled-radio-buttons-group"
+                      value={kind}
+                      onChange={handleChange}
+                    >
+                      <FormControlLabel value="client" control={<Radio />} label="מטופל" />
+                      <FormControlLabel value="employee" control={<Radio />} label="עובד" />
+                    </RadioGroup>
+                  </FormControl>
+                </Grid>
               </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={AddUser}
-              disabled={disabled}
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                {/* <Router> */}
-                <Link href="http://localhost:3000/log-in" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-                {/* <Routers>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={AddUser}
+                disabled={disabled}
+              >
+                הירשם
+              </Button>
+              <Grid container justifyContent="flex-end">
+                <Grid item>
+                  {/* <Router> */}
+                  <Link href="http://localhost:3000/log-in" variant="body2">
+                    כבר יש לך חשבון? הכנס
+                  </Link>
+                  {/* <Routers>
                      <Route path="/sign-in" element={<LogIn/>} />
                      </Routers> */}
-                {/* //<Routes/> */}
-                {/* </Router> */}
+                  {/* //<Routes/> */}
+                  {/* </Router> */}
+                </Grid>
               </Grid>
-            </Grid>
+            </Box>
           </Box>
-        </Box>
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
-    </ThemeProvider>
+          <Copyright sx={{ mt: 5 }} />
+        </Container>
+      </ThemeProvider>
+    </CacheProvider>
   );
 }

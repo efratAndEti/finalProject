@@ -122,13 +122,14 @@ const SearchEmp = () => {
             },
             kind: "startTry"
         }
+        const connect={emp_id: selectedEmp.emp_id, client_id: client.id_client}
         axios.post("http://localhost:8080/addSystemMassage", obj).then((res) => {
             alert("הודעה על הזמנה לראיון נשלחה ללקוח")
         })
         //יצירת קשר בין לקוח לעובד
         //להוסיף פונקציה בשרת שמוסיפה קשר בין לקוח לעובד
         //להפעיל כאן
-        axios.post("http://localhost:8080/", obj).then((res) => {
+        axios.post("http://localhost:8080/addConnect", connect).then((res) => {
               
         })
         //להוסיף פונקציה בשרת שמשנה סטטוס לעובד ולקוח. להפעיל כאן

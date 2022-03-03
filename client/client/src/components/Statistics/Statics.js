@@ -80,19 +80,19 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 
-const UpdatePages = () => {
+const Statistics = () => {
 
     return (
-        <Grid container spacing={2} columns={9}>
+        <Grid container spacing={2} columns={6}>
 
             <Grid item xs={3}>
-                <ImageButton focusRipple key={1} style={{ width: '100%'}} 
-                onClick={(e) => { window.location.assign(`/employee-bar/update-details`) }}>
+                <ImageButton focusRipple key={1} style={{ width: '100%' }}
+                    onClick={(e) => { window.location.assign(`/manager-bar/emp-statistic`) }}>
                     <ImageSrc style={{ backgroundColor: `${'#e0f7fa'}` }} />
                     <ImageBackdrop className="MuiImageBackdrop-root" />
                     <Image>
                         <Typography component="span" variant="subtitle1" color="inherit" sx={{ position: 'relative', p: 4, pt: 2, pb: (theme) => `calc(${theme.spacing(1)} + 6px)`, }} >
-                             עדכון פרטים אישיים
+                            סטטיסטיקת עובדים
                             <br />
                             <ImageMarked className="MuiImageMarked-root" />
                         </Typography>
@@ -101,36 +101,21 @@ const UpdatePages = () => {
             </Grid>
             <Grid item xs={3}>
                 <ImageButton focusRipple key={1} style={{ width: '100%' }}
-                 onClick={(e) => { window.location.assign(`/employee-bar/update-status`) }}>
-                    <ImageSrc style={{ backgroundColor: `${'#80deea'}` }} 
+                    onClick={(e) => { window.location.assign(`/employee-bar/update-status`) }}>
+                    <ImageSrc style={{ backgroundColor: `${'#80deea'}` }}
                     />
                     <ImageBackdrop className="MuiImageBackdrop-root" />
                     <Image>
                         <Typography component="span" variant="subtitle1" color="inherit" sx={{ position: 'relative', p: 4, pt: 2, pb: (theme) => `calc(${theme.spacing(1)} + 6px)`, }} >
-                              עדכון סטטוס
+                        סטטיסטיקת לקוחות
                             <br />
                             <ImageMarked className="MuiImageMarked-root" />
                         </Typography>
                     </Image>
                 </ImageButton>
             </Grid>
-            <Grid item xs={3}>
-                <ImageButton focusRipple key={1} style={{ width: '100%' }}
-                 onClick={(e) => { window.location.assign(`/employee-bar/update-preference`) }}>
-                    <ImageSrc style={{ backgroundColor: `${'#00bcd4'}` }} 
-                   />
-                    <ImageBackdrop className="MuiImageBackdrop-root" />
-                    <Image>
-                        <Typography component="span" variant="subtitle1" color="inherit" sx={{ position: 'relative', p: 4, pt: 2, pb: (theme) => `calc(${theme.spacing(1)} + 6px)`, }} >
-                        עדכון העדפות  
-                            <br />
-                            <ImageMarked className="MuiImageMarked-root" />
-                        </Typography>
-                    </Image>
-                </ImageButton>
-            </Grid>         
         </Grid>
     );
 }
 
-export default UpdatePages;
+export default Statistics;

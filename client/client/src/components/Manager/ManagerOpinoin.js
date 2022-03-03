@@ -36,7 +36,7 @@ const ManagerOpinion = () => {
         alert("send massage");
     }
     const changeReport = () => {
-        axios.put(`http://localhost:8080/changeReport/${id}/${id}`).then((res) => {
+        axios.put(`http://localhost:8080/changeReport/${id}`).then((res) => {
             console.log(res);
         })
 
@@ -54,6 +54,7 @@ const ManagerOpinion = () => {
         changeReport();
         setOpen(false);
     };
+    
     const handleChange = () => {
         deleteOpinion();
         setOpen(false);

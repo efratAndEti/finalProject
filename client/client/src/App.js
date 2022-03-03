@@ -32,6 +32,7 @@ import ManagerBar from './components/Manager/Manager';
 import ManagerOpinion from './components/Manager/ManagerOpinoin';
 import UpdatePages from './components/UpdateEmp/UpdatePage';
 import EmploeeView from './components/Manager/employeeView';
+import EmpStatistic from './components/Statistics/EmpStatistic';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
@@ -95,12 +96,14 @@ function App() {
                     </li>
                     <li><SignOut onSignOut={changeLogin} /></li>
                   </>
-                  :
+                  :user.user_kind == 2?
                   <>
                    <li id='li'>
                       <Link to="/manager-bar">מנהל</Link>
                     </li>
                     <li><SignOut onSignOut={changeLogin} /></li>
+                  </>: <>
+                  <li><SignOut onSignOut={changeLogin} /></li>
                   </>
             }
 
@@ -132,6 +135,8 @@ function App() {
           <Route path="/client-page" element={<ClientPage />} />
           <Route path="/man-op" element={<ManagerOpinion />} />
           <Route path="/emp-view" element={<EmploeeView />} />
+          <Route path="/emp-stat" element={<EmpStatistic />} />
+
           <Route path="/" element={<Home />} />
 
           <Route path="*" element={<Page404 />} />

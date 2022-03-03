@@ -133,7 +133,7 @@ const ManagerPage = () => {
             <Grid container spacing={2} columns={9}>
 
                 <Grid item xs={6}>
-                    <ImageButton focusRipple key={1} style={{ width: '100%',height:'40vh' }}>
+                    <ImageButton  onClick={(e) => { window.location.assign(`/manager-bar/statistics`) }} focusRipple key={1} style={{ width: '100%',height:'40vh' }}>
                         <ImageSrc style={{ backgroundColor: `${'#80deea'}` }} />
                         <ImageBackdrop className="MuiImageBackdrop-root" />
                         <Image>

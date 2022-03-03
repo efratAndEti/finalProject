@@ -1,6 +1,6 @@
 import { Alert, AlertTitle, Autocomplete, Button, Card, FormControl, FormControlLabel, FormLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, Snackbar, Stack, TextField } from '@mui/material';
 import { Box, minWidth, textAlign } from '@mui/system';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
@@ -14,18 +14,16 @@ import { cities } from './../../assets/cities.json';
 import MuiAlert from '@mui/material/Alert';
 import axios from 'axios';
 import { styled } from '@mui/material/styles';
-import MultipleSelectChip from './Days';
+import MultipleSelectChip from '../Employee/Days';
 import { TimePicker } from '@mui/lab';
-import MultipleSelectCheckmarks from './languages';
+import MultipleSelectCheckmarks from '../Employee/languages';
 
-const EmployeeForm = () => {
+const UpdateDetails = () => {
 
   const [emp_id, setEmpId] = useState();
   const [typeRec, setTypeRec] = useState('');
   const [error, setError] = useState('');
   const [errorNum, setErrorNum] = useState('');
-  const userStr = localStorage.getItem("user");
-  const user = JSON.parse(userStr);
   const [end_visa_period, setEndVisaPeriod] = useState();
   const [kind, setKind] = useState();
   const [gender, setGender] = useState();
@@ -37,22 +35,23 @@ const EmployeeForm = () => {
 
   const [start, setStart] = useState();
   const [stop, setStop] = useState();
-
+  const [user,setUser]=useState();
   const citiesNames = cities.city.map(c => c.hebrew_name);
 
   const [disabled, setDisabled] = useState(true);
-  const saveFile = () => {
-    let file = document.getElementById("user-file").files
-    console.log("files", file);
-    console.log("files1", file[0]);
-    var htmlContent = [file[0]];
-    var bl = new Blob(htmlContent, { type: "text/html" });
-    var a = document.createElement("a");
-    a.href = URL.createObjectURL(bl);
-    a.download = "./../../assets/files/userFile.html";
-    a.hidden = true;
-    document.body.appendChild(a);
-  }
+  const [details,setDetails]=useState();
+//   const saveFile = () => {
+//     let file = document.getElementById("user-file").files
+//     console.log("files", file);
+//     console.log("files1", file[0]);
+//     var htmlContent = [file[0]];
+//     var bl = new Blob(htmlContent, { type: "text/html" });
+//     var a = document.createElement("a");
+//     a.href = URL.createObjectURL(bl);
+//     a.download = "./../../assets/files/userFile.html";
+//     a.hidden = true;
+//     document.body.appendChild(a);
+//   }
   const theme = createTheme({
     direction: 'rtl', // Both here and <body dir="rtl">
   });
@@ -61,7 +60,17 @@ const EmployeeForm = () => {
     key: 'muirtl',
     stylisPlugins: [rtlPlugin],
   });
+  useEffect(()=>{
+    const userStr = localStorage.getItem("user");
+    const u = JSON.parse(userStr);
+    setUser(u);
+    axios.get(`http://localhost:8080/getEmployeeByUserId/${u.id}`).then((res) => {
+        const empDetails = res.data;
+        setDetails(empDetails);
+  })
+  },[])
 
+  
   const ifLegal = (event) => {
     const re = /^[0-9\b]+$/;
     if (typeRec == 'id')
@@ -222,23 +231,10 @@ return (
   <CacheProvider value={cacheRtl}>
     <Grid container
       // spacing={15}
-      columns={15}
-      padding={3}>
-
-
-      {/* <Box
-          dir='rtl'
-          component="form"
-          sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' }, }}
-          noValidate
-          autoComplete="off"
-        //  textAlign="center"
-        > */}
-      {/* //-emp_id, -last_name, -first_name, -end_visa_period, -type, status_emp, 
-          //-genus, -address, -city, -phone, password, mail, birth_date */}
+      padding={2}
+      spacing={2}>
       <Grid item sx={5} dir='rtl' >
         <Card style={{ width: '30vw' ,textAlign:'center' ,height: '80.6vh'}}>
-
           עובד מט''ב
           <MultipleSelectChip handleDays={handleDays} disabled={disabled} />
 
@@ -290,15 +286,15 @@ return (
       </Grid>
       <Grid item sx={10} dir='rtl' >
         <Card style={{ width: '60vw'}}>
-          <FormControl component="fieldset">
+          {/* <FormControl component="fieldset">
             <FormLabel component="legend">בחר אמצעי זיהוי</FormLabel>
             <RadioGroup row aria-label="rec" name="row-radio-buttons-group" drawableRight>
               <FormControlLabel value="id" control={<Radio />} label="תעודת זהות" onChange={(e) => { setTypeRec(e.target.value) }} />
               <FormControlLabel value="passport" control={<Radio />} label="מספר דרכון" onChange={(e) => { setTypeRec(e.target.value) }} />
             </RadioGroup>
-          </FormControl>
+          </FormControl> */}
           <>                                                                                                                                       </>
-          <FormControl component="fieldset">
+          {/* <FormControl component="fieldset">
             <FormLabel component="legend">בחר סוג עובד</FormLabel>
             <RadioGroup row aria-label="rec" name="row-radio-buttons-group" value={kind} onChange={changeKind}>
               <FormControlLabel value="matav" control={<Radio />} label="עובד מט''ב" />
@@ -311,14 +307,14 @@ return (
               <FormControlLabel value="female" control={<Radio />} label="זכר" />
               <FormControlLabel value="male" control={<Radio />} label="נקבה" />
             </RadioGroup>
-          </FormControl>
+          </FormControl> */}
           <br />
           <TextField
             required
             error={error}
             id="filled-required"
             label={typeRec}
-            value={emp_id}
+            defaultValue={details?details.emp_id:null}
             variant="standard"
             onChange={ifLegal}
             helperText={error}
@@ -332,7 +328,7 @@ return (
               label="שם פרטי"
               // value={emp_id}
               variant="standard"
-              defaultValue={user[0].first_name}
+              //defaultValue={user[0].first_name}
               //onChange={(e)=>{console.log(user);}}
             />
             <TextField
@@ -341,7 +337,7 @@ return (
               label="שם משפחה"
               // value={emp_id}
               variant="standard"
-              defaultValue={user[0].last_name}
+             // defaultValue={user[0].last_name}
             />
           </div>
           <br />
@@ -399,7 +395,7 @@ return (
             id="filled-required"
             label="מייל"
             variant="standard"
-            defaultValue={user[0].user_name}
+            //defaultValue={user.user_name}
           />
           <br/><br/>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -420,4 +416,4 @@ return (
 );
 }
 
-export default EmployeeForm
+export default UpdateDetails

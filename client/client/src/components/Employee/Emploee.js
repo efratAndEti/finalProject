@@ -32,6 +32,7 @@ import UpdateStatus from '../UpdateEmp/UpdateStatus';
 import UpdatePreference from '../UpdateEmp/UpdatePreference';
 import HomeIcon from '@mui/icons-material/Home';
 import axios from 'axios';
+import UpdateDetails from '../UpdateEmp/UpdateDetails';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -244,7 +245,7 @@ export default function EmployeeBar() {
         <AppBar position="static" style={{ background: '#006064' }}>
           <Toolbar>
 
-            <IconButton
+            {/* <IconButton
               size="large"
               edge="start"
               color="inherit"
@@ -260,7 +261,7 @@ export default function EmployeeBar() {
               sx={{ display: { xs: 'none', sm: 'block' } }}
             >
               Emploee
-            </Typography>
+            </Typography> */}
             {/* <Search>
               <SearchIconWrapper>
                 <SearchIcon />
@@ -345,8 +346,9 @@ export default function EmployeeBar() {
         <Route path={`opinion`} element={<OpinionEmp />} />
         <Route path={`preference`} element={<Preference />} />
         <Route path={`update-preference`} element={<UpdatePreference />} />
+        <Route path={`update-details`} element={<UpdateDetails />} />
         <Route path={`update`} element={<UpdatePages />} />
-        <Route path={`updateStatus`} element={<UpdateStatus onChangeStatus={handleStatusChanged} />} />
+        <Route path={`update-status`} element={<UpdateStatus onChangeStatus={handleStatusChanged} />} />
         <Route path={`massages`} element={< MyMassagesPage id={emp ? emp.emp_id : 0} />} />
         <Route path={``} element={<EmployeePage />} />
 

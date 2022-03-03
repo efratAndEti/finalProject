@@ -15,6 +15,42 @@
     {
         "english_name": "Ruusian",
         "hebrew_name": "רוסית"
+    },
+    {
+        "english_name": "Italian",
+        "hebrew_name": "איטלקית"
+    },   
+     {
+        "english_name": "French",
+        "hebrew_name": "צרפתית"
+    },    
+    {
+        "english_name": "Filipino",
+        "hebrew_name": "פיליפינית"
+    },    
+    {
+        "english_name": "Yiddish",
+        "hebrew_name": "אידיש"
+    },
+    {
+        "english_name": "Romanian",
+        "hebrew_name": "רומנית"
+    }, 
+    {
+        "english_name": "Portuguese",
+        "hebrew_name": "פורטוגזית"
+    },
+    {
+        "english_name": "Spanish",
+        "hebrew_name": "ספרדית"
+    },
+    {
+        "english_name": "Amharic",
+        "hebrew_name": "אמהרית"
+    },
+    {
+        "english_name": "Chinese",
+        "hebrew_name": "סינית"
     }
 ]
 }
